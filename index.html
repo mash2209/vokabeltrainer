@@ -397,14 +397,6 @@
     refreshMeta();
   }
 
-  function resetLocal() {
-    localStorage.removeItem(LS_DATA_KEY);
-    vocab = [];
-    renderTable();
-    refreshMeta();
-    status("lokal gelöscht");
-  }
-
   function reindexIds() {
     let maxId = vocab.reduce((m, it) => Math.max(m, Number(it.id)||0), 0);
     for (const it of vocab) {
