@@ -219,6 +219,13 @@
 
 <script>
   const LS_KEY = "vocab_trainer_v2";
+  function getListKey() {
+  const p = new URLSearchParams(location.search);
+  return (p.get("list") || "default").trim().toLowerCase();
+  }
+  const LIST_KEY = getListKey();
+  const CSV_URL = `csv/vocab_${LIST_KEY}.csv`;
+  const LS_DATA_KEY = `${LS_KEY}__${LIST_KEY}`;
   let vocab = [];
 
   // Session state
@@ -360,7 +367,7 @@
   }
 
   function load() {
-    const raw = localStorage.getItem(LS_KEY);
+    const raw = localStorage.getItem(LS_DATA_KEY);
     if (raw) {
       try { vocab = JSON.parse(raw) || []; }
       catch { vocab = []; }
@@ -385,7 +392,7 @@
   }
 
   function save() {
-    localStorage.setItem(LS_KEY, JSON.stringify(vocab));
+    localStorage.setItem(LS_DATA_KEY, JSON.stringify(vocab));
     status("gespeichert");
     refreshMeta();
   }
