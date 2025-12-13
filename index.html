@@ -785,8 +785,8 @@
 
   function importCsvText(text) {
     // Reset: neue CSV soll immer komplett „gewinnen“
-    localStorage.removeItem(LS_KEY);
-    localStorage.removeItem(LS_KEY + "_version"); // falls du das irgendwann nutzt
+    localStorage.removeItem(LS_DATA_KEY);
+    localStorage.removeItem(LS_DATA_KEY + "_version"); // falls du das irgendwann nutzt
 
     const items = fromCsv(text);
     const today = todayISO();
