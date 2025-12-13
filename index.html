@@ -54,6 +54,14 @@
       overflow: auto;
     }
     body.noscroll { overflow: hidden; }
+
+	/* Mobile: Controls stapeln, weniger Gequetsche */
+    @media (max-width: 600px) {
+      .row > label { width: 100%; }
+      .row > button { width: 100%; }
+      .right { margin-left: 0; }
+    }
+
   </style>
 </head>
 
