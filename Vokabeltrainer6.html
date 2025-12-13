@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vokabeltrainer (offline, 1 Datei)</title>
+  <style>
+    :root { --gap: 12px; --radius: 12px; }
+    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #f6f7f9; color: #111; }
+    header { padding: 16px 16px 8px; background: white; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #e6e8ee; }
+    h1 { font-size: 18px; margin: 0 0 8px; }
+    .row { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: center; }
+    .card { background: white; border: 1px solid #e6e8ee; border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 0 rgba(0,0,0,0.03); }
+    main { padding: 16px; display: grid; gap: 16px; }
+
+    /* Lernbereich oben, Tabelle unten */
+    .stack { display: grid; gap: 16px; }
+
+    button, select, input, textarea { font: inherit; }
+    button { border: 1px solid #d6d9e2; background: #fff; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+    button.primary { background: #111; color: #fff; border-color: #111; }
+    button.danger { background: #fff; color: #b00020; border-color: #f0c0c6; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    label { font-size: 12px; color: #444; display: grid; gap: 6px; }
+    .pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; border: 1px solid #e6e8ee; background: #fafbfc; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius); overflow: hidden; }
+    th, td { border-bottom: 1px solid #eef0f5; padding: 10px; vertical-align: top; }
+    th { background: #fbfcfe; text-align: left; font-size: 12px; color: #444; }
+    td[contenteditable="true"] { background: #fff; }
+    tr:hover td { background: #fcfdff; }
+    .small { font-size: 12px; color: #555; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .right { margin-left: auto; }
+    .notice { font-size: 12px; color: #555; line-height: 1.35; }
+    .quizBox { display: grid; gap: 10px; }
+    .big { font-size: 20px; font-weight: 700; }
+    .answer { padding: 12px; border: 1px dashed #d6d9e2; border-radius: 12px; background: #fbfcfe; }
+    .choices { display: grid; gap: 8px; }
+    .choices button { text-align: left; }
+    .ok { border-color: #bfe5c9 !important; background: #f2fbf4 !important; }
+    .bad { border-color: #f0c0c6 !important; background: #fff7f8 !important; }
+    .muted { opacity: .75; }
+    .wrap { white-space: pre-wrap; }
+
+    /* Overlay fürs Lernen */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; z-index: 999; }
+    .overlay.open { display: block; }
+    .overlayPanel {
+      position: absolute; inset: 10px;
+      background: #f6f7f9;
+      border-radius: 16px;
+      padding: 10px;
+      overflow: auto;
+    }
+    body.noscroll { overflow: hidden; }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>Vokabeltrainer (eine HTML-Datei, offline)</h1>
+  <div class="row">
+    <span class="pill">Speichert automatisch lokal im Browser</span>
+    <span class="pill">CSV Import/Export</span>
+    <span class="pill">3 Lernmodi</span>
+    <span class="right small">Stand: <span id="status">bereit</span></span>
+  </div>
+</header>
+
+<!-- Lern-Overlay -->
+<div id="learnOverlay" class="overlay" aria-hidden="true">
+  <div class="overlayPanel">
+    <div class="row" style="margin-bottom: 10px;">
+      <strong>Lernen</strong>
+      <span class="right"></span>
+      <button id="closeOverlayBtn">Zurück zur Tabelle</button>
+      <button id="nextBtn2" disabled>Nächste</button>
+      <button id="endBtn2" class="danger" disabled>Beenden</button>
+    </div>
+
+    <div id="learnCardInner"></div>
+  </div>
+</div>
+
+<main class="stack">
+
+  <!-- OBEN: Lernen (Startbereich) -->
+  <section class="card" id="learnStartCard">
+    <div class="row" style="margin-bottom: 10px;">
+      <strong>Lernen</strong>
+      <span class="right"></span>
+      <button id="startBtn" class="primary">Session starten</button>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px;">
+      <label>
+        Sprache
+        <select id="langSelect"></select>
+      </label>
+
+      <label>
+        Richtung
+        <select id="directionSelect">
+	  <option value="DE_TO_FOREIGN">DE → Foreign</option>
+	  <option value="FOREIGN_TO_DE">Foreign → DE</option>
+	  <option value="BOTH">Beide Richtungen (gemischt)</option>
+	</select>
+      </label>
+
+      <label>
+        Modus
+        <select id="modeSelect">
+          <option value="FLASH">Karteikarten (richtig/falsch)</option>
+          <option value="MCQ">Multiple Choice</option>
+          <option value="TYPE">Eingabe</option>
+        </select>
+      </label>
+
+      <label>
+        Anzahl Fragen (0 = alle)
+        <input id="limitInput" type="number" min="0" step="1" value="0" style="width:160px; padding:10px; border-radius:12px; border:1px solid #e6e8ee;">
+      </label>
+
+      <label>
+        Groß-/Kleinschreibung und Akzente ignorieren (nur Eingabe)
+        <select id="lenientSelect" style="width:200px; padding:10px; border-radius:12px; border:1px solid #e6e8ee;">
+	  <option value="OFF" selected>aus</option>
+	  <option value="ON">an</option>
+	</select>
+      </label>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px;">
+      <label style="flex:1; min-width: 260px;">
+        Units/Tags auswählen (mehrfach möglich)
+        <select id="tagSelect" multiple size="5" style="width:100%; padding:8px; border-radius:12px; border:1px solid #e6e8ee;"></select>
+      </label>
+
+      <div style="display:grid; gap:10px; min-width:240px;">
+        <button id="tags30Btn">Tags letzte 30 Tage</button>
+        <button id="tags90Btn">Tags letzte 90 Tage</button>
+        <button id="selectAllTagsBtn">Alle Tags auswählen</button>
+        <button id="clearTagsBtn">Tags abwählen (=> alle)</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <span class="pill">Score: <span id="score">0</span></span>
+      <span class="pill">Frage: <span id="progress">0/0</span></span>
+      <span class="pill">Aktive Wörter: <span id="activeCount">0</span></span>
+      <span class="right small muted">Session läuft im Overlay</span>
+    </div>
+
+    <div class="small muted" style="margin-top:10px;">
+      Hinweis: Bei Multiple Choice kommen falsche Antworten immer aus allen Vokabeln derselben Sprache (z.B. alle EN).
+    </div>
+  </section>
+
+  <!-- UNTEN: Daten -->
+  <section class="card">
+    <div class="row" style="margin-bottom: 10px;">
+      <strong>Vokabeln</strong>
+      <span class="right"></span>
+      <button id="addRowBtn">+ Zeile</button>
+      <button id="saveBtn" class="primary">Speichern</button>
+      <button id="resetBtn" class="danger" title="Löscht nur die lokalen Daten im Browser">Lokale Daten löschen</button>
+    </div>
+
+    <div class="notice" style="margin-bottom: 12px;">
+      Spalten: <span class="mono">Added</span> (Import-/Erstellt-Datum),
+      <span class="mono">DE</span>, <span class="mono">Foreign</span>, <span class="mono">Lang</span> (z.B. EN/ES),
+      <span class="mono">Tags</span> (z.B. Unit 1; Unit 2), <span class="mono">Example</span>.
+      Tags trennst du am besten mit Semikolon.
+    </div>
+
+    <div style="overflow:auto; border-radius: 12px; border:1px solid #e6e8ee;">
+      <table id="vocabTable">
+        <thead>
+          <tr>
+            <th style="width:52px;">#</th>
+            <th style="width:110px;">Added</th>
+            <th>DE</th>
+            <th>Foreign</th>
+            <th style="width:70px;">Lang</th>
+            <th style="min-width:220px;">Tags (Units)</th>
+            <th style="min-width:260px;">Example</th>
+            <th style="width:70px;">Aktion</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+	<hr style="border:none;border-top:1px solid #eef0f5;margin:14px 0;">
+
+	<div class="row">
+	  <strong>Update (CSV)</strong>
+	  <span class="small muted">Datei auswählen → Daten werden übernommen</span>
+	  <span class="right"></span>
+
+	  <label class="pill" style="cursor:pointer;">
+	    CSV importieren
+	    <input id="importFile" type="file" accept=".csv,text/csv" style="display:none;">
+	  </label>
+	
+	  <span class="small muted" id="csvStatus"></span>
+	</div>
+	
+	<div class="small muted" style="margin-top:8px;">
+	  Erwartete Spalten:
+	  <span class="mono">id,added,de,foreign,lang,tags,example</span>
+	</div>
+	
+	<span class="right small" id="countInfo"></span>
+
+  </section>
+
+</main>
+
+<script>
+  const LS_KEY = "vocab_trainer_v2";
+  let vocab = [];
+
+  // Session state
+  let session = [];
+  let idx = 0;
+  let score = 0;
+  let inSession = false;
+  let currentDirForQuestion = "DE_TO_FOREIGN";
+
+  const $ = (id) => document.getElementById(id);
+  const status = (msg) => { $("status").textContent = msg; };
+
+  function todayISO() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function parseISODate(s) {
+    // expects YYYY-MM-DD, fallback null
+    if (!s) return null;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim());
+    if (!m) return null;
+    const d = new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00`);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function normalize(str, lenient=true) {
+    if (!str) return "";
+    let s = str.trim();
+    if (lenient) {
+      s = s.toLowerCase();
+      s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    s = s.replace(/\s+/g, " ");
+    return s;
+  }
+
+  function parseTags(tags) {
+    return (tags || "")
+      .split(";")
+      .map(t => t.trim())
+      .filter(Boolean);
+  }
+
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function escapeCsvField(v) {
+    const s = (v ?? "").toString();
+    if (/[,"\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+    return s;
+  }
+
+  function toCsv(items) {
+    const header = ["id","added","de","foreign","lang","tags","example"];
+    const lines = [header.join(",")];
+    for (const it of items) {
+      const row = [
+        it.id ?? "",
+        escapeCsvField(it.added || ""),
+        escapeCsvField(it.de),
+        escapeCsvField(it.foreign),
+        escapeCsvField(it.lang),
+        escapeCsvField(it.tags),
+        escapeCsvField(it.example)
+      ];
+      lines.push(row.join(","));
+    }
+    return lines.join("\n");
+  }
+
+  function fromCsv(text) {
+    const rows = [];
+    let i = 0, field = "", row = [], inQuotes = false;
+
+    function pushField() { row.push(field); field = ""; }
+    function pushRow() { rows.push(row); row = []; }
+
+    while (i < text.length) {
+      const c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i+1] === '"') { field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        } else { field += c; i++; continue; }
+      } else {
+        if (c === '"') { inQuotes = true; i++; continue; }
+        if (c === ',') { pushField(); i++; continue; }
+        if (c === '\n') { pushField(); pushRow(); i++; continue; }
+        if (c === '\r') { i++; continue; }
+        field += c; i++; continue;
+      }
+    }
+    pushField();
+    if (row.length > 1 || row[0].trim() !== "") pushRow();
+    if (rows.length === 0) return [];
+
+    const header = rows[0].map(h => h.trim().toLowerCase());
+    const dataRows = rows.slice(1);
+    const ix = (name) => header.indexOf(name);
+
+    const idxMap = {
+      id: ix("id"),
+      added: ix("added"),
+      de: ix("de"),
+      foreign: ix("foreign"),
+      lang: ix("lang"),
+      tags: ix("tags"),
+      example: ix("example")
+    };
+
+    const out = [];
+    for (const r of dataRows) {
+      const get = (k) => {
+        const j = idxMap[k];
+        return j >= 0 ? (r[j] ?? "").trim() : "";
+      };
+      const idStr = get("id");
+      const addedStr = get("added");
+      out.push({
+        id: idStr ? Number(idStr) : null,
+        added: addedStr || "",
+        de: get("de"),
+        foreign: get("foreign"),
+        lang: (get("lang") || "EN").toUpperCase(),
+        tags: get("tags"),
+        example: get("example")
+      });
+    }
+    return out;
+  }
+
+  function load() {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      try { vocab = JSON.parse(raw) || []; }
+      catch { vocab = []; }
+    } else {
+      vocab = [];
+      save();
+  }
+    normalizeMissingFields();
+    reindexIds();
+  }
+
+  function normalizeMissingFields() {
+    for (const it of vocab) {
+      if (!it.added) it.added = todayISO();
+      if (!it.lang) it.lang = "EN";
+      it.lang = (it.lang || "EN").toUpperCase();
+      if (typeof it.de !== "string") it.de = it.de ? String(it.de) : "";
+      if (typeof it.foreign !== "string") it.foreign = it.foreign ? String(it.foreign) : "";
+      if (typeof it.tags !== "string") it.tags = it.tags ? String(it.tags) : "";
+      if (typeof it.example !== "string") it.example = it.example ? String(it.example) : "";
+    }
+  }
+
+  function save() {
+    localStorage.setItem(LS_KEY, JSON.stringify(vocab));
+    status("gespeichert");
+    refreshMeta();
+  }
+
+  function resetLocal() {
+    localStorage.removeItem(LS_KEY);
+    vocab = [];
+    renderTable();
+    refreshMeta();
+    status("lokal gelöscht");
+  }
+
+  function reindexIds() {
+    let maxId = vocab.reduce((m, it) => Math.max(m, Number(it.id)||0), 0);
+    for (const it of vocab) {
+      if (!it.id) it.id = ++maxId;
+    }
+  }
+
+  function computeTagRecency() {
+    // Map tag -> latest date
+    const map = new Map();
+    for (const v of vocab) {
+      const d = parseISODate(v.added) || new Date(0);
+      for (const t of parseTags(v.tags)) {
+        const prev = map.get(t);
+        if (!prev || d > prev) map.set(t, d);
+      }
+    }
+    return map;
+  }
+
+  function refreshMeta() {
+    const langs = [...new Set(vocab.map(v => (v.lang || "EN").toUpperCase()).filter(Boolean))]
+      .sort((a,b)=>a.localeCompare(b, "de"));
+
+    const langSel = $("langSelect");
+    const currentLang = langSel.value || "ALL";
+    langSel.innerHTML = "";
+    const optAll = document.createElement("option");
+    optAll.value = "ALL";
+    optAll.textContent = "Alle Sprachen";
+    langSel.appendChild(optAll);
+    langs.forEach(l => {
+      const o = document.createElement("option");
+      o.value = l;
+      o.textContent = l;
+      langSel.appendChild(o);
+    });
+    if ([...langSel.options].some(o => o.value === currentLang)) langSel.value = currentLang;
+
+    // Tags: neueste zuerst
+    const tagLatest = computeTagRecency();
+    const allTags = [...tagLatest.keys()].sort((a,b) => {
+      const da = tagLatest.get(a) || new Date(0);
+      const db = tagLatest.get(b) || new Date(0);
+      if (db.getTime() !== da.getTime()) return db - da; // newest first
+      return a.localeCompare(b, "de");
+    });
+
+    const tagSel = $("tagSelect");
+    const selected = new Set([...tagSel.selectedOptions].map(o => o.value));
+    tagSel.innerHTML = "";
+    allTags.forEach(t => {
+      const o = document.createElement("option");
+      o.value = t;
+      const d = tagLatest.get(t);
+      const dStr = d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}` : "";
+      o.textContent = dStr ? `${t}  (${dStr})` : t;
+      if (selected.has(t)) o.selected = true;
+      tagSel.appendChild(o);
+    });
+
+    $("countInfo").textContent = `${vocab.length} Vokabel(n)`;
+  }
+
+  function renderTable() {
+    const tb = $("vocabTable").querySelector("tbody");
+    tb.innerHTML = "";
+    vocab.sort((a,b)=>(a.id||0)-(b.id||0));
+
+    vocab.forEach((it, n) => {
+      const tr = document.createElement("tr");
+
+      const tdNo = document.createElement("td");
+      tdNo.textContent = String(it.id ?? (n+1));
+      tdNo.className = "mono";
+      tr.appendChild(tdNo);
+
+      const tdAdded = document.createElement("td");
+      tdAdded.contentEditable = "true";
+      tdAdded.spellcheck = false;
+      tdAdded.textContent = it.added || "";
+      tdAdded.title = "YYYY-MM-DD";
+      tdAdded.addEventListener("input", () => {
+        it.added = tdAdded.textContent.trim();
+        status("ungespeichert");
+        refreshMeta();
+      });
+      tr.appendChild(tdAdded);
+
+      const mkEdit = (key) => {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        td.spellcheck = false;
+        td.textContent = it[key] ?? "";
+        td.addEventListener("input", () => {
+          it[key] = td.textContent.trim();
+          status("ungespeichert");
+          refreshMeta();
+        });
+        return td;
+      };
+
+      tr.appendChild(mkEdit("de"));
+      tr.appendChild(mkEdit("foreign"));
+
+      const tdLang = document.createElement("td");
+      tdLang.contentEditable = "true";
+      tdLang.spellcheck = false;
+      tdLang.textContent = it.lang ?? "";
+      tdLang.addEventListener("input", () => {
+        it.lang = tdLang.textContent.trim().toUpperCase() || "EN";
+        status("ungespeichert");
+        refreshMeta();
+      });
+      tr.appendChild(tdLang);
+
+      tr.appendChild(mkEdit("tags"));
+
+      const tdEx = mkEdit("example");
+      tdEx.classList.add("wrap");
+      tr.appendChild(tdEx);
+
+      const tdAct = document.createElement("td");
+      const del = document.createElement("button");
+      del.textContent = "Löschen";
+      del.className = "danger";
+      del.addEventListener("click", () => {
+        vocab = vocab.filter(v => v !== it);
+        renderTable();
+        refreshMeta();
+        status("ungespeichert");
+      });
+      tdAct.appendChild(del);
+      tr.appendChild(tdAct);
+
+      tb.appendChild(tr);
+    });
+
+    refreshMeta();
+  }
+
+  function getFilters() {
+    const lang = $("langSelect").value;
+    // options are labeled with date in text; value is tag only
+    const selectedTags = [...$("tagSelect").selectedOptions].map(o => o.value);
+    return { lang, selectedTags };
+  }
+
+  function buildSession() {
+    const { lang, selectedTags } = getFilters();
+    const limitRaw = Number($("limitInput").value || 0);
+    const limit = Math.max(0, limitRaw);
+
+    let pool = vocab.slice();
+
+    if (lang !== "ALL") pool = pool.filter(v => (v.lang || "").toUpperCase() === lang);
+
+    if (selectedTags.length > 0) {
+      const set = new Set(selectedTags);
+      pool = pool.filter(v => parseTags(v.tags).some(t => set.has(t)));
+    }
+
+    pool = pool.filter(v => (v.de || "").trim() && (v.foreign || "").trim());
+    shuffle(pool);
+
+    session = (limit === 0) ? pool : pool.slice(0, Math.min(limit, pool.length));
+    idx = 0;
+    score = 0;
+    inSession = session.length > 0;
+
+    $("score").textContent = String(score);
+    $("progress").textContent = `${inSession ? 1 : 0}/${session.length}`;
+    $("activeCount").textContent = String(session.length);
+
+    return inSession;
+  }
+
+  function currentItem() { return session[idx]; }
+
+  function qText(item) {
+    const dir = currentDirForQuestion;
+    return dir === "DE_TO_FOREIGN" ? item.de : item.foreign;
+  }
+  function aText(item) {
+    const dir = currentDirForQuestion;
+    return dir === "DE_TO_FOREIGN" ? item.foreign : item.de;
+  }
+
+  function renderLearnInner(container) {
+    container.innerHTML = "";
+
+    if (!inSession) {
+      container.innerHTML = `<div class="small muted">Keine aktive Session. Tippe oben auf „Session starten“.</div>`;
+      return;
+    }
+
+    const item = currentItem();
+    const dirSetting = $("directionSelect").value;
+    currentDirForQuestion = (dirSetting === "BOTH")
+    ? (Math.random() < 0.5 ? "DE_TO_FOREIGN" : "FOREIGN_TO_DE")
+    : dirSetting;
+    const mode = $("modeSelect").value;
+
+    const head = document.createElement("div");
+    head.innerHTML = `
+      <div class="small muted">Sprache: <span class="mono">${(item.lang||"").toUpperCase()}</span> · Tags: <span class="mono">${item.tags||"-"}</span> · Added: <span class="mono">${item.added||"-"}</span></div>
+      <div class="big">${qText(item)}</div>
+      ${item.example ? `<div class="small muted">Beispiel: ${item.example}</div>` : ``}
+    `;
+    container.appendChild(head);
+
+    if (mode === "FLASH") {
+      const ans = document.createElement("div");
+      ans.className = "answer";
+      ans.innerHTML = `
+        <div class="small muted">Klicke „Aufdecken“, dann bewerte dich selbst.</div>
+        <button id="revealBtn">Aufdecken</button>
+        <div id="revealArea" class="big" style="margin-top:10px; display:none;"></div>
+        <div class="row" style="margin-top:10px;">
+          <button id="selfOkBtn" disabled class="primary">Richtig</button>
+          <button id="selfBadBtn" disabled>Falsch</button>
+        </div>
+      `;
+      container.appendChild(ans);
+
+      $("revealBtn").onclick = () => {
+        const r = $("revealArea");
+        r.style.display = "block";
+        r.textContent = aText(item);
+        $("selfOkBtn").disabled = false;
+        $("selfBadBtn").disabled = false;
+      };
+      $("selfOkBtn").onclick = () => { score++; $("score").textContent = score; next(); };
+      $("selfBadBtn").onclick = () => { next(); };
+
+    } else if (mode === "MCQ") {
+      // falsche Antworten immer aus allen Vokabeln derselben Sprache
+      const allSameLang = vocab.filter(v => (v.lang||"").toUpperCase() === (item.lang||"").toUpperCase());
+      const correct = aText(item);
+
+      const distractors = shuffle(
+        allSameLang
+          .filter(v => v !== item)
+          .map(v => aText(v))
+          .filter(t => normalize(t, true) !== normalize(correct, true))
+      ).slice(0, 3);
+
+      const choices = shuffle([correct, ...distractors]);
+
+      const wrap = document.createElement("div");
+      wrap.className = "choices";
+      choices.forEach(ch => {
+        const b = document.createElement("button");
+        b.textContent = ch;
+        b.onclick = () => {
+          const ok = normalize(ch, true) === normalize(correct, true);
+          if (ok) { b.classList.add("ok"); score++; $("score").textContent = score; }
+          else { b.classList.add("bad"); }
+          [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
+          const reveal = document.createElement("div");
+          reveal.className = "small";
+          reveal.style.marginTop = "6px";
+          reveal.innerHTML = ok ? `<span class="pill ok">✔ richtig</span>` : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
+          container.appendChild(reveal);
+        };
+        wrap.appendChild(b);
+      });
+      container.appendChild(wrap);
+
+      const hint = document.createElement("div");
+      hint.className = "small muted";
+      hint.textContent = "Danach auf „Nächste“ tippen.";
+      container.appendChild(hint);
+
+    } else if (mode === "TYPE") {
+      const lenient = $("lenientSelect").value === "ON";
+      const correct = aText(item);
+
+      const area = document.createElement("div");
+      area.className = "answer";
+      area.innerHTML = `
+        <label>
+          Deine Antwort
+          <input id="typeInput" style="width:100%; padding:10px; border-radius:12px; border:1px solid #e6e8ee;" placeholder="Antwort eintippen">
+        </label>
+        <div class="row">
+          <button id="checkBtn" class="primary">Prüfen</button>
+          <button id="showBtn">Lösung zeigen</button>
+        </div>
+        <div id="feedback" class="small" style="margin-top:8px;"></div>
+      `;
+      container.appendChild(area);
+
+      $("checkBtn").onclick = () => {
+        const user = $("typeInput").value;
+        const ok = normalize(user, lenient) === normalize(correct, lenient);
+        const fb = $("feedback");
+        fb.innerHTML = ok
+          ? `<span class="pill ok">✔ richtig</span>`
+          : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
+        if (ok) { score++; $("score").textContent = score; }
+      };
+      $("showBtn").onclick = () => {
+        $("feedback").innerHTML = `<span class="mono">Lösung: ${correct}</span>`;
+      };
+
+      const hint = document.createElement("div");
+      hint.className = "small muted";
+      hint.textContent = "Danach auf „Nächste“ tippen.";
+      container.appendChild(hint);
+    }
+  }
+
+  function openOverlay() {
+    $("learnOverlay").classList.add("open");
+    $("learnOverlay").setAttribute("aria-hidden", "false");
+    document.body.classList.add("noscroll");
+    syncOverlayButtons();
+    renderLearnInner($("learnCardInner"));
+    // scroll overlay top
+    $("learnOverlay").querySelector(".overlayPanel").scrollTop = 0;
+  }
+
+  function closeOverlay() {
+    $("learnOverlay").classList.remove("open");
+    $("learnOverlay").setAttribute("aria-hidden", "true");
+    document.body.classList.remove("noscroll");
+  }
+
+  function syncOverlayButtons() {
+    const can = inSession;
+    $("nextBtn2").disabled = !can;
+    $("endBtn2").disabled = !can;
+  }
+
+  function next() {
+    if (!inSession) return;
+    if (idx < session.length - 1) {
+      idx++;
+      $("progress").textContent = `${idx+1}/${session.length}`;
+      renderLearnInner($("learnCardInner"));
+    } else {
+      inSession = false;
+      renderLearnInner($("learnCardInner"));
+      syncOverlayButtons();
+      status("Session fertig");
+      $("progress").textContent = `${session.length}/${session.length}`;
+    }
+  }
+
+  function endSession() {
+    inSession = false;
+    session = [];
+    idx = 0;
+    renderLearnInner($("learnCardInner"));
+    syncOverlayButtons();
+    $("progress").textContent = `0/0`;
+    $("activeCount").textContent = "0";
+    status("Session beendet");
+  }
+
+  function exportCsvToBox() {
+    $("csvBox").value = toCsv(vocab);
+    status("CSV erstellt");
+  }
+
+  function downloadCsv() {
+    const csv = $("csvBox").value || toCsv(vocab);
+    const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "vokabeln.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    status("CSV heruntergeladen");
+  }
+
+  function importCsvText(text) {
+    // Reset: neue CSV soll immer komplett „gewinnen“
+    localStorage.removeItem(LS_KEY);
+    localStorage.removeItem(LS_KEY + "_version"); // falls du das irgendwann nutzt
+
+    const items = fromCsv(text);
+    const today = todayISO();
+    const cleaned = items
+      .filter(it => it.de || it.foreign)
+      .map(it => ({
+        id: it.id || null,
+        added: it.added || today,
+        de: it.de || "",
+        foreign: it.foreign || "",
+        lang: (it.lang || "EN").toUpperCase(),
+        tags: it.tags || "",
+        example: it.example || ""
+      }));
+
+    let nextId = cleaned.reduce((m, it) => Math.max(m, Number(it.id) || 0), 0) + 1;
+    cleaned.forEach(it => { if (!it.id) it.id = nextId++; });
+
+    vocab = cleaned;
+    normalizeMissingFields();
+    save();
+    renderTable();
+    // Session/UI reset
+    inSession = false;
+    session = [];
+    idx = 0;
+    score = 0;
+    $("score").textContent = "0";
+    $("progress").textContent = "0/0";
+    $("activeCount").textContent = String(vocab.length);
+  
+    // Mini-Status für Kinder
+    const newest = vocab
+      .map(v => (v.added || "").trim())
+      .filter(Boolean)
+      .sort()
+      .slice(-1)[0] || "";
+    if ($("csvStatus")) $("csvStatus").textContent = newest ? `Aktualisiert: ${newest}` : `CSV importiert`;
+    status("CSV importiert");
+}
+
+  // Tag quick select (30/90 days) based on tag "latest date"
+  function selectTagsByRecency(days) {
+    const tagLatest = computeTagRecency();
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+
+    const tagSel = $("tagSelect");
+    [...tagSel.options].forEach(o => {
+      const d = tagLatest.get(o.value) || new Date(0);
+      o.selected = d >= cutoff;
+    });
+  }
+
+  // Wiring
+  $("addRowBtn").addEventListener("click", () => {
+    const maxId = vocab.reduce((m, it) => Math.max(m, Number(it.id)||0), 0);
+    vocab.push({id: maxId+1, added: todayISO(), de:"", foreign:"", lang:"EN", tags:"", example:""});
+    renderTable();
+    status("ungespeichert");
+  });
+
+  $("saveBtn").addEventListener("click", save);
+  $("resetBtn").addEventListener("click", () => {
+    if (confirm("Lokale Daten im Browser wirklich löschen?")) resetLocal();
+  });
+
+  function resetLocal() {
+    localStorage.removeItem(LS_KEY);
+    vocab = [];
+    renderTable();
+    refreshMeta();
+    status("lokal gelöscht");
+  }
+
+  $("importFile").addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const text = await file.text();
+    importCsvText(text);
+    e.target.value = "";
+  });
+
+  $("selectAllTagsBtn").addEventListener("click", () => {
+    [...$("tagSelect").options].forEach(o => o.selected = true);
+  });
+  $("clearTagsBtn").addEventListener("click", () => {
+    [...$("tagSelect").options].forEach(o => o.selected = false);
+  });
+  $("tags30Btn").addEventListener("click", () => selectTagsByRecency(30));
+  $("tags90Btn").addEventListener("click", () => selectTagsByRecency(90));
+
+  $("startBtn").addEventListener("click", () => {
+    if (vocab.length === 0) return alert("Keine Vokabeln vorhanden.");
+    const ok = buildSession();
+    if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
+    inSession = true;
+    syncOverlayButtons();
+    $("progress").textContent = `1/${session.length}`;
+    status("Session läuft");
+    openOverlay();
+  });
+
+  $("closeOverlayBtn").addEventListener("click", closeOverlay);
+  $("nextBtn2").addEventListener("click", next);
+  $("endBtn2").addEventListener("click", endSession);
+
+  // If user changes settings while in session, keep session stable
+  ["langSelect","tagSelect","directionSelect","modeSelect","limitInput","lenientSelect"].forEach(id => {
+    $(id).addEventListener("change", () => {
+      if (inSession) status("Session läuft (Filter ändern wirkt erst bei neuer Session)");
+      else status("bereit");
+    });
+  });
+
+  // init
+  load();
+  renderTable();
+  const newest = vocab.map(v => (v.added || "").trim()).filter(Boolean).sort().slice(-1)[0] || "";
+  if ($("csvStatus")) $("csvStatus").textContent = newest ? `Aktualisiert: ${newest}` : "";
+  $("activeCount").textContent = "0";
+  $("progress").textContent = "0/0";
+  $("score").textContent = "0";
+</script>
+</body>
+</html>
