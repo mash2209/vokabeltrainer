@@ -58,6 +58,19 @@
       .row > label { width: 100%; }
       .row > button { width: 100%; }
       .right { margin-left: 0; }
+      /* Mobile: Tabelle verschlanken (Tags + Example ausblenden) */
+      #vocabTable th:nth-child(6),
+      #vocabTable td:nth-child(6),
+      #vocabTable th:nth-child(7),
+      #vocabTable td:nth-child(7) {
+        display: none;
+      }
+
+      /* Mobile: etwas kompaktere Zellen */
+      #vocabTable th,
+	  #vocabTable td {
+        padding: 8px;
+      }
     }
 
     header { display: none; }
