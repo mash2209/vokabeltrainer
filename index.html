@@ -903,13 +903,23 @@
   });
 
   // init
-  load();
-  renderTable();
-  const newest = vocab.map(v => (v.added || "").trim()).filter(Boolean).sort().slice(-1)[0] || "";
-  if ($("csvStatus")) $("csvStatus").textContent = newest ? `Aktualisiert: ${newest}` : "";
-  $("activeCount").textContent = "0";
-  $("progress").textContent = "0/0";
-  $("score").textContent = "0";
+load();
+renderTable();
+
+// CSV Autoload (je nach URL: ?list=kind1 / ?list=kind2)
+fetch(CSV_URL, { cache: "no-store" })
+  .then(r => { if (!r.ok) throw new Error("CSV not found"); return r.text(); })
+  .then(text => importCsvText(text))
+  .catch(() => {
+    if ($("csvStatus")) $("csvStatus").textContent = `Keine CSV gefunden: ${CSV_URL}`;
+  });
+
+// Statuszeile (zeigt letztes Added-Datum)
+const newest = vocab.map(v => (v.added || "").trim()).filter(Boolean).sort().slice(-1)[0] || "";
+if ($("csvStatus")) $("csvStatus").textContent = newest ? `Aktualisiert: ${newest}` : "";
+$("activeCount").textContent = "0";
+$("progress").textContent = "0/0";
+$("score").textContent = "0";
 </script>
 </body>
 </html>
