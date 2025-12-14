@@ -694,8 +694,14 @@
     const tb = $("csvTable").querySelector("tbody");
     tb.innerHTML = "";
 
-    // Nicht überbreit: wir begrenzen nicht hart, aber TableWrap scrollt
-    for (const it of vocab) {
+    const rows = vocab.slice().sort((a, b) => {
+      const da = (a.added || "").trim();
+      const db = (b.added || "").trim();
+      if (da !== db) return db.localeCompare(da);
+      return String(b.id || "").localeCompare(String(a.id || ""));
+    });
+
+    for (const it of rows) {
       const tr = document.createElement("tr");
       const cells = [
         it.id,
