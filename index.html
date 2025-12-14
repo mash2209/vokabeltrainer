@@ -202,33 +202,6 @@
     </details>
   </section>
 
-  <!-- (2b) Upload-Historie -->
-  <section class="card">
-    <strong>Uploads (aus Spalte <span class="mono">added</span>)</strong>
-    <div class="row" style="margin-top: 8px;">
-      <span class="pill">Letzter Upload: <span class="mono" id="lastUpload">-</span></span>
-      <span class="right small muted" id="uploadHint"></span>
-    </div>
-
-    <details style="margin-top: 12px;">
-      <summary>
-        <div class="summaryRow">
-          <span class="chev">▶</span>
-          <strong>Alle Uploads anzeigen</strong>
-          <span class="right small muted" id="uploadsCountLabel"></span>
-        </div>
-      </summary>
-
-      <div style="margin-top: 12px;">
-        <div id="uploadsList" class="small mono"></div>
-      </div>
-
-      <div class="small muted" style="margin-top:10px;">
-        Neueste oben. In Klammern: Anzahl Vokabeln mit diesem Datum.
-      </div>
-    </details>
-  </section>
-
 </main>
 
 <script>
@@ -723,38 +696,6 @@
     $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
   }
 
-  function renderUploadHistory() {
-    // Wir interpretieren "Upload" als die Datumswerte in "added"
-    const counts = new Map(); // dateStr -> count
-    for (const v of vocab) {
-      const d = (v.added || "").trim();
-      if (!d) continue;
-      counts.set(d, (counts.get(d) || 0) + 1);
-    }
-
-    const dates = [...counts.keys()].sort((a,b) => b.localeCompare(a, "de")); // ISO sort desc
-
-    const last = dates[0] || "-";
-    $("lastUpload").textContent = last;
-
-    $("uploadsCountLabel").textContent = dates.length ? `${dates.length} Datum/Datumswerte` : `0`;
-
-    const list = $("uploadsList");
-    list.innerHTML = "";
-    if (!dates.length) {
-      list.textContent = "Keine added-Daten gefunden.";
-      $("uploadHint").textContent = "";
-      return;
-    }
-
-    // Hinweis rechts: wie viele Vokabeln am letzten Datum
-    $("uploadHint").textContent = last !== "-" ? `${counts.get(last)} Vokabel(n) am letzten Datum` : "";
-
-    // Liste: neueste oben, mit count
-    const lines = dates.map(d => `${d}  (${counts.get(d)})`);
-    list.textContent = lines.join("\n");
-  }
-
   // -------------------------
   // Wiring
   // -------------------------
@@ -823,8 +764,7 @@
 
       refreshMeta();
       renderCsvTable();
-      renderUploadHistory();
-
+      
       $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
 
       $("startBtn").disabled = vocab.length === 0;
@@ -835,7 +775,6 @@
       vocab = [];
       refreshMeta();
       renderCsvTable();
-      renderUploadHistory();
       status(`Keine CSV gefunden: ${CSV_URL}`);
       $("startBtn").disabled = true;
     }
