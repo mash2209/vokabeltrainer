@@ -23,7 +23,6 @@
     button:disabled { opacity: .5; cursor: not-allowed; }
     label { font-size: 12px; color: #444; display: grid; gap: 6px; }
 
-    .quizBox { display: grid; gap: 10px; }
     .big { font-size: 20px; font-weight: 700; }
     .answer { padding: 12px; border: 1px dashed #d6d9e2; border-radius: 12px; background: #fbfcfe; }
     .choices { display: grid; gap: 8px; }
@@ -50,6 +49,31 @@
     }
 
     html, body { max-width: 100%; overflow-x: hidden; }
+
+    /* Collapsible cards */
+    details summary { cursor: pointer; user-select: none; }
+    details summary::-webkit-details-marker { display:none; }
+    .summaryRow { display:flex; align-items:center; gap:10px; }
+    .chev { font-size: 12px; opacity: .7; }
+    details[open] .chev { transform: rotate(90deg); display:inline-block; }
+
+    /* CSV table view */
+    .tableWrap {
+      overflow: auto;
+      border: 1px solid #e6e8ee;
+      border-radius: 12px;
+      background: #fff;
+      max-height: 280px;
+    }
+    table.csv { border-collapse: collapse; width: max-content; min-width: 100%; }
+    table.csv th, table.csv td {
+      border-bottom: 1px solid #eef0f5;
+      padding: 8px 10px;
+      white-space: nowrap;
+      font-size: 12px;
+      vertical-align: top;
+    }
+    table.csv th { position: sticky; top: 0; background: #fbfcfe; text-align: left; color:#444; }
   </style>
 </head>
 
@@ -144,12 +168,70 @@
     </div>
   </section>
 
+  <!-- (2a) CSV Tabelle -->
+  <section class="card">
+    <details id="csvDetails">
+      <summary>
+        <div class="summaryRow">
+          <span class="chev">▶</span>
+          <strong>CSV anzeigen</strong>
+          <span class="right small muted" id="csvCountLabel"></span>
+        </div>
+      </summary>
+
+      <div style="margin-top: 12px;" class="tableWrap">
+        <table class="csv" id="csvTable">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>added</th>
+              <th>de</th>
+              <th>foreign</th>
+              <th>lang</th>
+              <th>tags</th>
+              <th>example</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="small muted" style="margin-top:10px;">
+        Read-only Anzeige der CSV-Daten.
+      </div>
+    </details>
+  </section>
+
+  <!-- (2b) Upload-Historie -->
+  <section class="card">
+    <strong>Uploads (aus Spalte <span class="mono">added</span>)</strong>
+    <div class="row" style="margin-top: 8px;">
+      <span class="pill">Letzter Upload: <span class="mono" id="lastUpload">-</span></span>
+      <span class="right small muted" id="uploadHint"></span>
+    </div>
+
+    <details style="margin-top: 12px;">
+      <summary>
+        <div class="summaryRow">
+          <span class="chev">▶</span>
+          <strong>Alle Uploads anzeigen</strong>
+          <span class="right small muted" id="uploadsCountLabel"></span>
+        </div>
+      </summary>
+
+      <div style="margin-top: 12px;">
+        <div id="uploadsList" class="small mono"></div>
+      </div>
+
+      <div class="small muted" style="margin-top:10px;">
+        Neueste oben. In Klammern: Anzahl Vokabeln mit diesem Datum.
+      </div>
+    </details>
+  </section>
+
 </main>
 
 <script>
-  // -------------------------
-  // CSV only (read-only data)
-  // -------------------------
   function getListKey() {
     const p = new URLSearchParams(location.search);
     return (p.get("list") || "default").trim().toLowerCase();
@@ -255,7 +337,6 @@
 
       const rawId = get("id");
       out.push({
-        // ID: wir akzeptieren Zahl oder String (UUID). Intern behalten wir ihn als String.
         id: rawId ? rawId : "",
         added: get("added"),
         de: get("de"),
@@ -284,7 +365,6 @@
   }
 
   function refreshMeta() {
-    // Languages
     const langs = [...new Set(vocab.map(v => (v.lang || "EN").toUpperCase()).filter(Boolean))]
       .sort((a,b)=>a.localeCompare(b, "de"));
 
@@ -306,7 +386,6 @@
 
     if ([...langSel.options].some(o => o.value === currentLang)) langSel.value = currentLang;
 
-    // Tags (newest first)
     const tagLatest = computeTagRecency();
     const allTags = [...tagLatest.keys()].sort((a,b) => {
       const da = tagLatest.get(a) || new Date(0);
@@ -377,8 +456,18 @@
   }
 
   // -------------------------
-  // Learn UI (example only after solution)
+  // Learn UI (example under solution)
   // -------------------------
+  function renderExampleUnder(targetEl, item) {
+    const ex = (item.example || "").trim();
+    if (!ex) return;
+    const div = document.createElement("div");
+    div.className = "small muted";
+    div.style.marginTop = "6px";
+    div.textContent = `Beispiel: ${ex}`;
+    targetEl.appendChild(div);
+  }
+
   function renderLearnInner(container) {
     container.innerHTML = "";
 
@@ -402,17 +491,8 @@
         · Added: <span class="mono">${item.added||"-"}</span>
       </div>
       <div class="big">${qText(item)}</div>
-      <div id="exampleBlock" class="small muted" style="display:none; margin-top:6px;"></div>
     `;
     container.appendChild(head);
-
-    const showExample = () => {
-      const ex = (item.example || "").trim();
-      if (!ex) return;
-      const el = $("exampleBlock");
-      el.textContent = `Beispiel: ${ex}`;
-      el.style.display = "block";
-    };
 
     if (mode === "FLASH") {
       const ans = document.createElement("div");
@@ -420,7 +500,7 @@
       ans.innerHTML = `
         <div class="small muted">Klicke „Aufdecken“, dann bewerte dich selbst.</div>
         <button id="revealBtn">Aufdecken</button>
-        <div id="revealArea" class="big" style="margin-top:10px; display:none;"></div>
+        <div id="revealArea" style="margin-top:10px; display:none;"></div>
         <div class="row" style="margin-top:10px;">
           <button id="selfOkBtn" disabled class="primary">Richtig</button>
           <button id="selfBadBtn" disabled>Falsch</button>
@@ -429,11 +509,20 @@
       container.appendChild(ans);
 
       $("revealBtn").onclick = () => {
-        $("revealArea").style.display = "block";
-        $("revealArea").textContent = aText(item);
+        const revealArea = $("revealArea");
+        revealArea.style.display = "block";
+        revealArea.innerHTML = ""; // reset
+
+        const sol = document.createElement("div");
+        sol.className = "big";
+        sol.textContent = aText(item);
+        revealArea.appendChild(sol);
+
+        // Beispiel direkt UNTER der Lösung
+        renderExampleUnder(revealArea, item);
+
         $("selfOkBtn").disabled = false;
         $("selfBadBtn").disabled = false;
-        showExample(); // <-- Beispiel erst jetzt
       };
       $("selfOkBtn").onclick = () => { score++; $("score").textContent = score; next(); };
       $("selfBadBtn").onclick = () => { next(); };
@@ -466,13 +555,17 @@
 
           const reveal = document.createElement("div");
           reveal.className = "small";
-          reveal.style.marginTop = "6px";
-          reveal.innerHTML = ok
-            ? `<span class="pill ok">✔ richtig</span>`
-            : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
-          container.appendChild(reveal);
+          reveal.style.marginTop = "8px";
 
-          showExample(); // <-- Beispiel erst nach Auswahl
+          // Korrekte Lösung anzeigen + Beispiel DIREKT darunter
+          if (ok) {
+            reveal.innerHTML = `<span class="pill ok">✔ richtig</span>`;
+          } else {
+            reveal.innerHTML = `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
+          }
+          renderExampleUnder(reveal, item);
+
+          container.appendChild(reveal);
         };
         wrap.appendChild(b);
       });
@@ -502,24 +595,27 @@
       `;
       container.appendChild(area);
 
-      const revealSolution = (okKnown) => {
-        showExample(); // <-- Beispiel erst nach Prüfen/Lösung
+      const renderSolutionWithExample = (html) => {
+        const fb = $("feedback");
+        fb.innerHTML = html;
+        // Beispiel direkt unter dem Feedback (wo auch die korrekte Lösung steht)
+        renderExampleUnder(fb, item);
       };
 
       $("checkBtn").onclick = () => {
         const user = $("typeInput").value;
         const ok = normalize(user, lenient) === normalize(correct, lenient);
-        const fb = $("feedback");
-        fb.innerHTML = ok
-          ? `<span class="pill ok">✔ richtig</span>`
-          : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
         if (ok) { score++; $("score").textContent = score; }
-        revealSolution(ok);
+
+        renderSolutionWithExample(
+          ok
+            ? `<span class="pill ok">✔ richtig</span>`
+            : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`
+        );
       };
 
       $("showBtn").onclick = () => {
-        $("feedback").innerHTML = `<span class="mono">Lösung: ${correct}</span>`;
-        revealSolution(null);
+        renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
       };
 
       const hint = document.createElement("div");
@@ -592,7 +688,69 @@
   }
 
   // -------------------------
-  // Wiring (no table, no import)
+  // Bottom cards: CSV table + upload history
+  // -------------------------
+  function renderCsvTable() {
+    const tb = $("csvTable").querySelector("tbody");
+    tb.innerHTML = "";
+
+    // Nicht überbreit: wir begrenzen nicht hart, aber TableWrap scrollt
+    for (const it of vocab) {
+      const tr = document.createElement("tr");
+      const cells = [
+        it.id,
+        it.added,
+        it.de,
+        it.foreign,
+        it.lang,
+        it.tags,
+        it.example
+      ];
+      for (const c of cells) {
+        const td = document.createElement("td");
+        td.textContent = (c ?? "").toString();
+        tr.appendChild(td);
+      }
+      tb.appendChild(tr);
+    }
+
+    $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
+  }
+
+  function renderUploadHistory() {
+    // Wir interpretieren "Upload" als die Datumswerte in "added"
+    const counts = new Map(); // dateStr -> count
+    for (const v of vocab) {
+      const d = (v.added || "").trim();
+      if (!d) continue;
+      counts.set(d, (counts.get(d) || 0) + 1);
+    }
+
+    const dates = [...counts.keys()].sort((a,b) => b.localeCompare(a, "de")); // ISO sort desc
+
+    const last = dates[0] || "-";
+    $("lastUpload").textContent = last;
+
+    $("uploadsCountLabel").textContent = dates.length ? `${dates.length} Datum/Datumswerte` : `0`;
+
+    const list = $("uploadsList");
+    list.innerHTML = "";
+    if (!dates.length) {
+      list.textContent = "Keine added-Daten gefunden.";
+      $("uploadHint").textContent = "";
+      return;
+    }
+
+    // Hinweis rechts: wie viele Vokabeln am letzten Datum
+    $("uploadHint").textContent = last !== "-" ? `${counts.get(last)} Vokabel(n) am letzten Datum` : "";
+
+    // Liste: neueste oben, mit count
+    const lines = dates.map(d => `${d}  (${counts.get(d)})`);
+    list.textContent = lines.join("\n");
+  }
+
+  // -------------------------
+  // Wiring
   // -------------------------
   $("closeOverlayBtn").addEventListener("click", closeOverlay);
   $("nextBtn2").addEventListener("click", next);
@@ -635,7 +793,6 @@
     $("score").textContent = "0";
     $("startBtn").disabled = true;
 
-    // disable tag buttons until loaded
     ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = true);
 
     try {
@@ -645,7 +802,6 @@
       const text = await r.text();
       const items = fromCsv(text);
 
-      // Clean
       vocab = items
         .filter(it => (it.de || it.foreign) && (it.lang || "").trim())
         .map(it => ({
@@ -660,6 +816,10 @@
         .filter(it => it.de && it.foreign);
 
       refreshMeta();
+      renderCsvTable();
+      renderUploadHistory();
+
+      $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
 
       $("startBtn").disabled = vocab.length === 0;
       ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = vocab.length === 0);
@@ -668,6 +828,8 @@
     } catch (e) {
       vocab = [];
       refreshMeta();
+      renderCsvTable();
+      renderUploadHistory();
       status(`Keine CSV gefunden: ${CSV_URL}`);
       $("startBtn").disabled = true;
     }
