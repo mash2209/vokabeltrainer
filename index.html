@@ -666,14 +666,20 @@
   function renderCsvTable() {
     const tb = $("csvTable").querySelector("tbody");
     tb.innerHTML = "";
-
+  
     const rows = vocab.slice().sort((a, b) => {
-      const da = (a.added || "").trim();
-      const db = (b.added || "").trim();
-      if (da !== db) return db.localeCompare(da);
+      const ia = Number(a.id);
+      const ib = Number(b.id);
+  
+      // Numerisch absteigend sortieren
+      if (!Number.isNaN(ia) && !Number.isNaN(ib)) {
+        return ib - ia;
+      }
+  
+      // Fallback, falls id kein sauberer Zahlenwert ist
       return String(b.id || "").localeCompare(String(a.id || ""));
     });
-
+  
     for (const it of rows) {
       const tr = document.createElement("tr");
       const cells = [
@@ -685,11 +691,13 @@
         it.tags,
         it.example
       ];
+
       for (const c of cells) {
         const td = document.createElement("td");
         td.textContent = (c ?? "").toString();
         tr.appendChild(td);
       }
+
       tb.appendChild(tr);
     }
 
