@@ -172,3 +172,16 @@ id,added,de,foreign,lang,tags,example
 171,2025-12-14,X,equis,ES,Unidad 1 Alfabeto (Qué pasa 1),taxi
 172,2025-12-14,Y,ye,ES,Unidad 1 Alfabeto (Qué pasa 1),yo
 173,2025-12-14,Z,zeta,ES,Unidad 1 Alfabeto (Qué pasa 1),zoo
+174,2025-12-14,ich,yo,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Singular
+175,2025-12-14,du,tú,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Singular
+176,2025-12-14,er/sie/Sie,él/ella/usted,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Singular
+177,2025-12-14,wir,nosotros/nosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Plural
+178,2025-12-14,ihr,vosotros/vosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Plural
+179,2025-12-14,sie/Sie,ellos/ellas/ustedes,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Plural
+180,2025-12-14,ich bin,soy,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Singular
+181,2025-12-14,du bist,eres,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Singular
+182,2025-12-14,er/sie/Sie ist,es,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Singular
+183,2025-12-14,wir sind,somos,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Plural
+184,2025-12-14,ihr seid,sois,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Plural
+185,2025-12-14,sie/Sie sind,son,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Plural
+186,2025-12-14,sein,ser,ES,Unidad 1 Verb ser (Qué pasa 1),Infinitiv
