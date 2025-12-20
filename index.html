@@ -513,7 +513,12 @@
     let currentDirForQuestion = "DE_TO_FOREIGN";
 
     const $ = (id) => document.getElementById(id);
-    const status = (msg) => { $("status").textContent = msg; $("overlayStatus").textContent = msg; };
+    const status = (msg) => {
+      const s = $("status");
+      if (s) s.textContent = msg;
+      const o = $("overlayStatus");
+      if (o) o.textContent = msg;
+    };
 
     function parseISODate(s) {
       if (!s) return null;
@@ -983,7 +988,6 @@
     }
 
             $("modalOkBtn").addEventListener("click", () => closeModal("ok"));
-        });
 
     // -------------------------
     // Option modals
@@ -1200,7 +1204,7 @@
       );
     }
 
-    function openLenientModal() {() {
+    function openLenientModal() {
       let temp = lenient;
       openModal(
         "Eingabe: tolerant",
@@ -1339,8 +1343,6 @@
     $("pickLimit").addEventListener("click", openLimitModal);
     $("pickLenient").addEventListener("click", openLenientModal);
     $("pickTags").addEventListener("click", openTagsModal);
-      $("startBtn").click();
-    });
 
     // -------------------------
     // INIT
