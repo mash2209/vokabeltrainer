@@ -1105,7 +1105,7 @@
           note.textContent = "Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { selectedLang = temp; updateLabels(); },
+        () => { selectedLang = temp; updateLabels(); }
       );
     }
 
@@ -1133,7 +1133,7 @@
           body.appendChild(wrap);
 
         },
-        () => { direction = temp; updateLabels(); },
+        () => { direction = temp; updateLabels(); }
       );
     }
 
@@ -1165,7 +1165,7 @@
           note.textContent = "Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { mode = temp; updateLabels(); },
+        () => { mode = temp; updateLabels(); }
       );
     }
 
@@ -1208,7 +1208,7 @@
           const n = Number(temp);
           limitN = (!Number.isFinite(n) || n <= 0) ? 0 : n;
           updateLabels();
-        },
+        }
       );
     }
 
@@ -1236,7 +1236,7 @@
           expl.style.marginTop = "8px";
           body.appendChild(expl);
         },
-        () => { lenient = temp; updateLabels(); },
+        () => { lenient = temp; updateLabels(); }
       );
     }
 
@@ -1328,7 +1328,7 @@
           note.textContent = "Sortierung: neueste Units oben (nach Added-Datum). Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { selectedTags = temp; updateLabels(); },
+        () => { selectedTags = temp; updateLabels(); }
       );
     }
 
