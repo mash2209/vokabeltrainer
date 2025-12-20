@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vokabeltrainer</title>
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Vokabeltrainer</title>
+<style>
     :root{
       --gap: 12px;
 
@@ -349,179 +349,145 @@
     }
   </style>
 </head>
-
 <body>
+<!-- Lern-Overlay -->
+<div aria-hidden="true" class="overlay" id="learnOverlay">
+<div class="overlayPanel">
+<div class="row" style="margin-bottom: 10px;">
+<strong>Lernen</strong>
+<span class="right small" id="overlayStatus"></span>
+<button id="closeOverlayBtn">Zurück</button>
+<button disabled="" id="nextBtn2">Nächste</button>
+<button class="danger" disabled="" id="endBtn2">Beenden</button>
+</div>
+<div id="learnCardInner"></div>
+</div>
+</div>
+<!-- Auswahl-Modal -->
+<div aria-hidden="true" class="modal" id="modal">
+<div aria-modal="true" class="modalPanel" role="dialog">
+<div class="modalHead">
+<strong id="modalTitle">Auswahl</strong>
+<span class="right"></span>
 
-  <!-- Lern-Overlay -->
-  <div id="learnOverlay" class="overlay" aria-hidden="true">
-    <div class="overlayPanel">
-      <div class="row" style="margin-bottom: 10px;">
-        <strong>Lernen</strong>
-        <span class="right small" id="overlayStatus"></span>
-        <button id="closeOverlayBtn">Zurück</button>
-        <button id="nextBtn2" disabled>Nächste</button>
-        <button id="endBtn2" class="danger" disabled>Beenden</button>
-      </div>
-      <div id="learnCardInner"></div>
-    </div>
-  </div>
+</div>
+<div class="modalBody" id="modalBody"></div>
+<div class="modalFoot">
 
-  <!-- Auswahl-Modal -->
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="modalPanel" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <strong id="modalTitle">Auswahl</strong>
-        <span class="right"></span>
-        <button id="modalCloseBtn">Schließen</button>
-      </div>
-      <div id="modalBody" class="modalBody"></div>
-      <div class="modalFoot">
-        <button id="modalCancelBtn">Abbrechen</button>
-        <button id="modalOkBtn" class="btnPrimary" style="width:auto; padding:10px 12px;">OK</button>
-      </div>
-    </div>
-  </div>
+<button class="btnPrimary" id="modalOkBtn" style="width:auto; padding:10px 12px;">OK</button>
+</div>
+</div>
+</div>
+<main>
+<section class="card">
+<div class="appTitle">
+<span class="spark">✦</span>
+<span>Vokabeltrainer</span>
+</div>
+<div class="stats">
+<div class="stat">
+<div class="num" id="statTotal">0</div>
+<div class="lbl">Vokabeln</div>
+</div>
+<div class="stat">
+<div class="num" id="statLearned">0</div>
+<div class="lbl">Gelernt</div>
+</div>
+<div class="stat">
+<div class="num" id="statPracticed">0</div>
+<div class="lbl">Geübt</div>
+</div>
+</div>
+<button class="btnPrimary" disabled="" id="startBtn">＋ Session starten</button>
+<div class="stack" style="margin-top:12px;">
 
-  <main>
+<div class="sectionLbl">
+<span class="mini">🏆</span>
+<span>Trainingsmodus</span>
+</div>
+<!-- Optionen direkt sichtbar, öffnen Modals -->
+<div class="item" id="pickLang">
+<div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">🌐</div>
+<div class="txt">
+<strong>Sprache</strong>
+<span id="labelLang">—</span>
+</div>
+<div class="chev">›</div>
+</div>
+<div class="item" id="pickDirection">
+<div class="ic" style="background: rgba(37,99,235,.12); color:#2563eb;">⇄</div>
+<div class="txt">
+<strong>Richtung</strong>
+<span id="labelDirection">—</span>
+</div>
+<div class="chev">›</div>
+</div>
+<div class="item" id="pickMode">
+<div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🎛</div>
+<div class="txt">
+<strong>Modus</strong>
+<span id="labelMode">—</span>
+</div>
+<div class="chev">›</div>
+</div>
+<div class="item" id="pickLimit">
+<div class="ic" style="background: rgba(245,158,11,.14); color:#b45309;">#</div>
+<div class="txt">
+<strong>Anzahl Fragen</strong>
+<span id="labelLimit">—</span>
+</div>
+<div class="chev">›</div>
+</div>
+<div class="item" id="pickLenient">
+<div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">Aa</div>
+<div class="txt">
+<strong>Eingabe: tolerant</strong>
+<span id="labelLenient">—</span>
+</div>
+<div class="chev">›</div>
+</div>
+<div class="item" id="pickTags">
+<div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🏷</div>
+<div class="txt">
+<strong>Units/Tags</strong>
+<span id="labelTags">—</span>
+</div>
+<div class="chev">›</div>
+</div>
 
-    <section class="card">
-      <div class="appTitle">
-        <span class="spark">✦</span>
-        <span>Vokabeltrainer</span>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="num" id="statTotal">0</div>
-          <div class="lbl">Vokabeln</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="statLearned">0</div>
-          <div class="lbl">Gelernt</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="statPracticed">0</div>
-          <div class="lbl">Geübt</div>
-        </div>
-      </div>
-
-      <button id="startBtn" class="btnPrimary" disabled>＋ Session starten</button>
-
-      <div class="stack" style="margin-top:12px;">
-        <div class="item" id="openFlash">
-          <div class="ic">📇</div>
-          <div class="txt">
-            <strong>Karteikarten-Modus</strong>
-            <span>Übe mit Karteikarten</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="sectionLbl">
-          <span class="mini">🏆</span>
-          <span>Trainingsmodus</span>
-        </div>
-
-        <!-- Optionen direkt sichtbar, öffnen Modals -->
-        <div class="item" id="pickLang">
-          <div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">🌐</div>
-          <div class="txt">
-            <strong>Sprache</strong>
-            <span id="labelLang">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="item" id="pickDirection">
-          <div class="ic" style="background: rgba(37,99,235,.12); color:#2563eb;">⇄</div>
-          <div class="txt">
-            <strong>Richtung</strong>
-            <span id="labelDirection">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="item" id="pickMode">
-          <div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🎛</div>
-          <div class="txt">
-            <strong>Modus</strong>
-            <span id="labelMode">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="item" id="pickLimit">
-          <div class="ic" style="background: rgba(245,158,11,.14); color:#b45309;">#</div>
-          <div class="txt">
-            <strong>Anzahl Fragen</strong>
-            <span id="labelLimit">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="item" id="pickLenient">
-          <div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">Aa</div>
-          <div class="txt">
-            <strong>Eingabe: tolerant</strong>
-            <span id="labelLenient">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="item" id="pickTags">
-          <div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🏷</div>
-          <div class="txt">
-            <strong>Units/Tags</strong>
-            <span id="labelTags">—</span>
-          </div>
-          <div class="chev">›</div>
-        </div>
-
-        <div class="row">
-          <span class="pill">Score: <span id="score">0</span></span>
-          <span class="pill">Frage: <span id="progress">0/0</span></span>
-          <span class="pill">Aktive Wörter: <span id="activeCount">0</span></span>
-          <span class="right small">Status: <span id="status">lade…</span></span>
-        </div>
-
-        <div class="small">CSV: <span class="mono" id="csvLabel"></span></div>
-      </div>
-    </section>
-
-    <!-- CSV -->
-    <section class="card">
-      <details id="csvDetails" class="csvBlock">
-        <summary>
-          <span>Vokabeltabelle anzeigen</span>
-          <span class="right small" id="csvCountLabel"></span>
-        </summary>
-
-        <div class="tableWrap">
-          <table class="csv" id="csvTable">
-            <thead>
-              <tr>
-                <th>id</th>
-                <th>added</th>
-                <th>de</th>
-                <th>foreign</th>
-                <th>lang</th>
-                <th>tags</th>
-                <th>example</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-
-        <div class="small" style="margin-top:8px;">
+<div class="small">CSV: <span class="mono" id="csvLabel"></span></div>
+</div>
+</section>
+<!-- CSV -->
+<section class="card">
+<details class="csvBlock" id="csvDetails">
+<summary>
+<span>Vokabeltabelle anzeigen</span>
+<span class="right small" id="csvCountLabel"></span>
+</summary>
+<div class="tableWrap">
+<table class="csv" id="csvTable">
+<thead>
+<tr>
+<th>id</th>
+<th>added</th>
+<th>de</th>
+<th>foreign</th>
+<th>lang</th>
+<th>tags</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+<div class="small" style="margin-top:8px;">
           Read-only Anzeige der CSV-Daten
         </div>
-      </details>
-    </section>
-
-  </main>
-
-  <script>
+</details>
+</section>
+</main>
+<script>
     function getListKey() {
       const p = new URLSearchParams(location.search);
       return (p.get("list") || "default").trim().toLowerCase();
@@ -533,7 +499,7 @@
 
     // UI state
     let selectedLang = "ALL";
-    let direction = "BOTH";
+    let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
     let limitN = 0;
     let lenient = false;
@@ -696,10 +662,6 @@
       score = 0;
       inSession = session.length > 0;
 
-      $("score").textContent = String(score);
-      $("progress").textContent = `${inSession ? 1 : 0}/${session.length}`;
-      $("activeCount").textContent = String(session.length);
-
       return inSession;
     }
 
@@ -786,7 +748,7 @@
           $("selfBadBtn").disabled = false;
         };
 
-        $("selfOkBtn").onclick = () => { score++; $("score").textContent = score; next(); };
+        $("selfOkBtn").onclick = () => { score++; next(); };
         $("selfBadBtn").onclick = () => { next(); };
 
       } else if (mode === "MCQ") {
@@ -810,7 +772,7 @@
           b.textContent = ch;
           b.onclick = () => {
             const ok = normalize(ch, true) === normalize(correct, true);
-            if (ok) { b.classList.add("ok"); score++; $("score").textContent = score; }
+            if (ok) { b.classList.add("ok"); score++; }
             else { b.classList.add("bad"); }
 
             [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
@@ -863,7 +825,7 @@
         $("checkBtn").onclick = () => {
           const user = $("typeInput").value;
           const ok = normalize(user, lenient) === normalize(correct, lenient);
-          if (ok) { score++; $("score").textContent = score; }
+          if (ok) { score++; }
           renderSolutionWithExample(
             ok
               ? `<span class="pill ok">✔ richtig</span>`
@@ -908,15 +870,13 @@
       if (!inSession) return;
       if (idx < session.length - 1) {
         idx++;
-        $("progress").textContent = `${idx+1}/${session.length}`;
         renderLearnInner($("learnCardInner"));
       } else {
         inSession = false;
         renderLearnInner($("learnCardInner"));
         syncOverlayButtons();
         status("Session fertig");
-        $("progress").textContent = `${session.length}/${session.length}`;
-      }
+        }
     }
 
     function endSession() {
@@ -925,8 +885,6 @@
       idx = 0;
       renderLearnInner($("learnCardInner"));
       syncOverlayButtons();
-      $("progress").textContent = `0/0`;
-      $("activeCount").textContent = "0";
       status("Session beendet");
     }
 
@@ -1024,12 +982,8 @@
       modalOnCancel = null;
     }
 
-    $("modalCloseBtn").addEventListener("click", () => closeModal("cancel"));
-    $("modalCancelBtn").addEventListener("click", () => closeModal("cancel"));
-    $("modalOkBtn").addEventListener("click", () => closeModal("ok"));
-    $("modal").addEventListener("click", (e) => {
-      if (e.target === $("modal")) closeModal("cancel");
-    });
+            $("modalOkBtn").addEventListener("click", () => closeModal("ok"));
+        });
 
     // -------------------------
     // Option modals
@@ -1096,6 +1050,11 @@
           sel.onchange = () => { temp = sel.value; };
           wrap.appendChild(sel);
           body.appendChild(wrap);
+
+          const expl = document.createElement("div");
+          expl.className = "small";
+          expl.innerHTML = "• <span class=\"mono\">aus</span>: Deine Eingabe muss exakt passen.<br>• <span class=\"mono\">an</span>: Groß/Klein und Akzente werden ignoriert (z.&nbsp;B. \"café\" = \"Cafe\").";
+          body.appendChild(expl);
         },
         () => { direction = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
         null
@@ -1136,28 +1095,112 @@
     }
 
     function openLimitModal() {
-      let temp = limitN;
+      let tempChoice = (limitN === 0) ? "ALL" : "CUSTOM";
+      let tempN = (limitN === 0) ? 10 : limitN;
+
       openModal(
         "Anzahl Fragen",
         (body) => {
           const wrap = document.createElement("div");
           wrap.className = "field";
-          wrap.innerHTML = `<label>Anzahl (0 = alle)</label>`;
+
+          const label = document.createElement("label");
+          label.textContent = "Auswahl";
+          wrap.appendChild(label);
+
+          // Radio: ALL
+          const rAll = document.createElement("label");
+          rAll.style.display = "flex";
+          rAll.style.alignItems = "center";
+          rAll.style.gap = "10px";
+          rAll.style.fontWeight = "700";
+          rAll.style.color = "rgba(15,23,42,.8)";
+          rAll.style.cursor = "pointer";
+
+          const inAll = document.createElement("input");
+          inAll.type = "radio";
+          inAll.name = "limitChoice";
+          inAll.value = "ALL";
+          inAll.checked = tempChoice === "ALL";
+
+          const tAll = document.createElement("span");
+          tAll.textContent = "Alle";
+          rAll.appendChild(inAll);
+          rAll.appendChild(tAll);
+
+          // Radio: CUSTOM + input
+          const rCustom = document.createElement("label");
+          rCustom.style.display = "grid";
+          rCustom.style.gap = "8px";
+          rCustom.style.fontWeight = "700";
+          rCustom.style.color = "rgba(15,23,42,.8)";
+          rCustom.style.cursor = "pointer";
+
+          const top = document.createElement("div");
+          top.style.display = "flex";
+          top.style.alignItems = "center";
+          top.style.gap = "10px";
+
+          const inCustom = document.createElement("input");
+          inCustom.type = "radio";
+          inCustom.name = "limitChoice";
+          inCustom.value = "CUSTOM";
+          inCustom.checked = tempChoice === "CUSTOM";
+
+          const tCustom = document.createElement("span");
+          tCustom.textContent = "Selbsteinstellung";
+          top.appendChild(inCustom);
+          top.appendChild(tCustom);
+
           const inp = document.createElement("input");
           inp.type = "number";
-          inp.min = "0";
+          inp.min = "1";
           inp.step = "1";
-          inp.value = String(temp);
-          inp.oninput = () => { temp = Math.max(0, Number(inp.value || 0)); };
-          wrap.appendChild(inp);
+          inp.value = String(tempN);
+
+          function syncEnabled() {
+            inp.disabled = (tempChoice !== "CUSTOM");
+          }
+          syncEnabled();
+
+          // events
+          inAll.onchange = () => { tempChoice = "ALL"; syncEnabled(); };
+          inCustom.onchange = () => { tempChoice = "CUSTOM"; syncEnabled(); inp.focus(); inp.select(); };
+          inp.oninput = () => {
+            const n = Math.max(1, Number(inp.value || 1));
+            tempN = n;
+          };
+
+          rCustom.appendChild(top);
+          rCustom.appendChild(inp);
+
+          // clicking label should switch radio
+          rAll.addEventListener("click", () => { inAll.checked = true; inAll.dispatchEvent(new Event("change")); });
+          rCustom.addEventListener("click", (e) => {
+            if (e.target === inp) return;
+            inCustom.checked = true; inCustom.dispatchEvent(new Event("change"));
+          });
+
+          wrap.appendChild(rAll);
+          wrap.appendChild(rCustom);
+
           body.appendChild(wrap);
+
+          const note = document.createElement("div");
+          note.className = "small";
+          note.textContent = "Die Einstellung wirkt bei neuer Session.";
+          body.appendChild(note);
         },
-        () => { limitN = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => {
+          limitN = (tempChoice === "ALL") ? 0 : Math.max(1, Number(tempN || 1));
+          updateLabels();
+          status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit");
+        },
         null
       );
     }
 
-    function openLenientModal() {
+    function openLenientModal() {() {
       let temp = lenient;
       openModal(
         "Eingabe: tolerant",
@@ -1285,7 +1328,6 @@
       if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
       inSession = true;
       syncOverlayButtons();
-      $("progress").textContent = `1/${session.length}`;
       status("Session läuft");
       openOverlay();
     });
@@ -1297,12 +1339,6 @@
     $("pickLimit").addEventListener("click", openLimitModal);
     $("pickLenient").addEventListener("click", openLenientModal);
     $("pickTags").addEventListener("click", openTagsModal);
-
-    // Quick tiles
-    $("openFlash").addEventListener("click", () => {
-      mode = "FLASH";
-      direction = "BOTH";
-      updateLabels();
       $("startBtn").click();
     });
 
@@ -1311,9 +1347,6 @@
     // -------------------------
     async function init() {
       $("csvLabel").textContent = CSV_URL;
-      $("activeCount").textContent = "0";
-      $("progress").textContent = "0/0";
-      $("score").textContent = "0";
       $("startBtn").disabled = true;
 
       // defaults on labels
@@ -1358,6 +1391,5 @@
 
     init();
   </script>
-
 </body>
 </html>
