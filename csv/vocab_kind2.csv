@@ -1,236 +1,241 @@
 id,added,de,foreign,lang,tags,example
-1,2025-12-14,"der Urlaub, die Ferien",las vacaciones,ES,"Unidad 1 (Qué pasa 1)","vacation (Englisch)"
-2,2025-12-14,"in, auf, an",en,ES,"Unidad 1 (Qué pasa 1)",
-3,2025-12-14,Hallo!,¡Hola!,ES,"Unidad 1 (Qué pasa 1)",
-4,2025-12-14,ich heiße,me llamo,ES,"Unidad 1 (Qué pasa 1)","Me llamo Lucía. (Ich heiße Lucía.)"
-5,2025-12-14,ich bin,soy,ES,"Unidad 1 (Qué pasa 1)","Soy de Ribadesella. (Ich bin aus Ribadesella.)"
-6,2025-12-14,"von, aus",de,ES,"Unidad 1 (Qué pasa 1)","Soy de Ribadesella. (Ich bin aus Ribadesella.)"
-7,2025-12-14,für mich,para mí,ES,"Unidad 1 (Qué pasa 1)",
-8,2025-12-14,für,para,ES,"Unidad 1 (Qué pasa 1)",
-9,2025-12-14,sie sind,son,ES,"Unidad 1 (Qué pasa 1)",
-10,2025-12-14,die Musik,la música,ES,"Unidad 1 (Qué pasa 1)","music (Englisch)"
+1,2025-12-14,"der Urlaub, die Ferien",las vacaciones,ES,Unidad 1 (Qué pasa 1),vacation (Englisch)
+2,2025-12-14,"in, auf, an",en,ES,Unidad 1 (Qué pasa 1),
+3,2025-12-14,Hallo!,¡Hola!,ES,Unidad 1 (Qué pasa 1),
+4,2025-12-14,ich heiße,me llamo,ES,Unidad 1 (Qué pasa 1),Me llamo Lucía. (Ich heiße Lucía.)
+5,2025-12-14,ich bin,soy,ES,Unidad 1 (Qué pasa 1),Soy de Ribadesella. (Ich bin aus Ribadesella.)
+6,2025-12-14,"von, aus",de,ES,Unidad 1 (Qué pasa 1),Soy de Ribadesella. (Ich bin aus Ribadesella.)
+7,2025-12-14,für mich,para mí,ES,Unidad 1 (Qué pasa 1),
+8,2025-12-14,für,para,ES,Unidad 1 (Qué pasa 1),
+9,2025-12-14,sie sind,son,ES,Unidad 1 (Qué pasa 1),
+10,2025-12-14,die Musik,la música,ES,Unidad 1 (Qué pasa 1),music (Englisch)
 11,2025-12-14,und,y,ES,Unidad 1 (Qué pasa 1),
-12,2025-12-14,der/die Freund/in,el/la amigo/-a,ES,Unidad 1 (Qué pasa 1),Soy la amiga de Tito.
-13,2025-12-14,er,él,ES,Unidad 1 (Qué pasa 1),
-14,2025-12-14,er/sie/es ist,es,ES,Unidad 1 (Qué pasa 1),Él es Raúl.
-15,2025-12-14,ich,yo,ES,Unidad 1 (Qué pasa 1),Yo soy Lucía.
-16,2025-12-14,der Bruder; die Schwester,el/la hermano/-a,ES,Unidad 1 (Qué pasa 1),Lucía es la hermana de Miguel.
-17,2025-12-14,der Strand,la playa,ES,Unidad 1 (Qué pasa 1),
-18,2025-12-14,das (Speise-)eis; die Eiscreme,el helado,ES,Unidad 1 (Qué pasa 1),
-19,2025-12-14,Bis später!,¡Hasta luego!,ES,Unidad 1 (Qué pasa 1),
-20,2025-12-14,wir sind,somos,ES,Unidad 1 (Qué pasa 1),Somos amigos.
-21,2025-12-14,der Sommer,el verano,ES,Unidad 1 (Qué pasa 1),
-22,2025-12-14,schrecklich,horrible,ES,Unidad 1 (Qué pasa 1),Englisch: horrible
-23,2025-12-14,aber,pero,ES,Unidad 1 (Qué pasa 1),
-24,2025-12-14,genial,genial,ES,Unidad 1 (Qué pasa 1),La playa es genial.
-25,2025-12-14,der Berg; das Gebirge,la montaña,ES,Unidad 1 (Qué pasa 1),Englisch: mountain
-26,2025-12-14,das Spiel,el juego,ES,Unidad 1 (Qué pasa 1),
-27,2025-12-14,Guten Morgen!; Guten Tag!,¡Buenos días!,ES,Unidad 1 (Qué pasa 1),Guten Morgen! / Guten Tag!
-28,2025-12-14,der Sport,el deporte,ES,Unidad 1 (Qué pasa 1),
-29,2025-12-14,die Sonne,el sol,ES,Unidad 1 (Qué pasa 1),
-30,2025-12-14,das Restaurant,el restaurante,ES,Unidad 1 (Qué pasa 1),
-31,2025-12-14,das Hotel,el hotel,ES,Unidad 1 (Qué pasa 1),
-32,2025-12-14,der Papa,el papá,ES,Unidad 1 (Qué pasa 1),Él es el papá de Lucía.
-33,2025-12-14,der Junge; das Mädchen,el/la chico/-a,ES,Unidad 1 (Qué pasa 1),Lucía y Clara son chicas.
-34,2025-12-14,sie (sg.),ella,ES,Unidad 1 (Qué pasa 1),Ella es Clara.
-35,2025-12-14,der/die Cousin/e,el/la primo/-a,ES,Unidad 1 (Qué pasa 1),Clara es la prima de Lucía.
-36,2025-12-14,das (Steh-)café; die Bar,el bar,ES,Unidad 1 (Qué pasa 1),
-37,2025-12-14,das Fest; die Party,la fiesta,ES,Unidad 1 (Qué pasa 1),La fiesta es genial.
-38,2025-12-14,Tschüss!,¡Adiós!,ES,Unidad 1 (Qué pasa 1),
-39,2025-12-14,der kulturelle Raum,el espacio cultural,ES,Unidad 1 (Qué pasa 1),
-40,2025-12-14,wie?,¿cómo?,ES,Unidad 1 (Qué pasa 1),
-41,2025-12-14,Wie heißt du?,¿Cómo te llamas?,ES,Unidad 1 (Qué pasa 1),
-42,2025-12-14,woher?,¿de dónde?,ES,Unidad 1 (Qué pasa 1),¿De dónde eres? Woher kommst du?
-43,2025-12-14,du bist,eres,ES,Unidad 1 (Qué pasa 1),
-44,2025-12-14,Guten Tag! Guten Abend!,¡Buenas tardes!,ES,Unidad 1 (Qué pasa 1),
-45,2025-12-14,Guten Abend! Gute Nacht!,¡Buenas noches!,ES,Unidad 1 (Qué pasa 1),
-46,2025-12-14,du,tú,ES,Unidad 1 (Qué pasa 1),
-47,2025-12-14,er/sie/es heißt,se llama,ES,Unidad 1 (Qué pasa 1),"Él se llama Omar. Er heißt Omar."
-48,2025-12-14,Bis morgen!,¡Hasta mañana!,ES,Unidad 1 (Qué pasa 1),
-49,2025-12-14,das Verb,el verbo,ES,Unidad 1 (Qué pasa 1),
-50,2025-12-14,sein,ser (irr.),ES,Unidad 1 (Qué pasa 1),
-51,2025-12-14,wir,nosotros/-as,ES,Unidad 1 (Qué pasa 1),"Nosotros somos amigos. Wir sind Freunde."
-52,2025-12-14,ihr,vosotros/-as,ES,Unidad 1 (Qué pasa 1),"Vosotras sois amigas. Ihr seid Freundinnen."
-53,2025-12-14,sie (pl.),ellos/ellas,ES,Unidad 1 (Qué pasa 1),"¿Ellos son amigos? Sind sie Freunde?"
-54,2025-12-14,zum Entdecken,a descubrir,ES,Unidad 1 (Qué pasa 1),
-55,2025-12-14,mit Strategien lernen,aprender con estrategias,ES,Unidad 1 (Qué pasa 1),
-56,2025-12-14,das Wort,la palabra,ES,Unidad 1 (Qué pasa 1),
-57,2025-12-14,er/sie/es bedeutet,significa,ES,Unidad 1 (Qué pasa 1),"Playa significa Strand en alemán. Playa bedeutet Strand auf Deutsch."
-58,2025-12-14,das Deutsch; die deutsche Sprache,el alemán,ES,Unidad 1 (Qué pasa 1),
-59,2025-12-14,Wie geht’s?,¿Qué tal?,ES,Unidad 1 (Qué pasa 1),"¿Qué tal? - Muy bien, gracias. Wie geht`s? - Sehr gut, danke."
-60,2025-12-14,sehr,muy,ES,Unidad 1 (Qué pasa 1),
-61,2025-12-14,gut,bien,ES,Unidad 1 (Qué pasa 1),
-62,2025-12-14,danke,gracias,ES,Unidad 1 (Qué pasa 1),"¿Qué tal? – Muy bien, gracias."
-63,2025-12-14,Hör mal!,¡Oye!,ES,Unidad 1 (Qué pasa 1),
-64,2025-12-14,was?,¿qué?,ES,Unidad 1 (Qué pasa 1),
-65,2025-12-14,Was ist (los)?,¿Qué pasa?,ES,Unidad 1 (Qué pasa 1),"¿Qué pasa hoy? Was ist heute los?"
-66,2025-12-14,heute,hoy,ES,Unidad 1 (Qué pasa 1),
-67,2025-12-14,das Kanu,la piragua,ES,Unidad 1 (Qué pasa 1),
-68,2025-12-14,beliebt,popular,ES,Unidad 1 (Qué pasa 1),"Englisch: popular"
-69,2025-12-14,ja,sí,ES,Unidad 1 (Qué pasa 1),
-70,2025-12-14,morgen,mañana,ES,Unidad 1 (Qué pasa 1),"¡Hasta mañana!"
-71,2025-12-14,Was bedeutet...?,¿Qué significa...?,ES,Unidad 1 (Qué pasa 1),
-72,2025-12-14,das Plakat; das Schild,el cartel,ES,Unidad 1 (Qué pasa 1),
-73,2025-12-14,Wie geht es dir?,¿Cómo estás?,ES,Unidad 1 (Qué pasa 1),"= ¿Qué tal?"
-74,2025-12-14,einigermassen,así así,ES,Unidad 1 (Qué pasa 1),
-75,2025-12-14,mittelmäßig,regular,ES,Unidad 1 (Qué pasa 1),= asi asi
-76,2025-12-14,schlecht,mal,ES,Unidad 1 (Qué pasa 1),
-77,2025-12-14,übel; mies,fatal (col.),ES,Unidad 1 (Qué pasa 1), = muy mal
-78,2025-12-14,das Alphabet,el alfabeto,ES,Unidad 1 (Qué pasa 1),
-79,2025-12-14,Wie schreibt man ...?,¿Cómo se escribe...?,ES,Unidad 1 (Qué pasa 1),
-80,2025-12-14,mein/e,mi,ES,Unidad 2 (Qué pasa 1),"Englisch: my"
-81,2025-12-14,das Leben,la vida,ES,Unidad 2 (Qué pasa 1),"La vida en Madrid es genial."
-82,2025-12-14,die Mutter,la madre,ES,Unidad 2 (Qué pasa 1),"Mi madre se llama Isabel."
-83,2025-12-14,der Vater,el padre,ES,Unidad 2 (Qué pasa 1),"Mi padre se llama Víctor."
-84,2025-12-14,die Eltern,los padres,ES,Unidad 2 (Qué pasa 1),"Los padres de Tito son de Gijón."
-85,2025-12-14,der/die beste Freund/in,el/la mejor amigo/-a,ES,Unidad 2 (Qué pasa 1),"Mi mejor amiga se llama Ida."
-86,2025-12-14,das Haustier,la mascota,ES,Unidad 2 (Qué pasa 1),"Mi mascota es un conejo."
-87,2025-12-14,das Kaninchen,el conejo,ES,Unidad 2 (Qué pasa 1),
-88,2025-12-14,der Park,el parque,ES,Unidad 2 (Qué pasa 1),
-89,2025-12-14,wer?,¿quién?,ES,Unidad 2 (Qué pasa 1),
-90,2025-12-14,der Hund,el perro,ES,Unidad 2 (Qué pasa 1),
-91,2025-12-14,"nein, nicht, kein/e",no,ES,Unidad 2 (Qué pasa 1),
-92,2025-12-14,die Stadt,la ciudad,ES,Unidad 2 (Qué pasa 1),"Englisch: city"
-93,2025-12-14,in der Nähe von,cerca de,ES,Unidad 2 (Qué pasa 1),"Segovia es una ciudad cerca de Madrid."
-94,2025-12-14,jetzt,ahora,ES,Unidad 2 (Qué pasa 1),
-95,2025-12-14,das Stadtviertel,el barrio,ES,Unidad 2 (Qué pasa 1),"Mi barrio se llama Südstadt."
-96,2025-12-14,auch,también,ES,Unidad 2 (Qué pasa 1),"Yo también soy de Madrid."
-97,2025-12-14,Wie alt bist du?,¿Cuántos años tienes?,ES,Unidad 2 (Qué pasa 1),
-98,2025-12-14,das Jahr,el año,ES,Unidad 2 (Qué pasa 1),"Tengo 14 años."
-99,2025-12-14,haben,tener,ES,Unidad 2 (Qué pasa 1),"Yo tengo un perro."
-100,2025-12-14,die Geschwister,los hermanos,ES,Unidad 2 (Qué pasa 1),"Lucía y Miguel son hermanos."
-101,2025-12-14,ein/e,un/una,ES,Unidad 2 (Qué pasa 1),"Lucía tiene un conejo."
-102,2025-12-14,der Hamster,el hámster,ES,Unidad 2 (Qué pasa 1),"Plural: los hámsteres"
-103,2025-12-14,"die Zahl, die Nummer",el número,ES,Unidad 2 (Qué pasa 1),"Englisch: number"
-104,2025-12-14,der Bahnhof,la estación,ES,Unidad 2 (Qué pasa 1),"Englisch: station"
-105,2025-12-14,so,así,ES,Unidad 2 (Qué pasa 1),"Sí, así es. Ja, so ist es."
-106,2025-12-14,dein/e,tu,ES,Unidad 2 (Qué pasa 1),"¿Cómo se llama tu padre?"
-107,2025-12-14,"sich verabreden, sich treffen",quedar,ES,Unidad 2 (Qué pasa 1),"Quedo con mi amiga en el parque."
-108,2025-12-14,"nachmittags, abends",por la tarde,ES,Unidad 2 (Qué pasa 1),"¿Quedamos por la tarde?"
-109,2025-12-14,"der Nachmittag, der Abend",la tarde,ES,Unidad 2 (Qué pasa 1),
-110,2025-12-14,"sprechen (über), reden (über)",hablar (de),ES,Unidad 2 (Qué pasa 1),"Hablamos de las vacaciones."
-111,2025-12-14,die Zeit,el tiempo,ES,Unidad 2 (Qué pasa 1),"Englisch: time"
-112,2025-12-14,verbringen,pasar,ES,Unidad 2 (Qué pasa 1),"Hoy paso tiempo con Lucía."
-113,2025-12-14,das Kino,el cine,ES,Unidad 2 (Qué pasa 1),"Englisch: cinema"
-114,2025-12-14,mit,con,ES,Unidad 2 (Qué pasa 1),
-115,2025-12-14,"später, nachher, dann",luego,ES,Unidad 2 (Qué pasa 1),"Hablamos luego."
-116,2025-12-14,zu Hause,en casa,ES,Unidad 2 (Qué pasa 1),
-117,2025-12-14,das Haus,la casa,ES,Unidad 2 (Qué pasa 1),
-118,2025-12-14,aufnehmen,grabar,ES,Unidad 2 (Qué pasa 1),"Grabo un vídeo para mi prima."
-119,2025-12-14,das Video,el vídeo,ES,Unidad 2 (Qué pasa 1),
-120,2025-12-14,wann?,¿cuándo?,ES,Unidad 2 (Qué pasa 1),"¿Cuándo quedamos hoy?"
-121,2025-12-14,"also, dann",entonces,ES,Unidad 2 (Qué pasa 1),"Entonces quedamos por la noche."
-122,2025-12-14,"abends, nachts",por la noche,ES,Unidad 2 (Qué pasa 1),
-123,2025-12-14,"der Abend, die Nacht",la noche,ES,Unidad 2 (Qué pasa 1),"Englisch: night"
-124,2025-12-14,"morgens, vormittags",por la mañana,ES,Unidad 2 (Qué pasa 1),
-125,2025-12-14,"der Morgen, der Vormittag",la mañana,ES,Unidad 2 (Qué pasa 1),
-126,2025-12-14,"einverstanden, o. k.",vale,ES,Unidad 2 (Qué pasa 1),
-127,2025-12-14,die katalanische Sprache,el catalán,ES,Unidad 2 (Qué pasa 1),"Omar habla catalán. Omar spricht Katalan."
-128,2025-12-14,"das kastilische Spanisch",el castellano,ES,Unidad 2 (Qué pasa 1),
-129,2025-12-14,"das Spanisch, die spanische Sprache",el español,ES,Unidad 2 (Qué pasa 1),"Mi padre habla español. Mein Vater spricht Spanisch."
-130,2025-12-14,ein bisschen,un poco (de),ES,Unidad 2 (Qué pasa 1),"Hablo un poco de inglés."
-131,2025-12-14,"das Englisch, die englische Sprache",el inglés,ES,Unidad 2 (Qué pasa 1),
-132,2025-12-14,lernen,estudiar,ES,Unidad 2 (Qué pasa 1),"Englisch: to study"
-133,2025-12-14,das Gymnasium,el instituto,ES,Unidad 2 (Qué pasa 1),
-134,2025-12-14,na gut,bueno,ES,Unidad 2 (Qué pasa 1),
-135,2025-12-14,die Familie,la familia,ES,Unidad 2 (Qué pasa 1),
-136,2025-12-14,wo?,¿dónde?,ES,Unidad 2 (Qué pasa 1),"¿Dónde quedamos? - Wo treffen wir uns?"
-137,2025-12-14,das Einkaufszentrum,el centro comercial,ES,Unidad 2 (Qué pasa 1),"Quedamos en el centro comercial. - Wir treffen uns im Einkaufszentrum."
-138,2025-12-14,das Zentrum,el centro,ES,Unidad 2 (Qué pasa 1),
-139,2025-12-14,der Hauptplatz,la plaza mayor,ES,Unidad 2 (Qué pasa 1),
-140,2025-12-14,der Platz,la plaza,ES,Unidad 2 (Qué pasa 1),
-141,2025-12-14,Gassi gehen,pasear al perro,ES,Unidad 2 (Qué pasa 1),"Paseo al perro en el parque."
-142,2025-12-14,kaufen,comprar,ES,Unidad 2 (Qué pasa 1),"Compramos un helado en la playa."
-143,2025-12-14,jdn. mitbringen,llevar a alg.,ES,Unidad 2 (Qué pasa 1),"Llevo a Xavier. - Ich bringe Xavier mit."
-144,2025-12-14,klar,claro,ES,Unidad 2 (Qué pasa 1),
-145,2025-12-14,die Nachricht,el mensaje,ES,Unidad 2 (Qué pasa 1),"Englisch: message"
-146,2025-12-14,zwischen Sprachen,entre idiomas,ES,Unidad 2 (Qué pasa 1),
-147,2025-12-14,A,a,ES,Unidad 1 Alfabeto (Qué pasa 1),adiós
-148,2025-12-14,B,be,ES,Unidad 1 Alfabeto (Qué pasa 1),bar
-149,2025-12-14,C,ce,ES,Unidad 1 Alfabeto (Qué pasa 1),"Clara, vacaciones"
-150,2025-12-14,D,de,ES,Unidad 1 Alfabeto (Qué pasa 1),deporte
-151,2025-12-14,E,e,ES,Unidad 1 Alfabeto (Qué pasa 1),ellos
-152,2025-12-14,F,efe,ES,Unidad 1 Alfabeto (Qué pasa 1),fiesta
-153,2025-12-14,G,ge,ES,Unidad 1 Alfabeto (Qué pasa 1),"gracias, genial"
-154,2025-12-14,H,hache,ES,Unidad 1 Alfabeto (Qué pasa 1),hotel
-155,2025-12-14,I,i,ES,Unidad 1 Alfabeto (Qué pasa 1),idea
-156,2025-12-14,J,jota,ES,Unidad 1 Alfabeto (Qué pasa 1),juego
-157,2025-12-14,K,ka,ES,Unidad 1 Alfabeto (Qué pasa 1),kilo
-158,2025-12-14,L,ele,ES,Unidad 1 Alfabeto (Qué pasa 1),Lucía
-159,2025-12-14,M,eme,ES,Unidad 1 Alfabeto (Qué pasa 1),Madrid
-160,2025-12-14,N,ene,ES,Unidad 1 Alfabeto (Qué pasa 1),nosotros
-161,2025-12-14,Ñ,eñe,ES,Unidad 1 Alfabeto (Qué pasa 1),montaña
-162,2025-12-14,O,o,ES,Unidad 1 Alfabeto (Qué pasa 1),océano
-163,2025-12-14,P,pe,ES,Unidad 1 Alfabeto (Qué pasa 1),playa
-164,2025-12-14,Q,cu,ES,Unidad 1 Alfabeto (Qué pasa 1),qué
-165,2025-12-14,R,erre,ES,Unidad 1 Alfabeto (Qué pasa 1),"hermano, Raúl"
-166,2025-12-14,S,ese,ES,Unidad 1 Alfabeto (Qué pasa 1),sol
-167,2025-12-14,T,te,ES,Unidad 1 Alfabeto (Qué pasa 1),Tito
-168,2025-12-14,U,u,ES,Unidad 1 Alfabeto (Qué pasa 1),una
-169,2025-12-14,V,uve,ES,Unidad 1 Alfabeto (Qué pasa 1),verano
-170,2025-12-14,W,uve doble,ES,Unidad 1 Alfabeto (Qué pasa 1),windsurf
-171,2025-12-14,X,equis,ES,Unidad 1 Alfabeto (Qué pasa 1),taxi
-172,2025-12-14,Y,ye,ES,Unidad 1 Alfabeto (Qué pasa 1),yo
-173,2025-12-14,Z,zeta,ES,Unidad 1 Alfabeto (Qué pasa 1),zoo
-174,2025-12-14,ich,yo,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Singular
-175,2025-12-14,du,tú,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Singular
-176,2025-12-14,er/sie/Sie,él/ella/usted,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Singular
-177,2025-12-14,wir,nosotros/nosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Plural
-178,2025-12-14,ihr,vosotros/vosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Plural
-179,2025-12-14,sie/Sie,ellos/ellas/ustedes,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Plural
-180,2025-12-14,ich bin,soy,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Singular
-181,2025-12-14,du bist,eres,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Singular
-182,2025-12-14,er/sie ist,es,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Singular
-183,2025-12-14,wir sind,somos,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Plural
-184,2025-12-14,ihr seid,sois,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Plural
-185,2025-12-14,sie/Sie sind,son,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Plural
-186,2025-12-14,sein,ser,ES,Unidad 1 Verb ser (Qué pasa 1),Infinitiv
-187,2025-12-14,der Junge,el chico,ES,Unidad 1 Singular/Plural,Singular maskulin
-188,2025-12-14,die Jungen,los chicos,ES,Unidad 1 Singular/Plural,Plural maskulin
-189,2025-12-14,das Hotel,el hotel,ES,Unidad 1 Singular/Plural,Singular maskulin
-190,2025-12-14,die Hotels,los hoteles,ES,Unidad 1 Singular/Plural,Plural maskulin
-191,2025-12-14,das Mädchen,la chica,ES,Unidad 1 Singular/Plural,Singular feminin
-192,2025-12-14,die Mädchen,las chicas,ES,Unidad 1 Singular/Plural,Plural feminin
-193,2025-12-14,die Nacht,la noche,ES,Unidad 1 Singular/Plural,Singular feminin
-194,2025-12-14,die Nächte,las noches,ES,Unidad 1 Singular/Plural,Plural feminin
-195,2025-12-14,null (0),cero,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-196,2025-12-14,eins (1),uno,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-197,2025-12-14,zwei (2),dos,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-198,2025-12-14,drei (3),tres,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-199,2025-12-14,vier (4),cuatro,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-200,2025-12-14,fünf (5),cinco,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-201,2025-12-14,sechs (6),seis,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-202,2025-12-14,sieben (7),siete,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-203,2025-12-14,acht (8),ocho,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-204,2025-12-14,neun (9),nueve,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-205,2025-12-14,zehn (10),diez,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-206,2025-12-14,elf (11),once,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-207,2025-12-14,zwölf (12),doce,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-208,2025-12-14,dreizehn (13),trece,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-209,2025-12-14,vierzehn (14),catorce,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-210,2025-12-14,fünfzehn (15),quince,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-211,2025-12-14,sechzehn (16),dieciséis,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-212,2025-12-14,siebzehn (17),diecisiete,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-213,2025-12-14,achtzehn (18),dieciocho,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-214,2025-12-14,neunzehn (19),diecinueve,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-215,2025-12-14,zwanzig (20),veinte,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
-216,2025-12-14,ich habe,tengo,ES,Unidad 2 Verb tener (Qué pasa 1),1. Person Singular
-217,2025-12-14,du hast,tienes,ES,Unidad 2 Verb tener (Qué pasa 1),2. Person Singular
-218,2025-12-14,er/sie hat,tiene,ES,Unidad 2 Verb tener (Qué pasa 1),3. Person Singular
-219,2025-12-14,wir haben,tenemos,ES,Unidad 2 Verb tener (Qué pasa 1),1. Person Plural
-220,2025-12-14,ihr habt,tenéis,ES,Unidad 2 Verb tener (Qué pasa 1),2. Person Plural
-221,2025-12-14,sie/Sie haben,tienen,ES,Unidad 2 Verb tener (Qué pasa 1),3. Person Plural
-222,2025-12-14,ich verabrede mich / treffe mich,quedo,ES,Unidad 2 Verb quedar (Qué pasa 1),1. Person Singular
-223,2025-12-14,du verabredest dich / triffst dich,quedas,ES,Unidad 2 Verb quedar (Qué pasa 1),2. Person Singular
-224,2025-12-14,er/sie verabredet sich / trifft sich,queda,ES,Unidad 2 Verb quedar (Qué pasa 1),3. Person Singular
-225,2025-12-14,wir verabreden uns / treffen uns,quedamos,ES,Unidad 2 Verb quedar (Qué pasa 1),1. Person Plural
-226,2025-12-14,ihr verabredet euch / trefft euch,quedáis,ES,Unidad 2 Verb quedar (Qué pasa 1),2. Person Plural
-227,2025-12-14,sie/Sie verabreden sich / treffen sich,quedan,ES,Unidad 2 Verb quedar (Qué pasa 1),3. Person Plural
-228,2025-12-14,sich verabreden / sich treffen,quedar,ES,Unidad 2 Verb quedar (Qué pasa 1),Infinitiv
-229,2025-12-14,ich kaufe,compro,ES,Unidad 2 Verb comprar (Qué pasa 1),1. Person Singular
-230,2025-12-14,du kaufst,compras,ES,Unidad 2 Verb comprar (Qué pasa 1),2. Person Singular
-231,2025-12-14,er/sie kauft,compra,ES,Unidad 2 Verb comprar (Qué pasa 1),3. Person Singular
-232,2025-12-14,wir kaufen,compramos,ES,Unidad 2 Verb comprar (Qué pasa 1),1. Person Plural
-233,2025-12-14,ihr kauft,compráis,ES,Unidad 2 Verb comprar (Qué pasa 1),2. Person Plural
-234,2025-12-14,sie/Sie kaufen,compran,ES,Unidad 2 Verb comprar (Qué pasa 1),3. Person Plural
-235,2025-12-14,kaufen,comprar,ES,Unidad 2 Verb comprar (Qué pasa 1),Infinitiv
+12,2025-12-14,der Freund,el amigo,ES,Unidad 1 (Qué pasa 1),Soy el amigo de Tito.
+13,2025-12-14,die Freundin,la amiga,ES,Unidad 1 (Qué pasa 1),Soy la amiga de Tito.
+14,2025-12-14,er,él,ES,Unidad 1 (Qué pasa 1),
+15,2025-12-14,er/sie/es ist,es,ES,Unidad 1 (Qué pasa 1),Él es Raúl.
+16,2025-12-14,ich,yo,ES,Unidad 1 (Qué pasa 1),Yo soy Lucía.
+17,2025-12-14,der Bruder,el hermano,ES,Unidad 1 (Qué pasa 1),Lucía es el hermano de Miguel.
+18,2025-12-14,die Schwester,la hermana,ES,Unidad 1 (Qué pasa 1),Lucía es la hermana de Miguel.
+19,2025-12-14,der Strand,la playa,ES,Unidad 1 (Qué pasa 1),
+20,2025-12-14,das (Speise-)eis; die Eiscreme,el helado,ES,Unidad 1 (Qué pasa 1),
+21,2025-12-14,Bis später!,¡Hasta luego!,ES,Unidad 1 (Qué pasa 1),
+22,2025-12-14,wir sind,somos,ES,Unidad 1 (Qué pasa 1),Somos amigos.
+23,2025-12-14,der Sommer,el verano,ES,Unidad 1 (Qué pasa 1),
+24,2025-12-14,schrecklich,horrible,ES,Unidad 1 (Qué pasa 1),Englisch: horrible
+25,2025-12-14,aber,pero,ES,Unidad 1 (Qué pasa 1),
+26,2025-12-14,genial,genial,ES,Unidad 1 (Qué pasa 1),La playa es genial.
+27,2025-12-14,"der Berg; das Gebirge",la montaña,ES,Unidad 1 (Qué pasa 1),Englisch: mountain
+28,2025-12-14,das Spiel,el juego,ES,Unidad 1 (Qué pasa 1),
+29,2025-12-14,Guten Morgen!; Guten Tag!,¡Buenos días!,ES,Unidad 1 (Qué pasa 1),Guten Morgen! / Guten Tag!
+30,2025-12-14,der Sport,el deporte,ES,Unidad 1 (Qué pasa 1),
+31,2025-12-14,die Sonne,el sol,ES,Unidad 1 (Qué pasa 1),
+32,2025-12-14,das Restaurant,el restaurante,ES,Unidad 1 (Qué pasa 1),
+33,2025-12-14,das Hotel,el hotel,ES,Unidad 1 (Qué pasa 1),
+34,2025-12-14,der Papa,el papá,ES,Unidad 1 (Qué pasa 1),Él es el papá de Lucía.
+35,2025-12-14,der Junge,el chico,ES,Unidad 1 (Qué pasa 1),Lucía y Clara son chicos.
+36,2025-12-14,das Mädchen,la chica,ES,Unidad 1 (Qué pasa 1),Lucía y Clara son chicas.
+37,2025-12-14,sie (sg.),ella,ES,Unidad 1 (Qué pasa 1),Ella es Clara.
+38,2025-12-14,der Cousin,el primo,ES,Unidad 1 (Qué pasa 1),Clara es el primo de Lucía.
+39,2025-12-14,die Cousine,la prima,ES,Unidad 1 (Qué pasa 1),Clara es la prima de Lucía.
+40,2025-12-14,das (Steh-)café; die Bar,el bar,ES,Unidad 1 (Qué pasa 1),
+41,2025-12-14,das Fest; die Party,la fiesta,ES,Unidad 1 (Qué pasa 1),La fiesta es genial.
+42,2025-12-14,Tschüss!,¡Adiós!,ES,Unidad 1 (Qué pasa 1),
+43,2025-12-14,der kulturelle Raum,el espacio cultural,ES,Unidad 1 (Qué pasa 1),
+44,2025-12-14,wie?,¿cómo?,ES,Unidad 1 (Qué pasa 1),
+45,2025-12-14,Wie heißt du?,¿Cómo te llamas?,ES,Unidad 1 (Qué pasa 1),
+46,2025-12-14,woher?,¿de dónde?,ES,Unidad 1 (Qué pasa 1),¿De dónde eres? Woher kommst du?
+47,2025-12-14,du bist,eres,ES,Unidad 1 (Qué pasa 1),
+48,2025-12-14,Guten Tag! Guten Abend!,¡Buenas tardes!,ES,Unidad 1 (Qué pasa 1),
+49,2025-12-14,Guten Abend! Gute Nacht!,¡Buenas noches!,ES,Unidad 1 (Qué pasa 1),
+50,2025-12-14,du,tú,ES,Unidad 1 (Qué pasa 1),
+51,2025-12-14,er/sie/es heißt,se llama,ES,Unidad 1 (Qué pasa 1),Él se llama Omar. Er heißt Omar.
+52,2025-12-14,Bis morgen!,¡Hasta mañana!,ES,Unidad 1 (Qué pasa 1),
+53,2025-12-14,das Verb,el verbo,ES,Unidad 1 (Qué pasa 1),
+54,2025-12-14,sein,ser (irr.),ES,Unidad 1 (Qué pasa 1),
+55,2025-12-14,wir,nosotros/-as,ES,Unidad 1 (Qué pasa 1),Nosotros somos amigos. Wir sind Freunde.
+56,2025-12-14,ihr,vosotros/-as,ES,Unidad 1 (Qué pasa 1),Vosotras sois amigas. Ihr seid Freundinnen.
+57,2025-12-14,sie (pl.),ellos/ellas,ES,Unidad 1 (Qué pasa 1),¿Ellos son amigos? Sind sie Freunde?
+58,2025-12-14,zum Entdecken,a descubrir,ES,Unidad 1 (Qué pasa 1),
+59,2025-12-14,mit Strategien lernen,aprender con estrategias,ES,Unidad 1 (Qué pasa 1),
+60,2025-12-14,das Wort,la palabra,ES,Unidad 1 (Qué pasa 1),
+61,2025-12-14,er/sie/es bedeutet,significa,ES,Unidad 1 (Qué pasa 1),Playa significa Strand en alemán. Playa bedeutet Strand auf Deutsch.
+62,2025-12-14,das Deutsch; die deutsche Sprache,el alemán,ES,Unidad 1 (Qué pasa 1),
+63,2025-12-14,Wie geht’s?,¿Qué tal?,ES,Unidad 1 (Qué pasa 1),¿Qué tal? - Muy bien, gracias. Wie geht`s? - Sehr gut, danke.
+64,2025-12-14,sehr,muy,ES,Unidad 1 (Qué pasa 1),
+65,2025-12-14,gut,bien,ES,Unidad 1 (Qué pasa 1),
+66,2025-12-14,danke,gracias,ES,Unidad 1 (Qué pasa 1),¿Qué tal? – Muy bien, gracias.
+67,2025-12-14,Hör mal!,¡Oye!,ES,Unidad 1 (Qué pasa 1),
+68,2025-12-14,was?,¿qué?,ES,Unidad 1 (Qué pasa 1),
+69,2025-12-14,Was ist (los)?,¿Qué pasa?,ES,Unidad 1 (Qué pasa 1),¿Qué pasa hoy? Was ist heute los?
+70,2025-12-14,heute,hoy,ES,Unidad 1 (Qué pasa 1),
+71,2025-12-14,das Kanu,la piragua,ES,Unidad 1 (Qué pasa 1),
+72,2025-12-14,beliebt,popular,ES,Unidad 1 (Qué pasa 1),Englisch: popular
+73,2025-12-14,ja,sí,ES,Unidad 1 (Qué pasa 1),
+74,2025-12-14,morgen,mañana,ES,Unidad 1 (Qué pasa 1),¡Hasta mañana!
+75,2025-12-14,Was bedeutet...?,¿Qué significa...?,ES,Unidad 1 (Qué pasa 1),
+76,2025-12-14,das Plakat; das Schild,el cartel,ES,Unidad 1 (Qué pasa 1),
+77,2025-12-14,Wie geht es dir?,¿Cómo estás?,ES,Unidad 1 (Qué pasa 1),= ¿Qué tal?
+78,2025-12-14,einigermassen,así así,ES,Unidad 1 (Qué pasa 1),
+79,2025-12-14,mittelmäßig,regular,ES,Unidad 1 (Qué pasa 1),= asi asi
+80,2025-12-14,schlecht,mal,ES,Unidad 1 (Qué pasa 1),
+81,2025-12-14,übel; mies,fatal (col.),ES,Unidad 1 (Qué pasa 1),= muy mal
+82,2025-12-14,das Alphabet,el alfabeto,ES,Unidad 1 (Qué pasa 1),
+83,2025-12-14,Wie schreibt man ...?,¿Cómo se escribe...?,ES,Unidad 1 (Qué pasa 1),
+84,2025-12-14,mein/e,mi,ES,Unidad 2 (Qué pasa 1),Englisch: my
+85,2025-12-14,das Leben,la vida,ES,Unidad 2 (Qué pasa 1),La vida en Madrid es genial.
+86,2025-12-14,die Mutter,la madre,ES,Unidad 2 (Qué pasa 1),Mi madre se llama Isabel.
+87,2025-12-14,der Vater,el padre,ES,Unidad 2 (Qué pasa 1),Mi padre se llama Víctor.
+88,2025-12-14,die Eltern,los padres,ES,Unidad 2 (Qué pasa 1),Los padres de Tito son de Gijón.
+89,2025-12-14,der beste Freund,el mejor amigo,ES,Unidad 2 (Qué pasa 1),Mi mejor amigo se llama Ida.
+90,2025-12-14,die beste Freundin,la mejor amiga,ES,Unidad 2 (Qué pasa 1),Mi mejor amiga se llama Ida.
+91,2025-12-14,das Haustier,la mascota,ES,Unidad 2 (Qué pasa 1),Mi mascota es un conejo.
+92,2025-12-14,das Kaninchen,el conejo,ES,Unidad 2 (Qué pasa 1),
+93,2025-12-14,der Park,el parque,ES,Unidad 2 (Qué pasa 1),
+94,2025-12-14,wer?,¿quién?,ES,Unidad 2 (Qué pasa 1),
+95,2025-12-14,der Hund,el perro,ES,Unidad 2 (Qué pasa 1),
+96,2025-12-14,"nein, nicht, kein/e",no,ES,Unidad 2 (Qué pasa 1),
+97,2025-12-14,die Stadt,la ciudad,ES,Unidad 2 (Qué pasa 1),Englisch: city
+98,2025-12-14,in der Nähe von,cerca de,ES,Unidad 2 (Qué pasa 1),Segovia es una ciudad cerca de Madrid.
+99,2025-12-14,jetzt,ahora,ES,Unidad 2 (Qué pasa 1),
+100,2025-12-14,das Stadtviertel,el barrio,ES,Unidad 2 (Qué pasa 1),Mi barrio se llama Südstadt.
+101,2025-12-14,auch,también,ES,Unidad 2 (Qué pasa 1),Yo también soy de Madrid.
+102,2025-12-14,Wie alt bist du?,¿Cuántos años tienes?,ES,Unidad 2 (Qué pasa 1),
+103,2025-12-14,das Jahr,el año,ES,Unidad 2 (Qué pasa 1),Tengo 14 años.
+104,2025-12-14,haben,tener,ES,Unidad 2 (Qué pasa 1),Yo tengo un perro.
+105,2025-12-14,die Geschwister,los hermanos,ES,Unidad 2 (Qué pasa 1),Lucía y Miguel son hermanos.
+106,2025-12-14,ein/e,un/una,ES,Unidad 2 (Qué pasa 1),Lucía tiene un conejo.
+107,2025-12-14,der Hamster,el hámster,ES,Unidad 2 (Qué pasa 1),Plural: los hámsteres
+108,2025-12-14,"die Zahl, die Nummer",el número,ES,Unidad 2 (Qué pasa 1),Englisch: number
+109,2025-12-14,der Bahnhof,la estación,ES,Unidad 2 (Qué pasa 1),Englisch: station
+110,2025-12-14,so,así,ES,Unidad 2 (Qué pasa 1),"Sí, así es. Ja, so ist es."
+111,2025-12-14,dein/e,tu,ES,Unidad 2 (Qué pasa 1),¿Cómo se llama tu padre?
+112,2025-12-14,"sich verabreden, sich treffen",quedar,ES,Unidad 2 (Qué pasa 1),Quedo con mi amiga en el parque.
+113,2025-12-14,"nachmittags, abends",por la tarde,ES,Unidad 2 (Qué pasa 1),¿Quedamos por la tarde?
+114,2025-12-14,"der Nachmittag, der Abend",la tarde,ES,Unidad 2 (Qué pasa 1),
+115,2025-12-14,"sprechen (über), reden (über)",hablar (de),ES,Unidad 2 (Qué pasa 1),Hablamos de las vacaciones.
+116,2025-12-14,die Zeit,el tiempo,ES,Unidad 2 (Qué pasa 1),Englisch: time
+117,2025-12-14,verbringen,pasar,ES,Unidad 2 (Qué pasa 1),Hoy paso tiempo con Lucía.
+118,2025-12-14,das Kino,el cine,ES,Unidad 2 (Qué pasa 1),Englisch: cinema
+119,2025-12-14,mit,con,ES,Unidad 2 (Qué pasa 1),
+120,2025-12-14,"später, nachher, dann",luego,ES,Unidad 2 (Qué pasa 1),Hablamos luego.
+121,2025-12-14,zu Hause,en casa,ES,Unidad 2 (Qué pasa 1),
+122,2025-12-14,das Haus,la casa,ES,Unidad 2 (Qué pasa 1),
+123,2025-12-14,aufnehmen,grabar,ES,Unidad 2 (Qué pasa 1),Grabo un vídeo para mi prima.
+124,2025-12-14,das Video,el vídeo,ES,Unidad 2 (Qué pasa 1),
+125,2025-12-14,wann?,¿cuándo?,ES,Unidad 2 (Qué pasa 1),¿Cuándo quedamos hoy?
+126,2025-12-14,"also, dann",entonces,ES,Unidad 2 (Qué pasa 1),Entonces quedamos por la noche.
+127,2025-12-14,"abends, nachts",por la noche,ES,Unidad 2 (Qué pasa 1),
+128,2025-12-14,"der Abend, die Nacht",la noche,ES,Unidad 2 (Qué pasa 1),Englisch: night
+129,2025-12-14,"morgens, vormittags",por la mañana,ES,Unidad 2 (Qué pasa 1),
+130,2025-12-14,"der Morgen, der Vormittag",la mañana,ES,Unidad 2 (Qué pasa 1),
+131,2025-12-14,"einverstanden, o. k.",vale,ES,Unidad 2 (Qué pasa 1),
+132,2025-12-14,die katalanische Sprache,el catalán,ES,Unidad 2 (Qué pasa 1),Omar habla catalán. Omar spricht Katalan.
+133,2025-12-14,das kastilische Spanisch,el castellano,ES,Unidad 2 (Qué pasa 1),
+134,2025-12-14,"das Spanisch, die spanische Sprache",el español,ES,Unidad 2 (Qué pasa 1),Mi padre habla español. Mein Vater spricht Spanisch.
+135,2025-12-14,ein bisschen,"un poco (de)",ES,Unidad 2 (Qué pasa 1),Hablo un poco de inglés.
+136,2025-12-14,"das Englisch, die englische Sprache",el inglés,ES,Unidad 2 (Qué pasa 1),
+137,2025-12-14,lernen,estudiar,ES,Unidad 2 (Qué pasa 1),Englisch: to study
+138,2025-12-14,das Gymnasium,el instituto,ES,Unidad 2 (Qué pasa 1),
+139,2025-12-14,na gut,bueno,ES,Unidad 2 (Qué pasa 1),
+140,2025-12-14,die Familie,la familia,ES,Unidad 2 (Qué pasa 1),
+141,2025-12-14,wo?,¿dónde?,ES,Unidad 2 (Qué pasa 1),¿Dónde quedamos? - Wo treffen wir uns?
+142,2025-12-14,das Einkaufszentrum,el centro comercial,ES,Unidad 2 (Qué pasa 1),Quedamos en el centro comercial. - Wir treffen uns im Einkaufszentrum.
+143,2025-12-14,das Zentrum,el centro,ES,Unidad 2 (Qué pasa 1),
+144,2025-12-14,der Hauptplatz,la plaza mayor,ES,Unidad 2 (Qué pasa 1),
+145,2025-12-14,der Platz,la plaza,ES,Unidad 2 (Qué pasa 1),
+146,2025-12-14,Gassi gehen,pasear al perro,ES,Unidad 2 (Qué pasa 1),Paseo al perro en el parque.
+147,2025-12-14,kaufen,comprar,ES,Unidad 2 (Qué pasa 1),Compramos un helado en la playa.
+148,2025-12-14,jdn. mitbringen,llevar a alg.,ES,Unidad 2 (Qué pasa 1),Llevo a Xavier. - Ich bringe Xavier mit.
+149,2025-12-14,klar,claro,ES,Unidad 2 (Qué pasa 1),
+150,2025-12-14,die Nachricht,el mensaje,ES,Unidad 2 (Qué pasa 1),Englisch: message
+151,2025-12-14,zwischen Sprachen,entre idiomas,ES,Unidad 2 (Qué pasa 1),
+152,2025-12-14,A,a,ES,Unidad 1 Alfabeto (Qué pasa 1),adiós
+153,2025-12-14,B,be,ES,Unidad 1 Alfabeto (Qué pasa 1),bar
+154,2025-12-14,C,ce,ES,Unidad 1 Alfabeto (Qué pasa 1),"Clara, vacaciones"
+155,2025-12-14,D,de,ES,Unidad 1 Alfabeto (Qué pasa 1),deporte
+156,2025-12-14,E,e,ES,Unidad 1 Alfabeto (Qué pasa 1),ellos
+157,2025-12-14,F,efe,ES,Unidad 1 Alfabeto (Qué pasa 1),fiesta
+158,2025-12-14,G,ge,ES,Unidad 1 Alfabeto (Qué pasa 1),"gracias, genial"
+159,2025-12-14,H,hache,ES,Unidad 1 Alfabeto (Qué pasa 1),hotel
+160,2025-12-14,I,i,ES,Unidad 1 Alfabeto (Qué pasa 1),idea
+161,2025-12-14,J,jota,ES,Unidad 1 Alfabeto (Qué pasa 1),juego
+162,2025-12-14,K,ka,ES,Unidad 1 Alfabeto (Qué pasa 1),kilo
+163,2025-12-14,L,ele,ES,Unidad 1 Alfabeto (Qué pasa 1),Lucía
+164,2025-12-14,M,eme,ES,Unidad 1 Alfabeto (Qué pasa 1),Madrid
+165,2025-12-14,N,ene,ES,Unidad 1 Alfabeto (Qué pasa 1),nosotros
+166,2025-12-14,Ñ,eñe,ES,Unidad 1 Alfabeto (Qué pasa 1),montaña
+167,2025-12-14,O,o,ES,Unidad 1 Alfabeto (Qué pasa 1),océano
+168,2025-12-14,P,pe,ES,Unidad 1 Alfabeto (Qué pasa 1),playa
+169,2025-12-14,Q,cu,ES,Unidad 1 Alfabeto (Qué pasa 1),qué
+170,2025-12-14,R,erre,ES,Unidad 1 Alfabeto (Qué pasa 1),"hermano, Raúl"
+171,2025-12-14,S,ese,ES,Unidad 1 Alfabeto (Qué pasa 1),sol
+172,2025-12-14,T,te,ES,Unidad 1 Alfabeto (Qué pasa 1),Tito
+173,2025-12-14,U,u,ES,Unidad 1 Alfabeto (Qué pasa 1),una
+174,2025-12-14,V,uve,ES,Unidad 1 Alfabeto (Qué pasa 1),verano
+175,2025-12-14,W,uve doble,ES,Unidad 1 Alfabeto (Qué pasa 1),windsurf
+176,2025-12-14,X,equis,ES,Unidad 1 Alfabeto (Qué pasa 1),taxi
+177,2025-12-14,Y,ye,ES,Unidad 1 Alfabeto (Qué pasa 1),yo
+178,2025-12-14,Z,zeta,ES,Unidad 1 Alfabeto (Qué pasa 1),zoo
+179,2025-12-14,ich,yo,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Singular
+180,2025-12-14,du,tú,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Singular
+181,2025-12-14,er/sie/Sie,él/ella/usted,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Singular
+182,2025-12-14,wir,nosotros/nosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),1. Person Plural
+183,2025-12-14,ihr,vosotros/vosotras,ES,Unidad 1 Personalpronomen (Qué pasa 1),2. Person Plural
+184,2025-12-14,sie/Sie,ellos/ellas/ustedes,ES,Unidad 1 Personalpronomen (Qué pasa 1),3. Person Plural
+185,2025-12-14,ich bin,soy,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Singular
+186,2025-12-14,du bist,eres,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Singular
+187,2025-12-14,er/sie ist,es,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Singular
+188,2025-12-14,wir sind,somos,ES,Unidad 1 Verb ser (Qué pasa 1),1. Person Plural
+189,2025-12-14,ihr seid,sois,ES,Unidad 1 Verb ser (Qué pasa 1),2. Person Plural
+190,2025-12-14,sie/Sie sind,son,ES,Unidad 1 Verb ser (Qué pasa 1),3. Person Plural
+191,2025-12-14,sein,ser,ES,Unidad 1 Verb ser (Qué pasa 1),Infinitiv
+192,2025-12-14,der Junge,el chico,ES,Unidad 1 Singular/Plural,Singular maskulin
+193,2025-12-14,die Jungen,los chicos,ES,Unidad 1 Singular/Plural,Plural maskulin
+194,2025-12-14,das Hotel,el hotel,ES,Unidad 1 Singular/Plural,Singular maskulin
+195,2025-12-14,die Hotels,los hoteles,ES,Unidad 1 Singular/Plural,Plural maskulin
+196,2025-12-14,das Mädchen,la chica,ES,Unidad 1 Singular/Plural,Singular feminin
+197,2025-12-14,die Mädchen,las chicas,ES,Unidad 1 Singular/Plural,Plural feminin
+198,2025-12-14,die Nacht,la noche,ES,Unidad 1 Singular/Plural,Singular feminin
+199,2025-12-14,die Nächte,las noches,ES,Unidad 1 Singular/Plural,Plural feminin
+200,2025-12-14,null (0),cero,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+201,2025-12-14,eins (1),uno,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+202,2025-12-14,zwei (2),dos,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+203,2025-12-14,drei (3),tres,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+204,2025-12-14,vier (4),cuatro,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+205,2025-12-14,fünf (5),cinco,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+206,2025-12-14,sechs (6),seis,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+207,2025-12-14,sieben (7),siete,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+208,2025-12-14,acht (8),ocho,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+209,2025-12-14,neun (9),nueve,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+210,2025-12-14,zehn (10),diez,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+211,2025-12-14,elf (11),once,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+212,2025-12-14,zwölf (12),doce,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+213,2025-12-14,dreizehn (13),trece,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+214,2025-12-14,vierzehn (14),catorce,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+215,2025-12-14,fünfzehn (15),quince,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+216,2025-12-14,sechzehn (16),dieciséis,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+217,2025-12-14,siebzehn (17),diecisiete,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+218,2025-12-14,achtzehn (18),dieciocho,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+219,2025-12-14,neunzehn (19),diecinueve,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+220,2025-12-14,zwanzig (20),veinte,ES,Unidad 2 Zahlen 1-20 (Qué pasa 1),
+221,2025-12-14,ich habe,tengo,ES,Unidad 2 Verb tener (Qué pasa 1),1. Person Singular
+222,2025-12-14,du hast,tienes,ES,Unidad 2 Verb tener (Qué pasa 1),2. Person Singular
+223,2025-12-14,er/sie hat,tiene,ES,Unidad 2 Verb tener (Qué pasa 1),3. Person Singular
+224,2025-12-14,wir haben,tenemos,ES,Unidad 2 Verb tener (Qué pasa 1),1. Person Plural
+225,2025-12-14,ihr habt,tenéis,ES,Unidad 2 Verb tener (Qué pasa 1),2. Person Plural
+226,2025-12-14,sie/Sie haben,tienen,ES,Unidad 2 Verb tener (Qué pasa 1),3. Person Plural
+227,2025-12-14,ich verabrede mich / treffe mich,quedo,ES,Unidad 2 Verb quedar (Qué pasa 1),1. Person Singular
+228,2025-12-14,du verabredest dich / triffst dich,quedas,ES,Unidad 2 Verb quedar (Qué pasa 1),2. Person Singular
+229,2025-12-14,er/sie verabredet sich / trifft sich,queda,ES,Unidad 2 Verb quedar (Qué pasa 1),3. Person Singular
+230,2025-12-14,wir verabreden uns / treffen uns,quedamos,ES,Unidad 2 Verb quedar (Qué pasa 1),1. Person Plural
+231,2025-12-14,ihr verabredet euch / trefft euch,quedáis,ES,Unidad 2 Verb quedar (Qué pasa 1),2. Person Plural
+232,2025-12-14,sie/Sie verabreden sich / treffen sich,quedan,ES,Unidad 2 Verb quedar (Qué pasa 1),3. Person Plural
+233,2025-12-14,sich verabreden / sich treffen,quedar,ES,Unidad 2 Verb quedar (Qué pasa 1),Infinitiv
+234,2025-12-14,ich kaufe,compro,ES,Unidad 2 Verb comprar (Qué pasa 1),1. Person Singular
+235,2025-12-14,du kaufst,compras,ES,Unidad 2 Verb comprar (Qué pasa 1),2. Person Singular
+236,2025-12-14,er/sie kauft,compra,ES,Unidad 2 Verb comprar (Qué pasa 1),3. Person Singular
+237,2025-12-14,wir kaufen,compramos,ES,Unidad 2 Verb comprar (Qué pasa 1),1. Person Plural
+238,2025-12-14,ihr kauft,compráis,ES,Unidad 2 Verb comprar (Qué pasa 1),2. Person Plural
+239,2025-12-14,sie/Sie kaufen,compran,ES,Unidad 2 Verb comprar (Qué pasa 1),3. Person Plural
+240,2025-12-14,kaufen,comprar,ES,Unidad 2 Verb comprar (Qué pasa 1),Infinitiv
