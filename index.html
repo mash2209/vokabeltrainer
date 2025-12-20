@@ -1156,10 +1156,6 @@
           wrap.appendChild(sel);
           body.appendChild(wrap);
 
-          const expl = document.createElement("div");
-          expl.className = "small";
-          expl.innerHTML = "• <span class=\"mono\">aus</span>: Deine Eingabe muss exakt passen.<br>• <span class=\"mono\">an</span>: Groß/Klein und Akzente werden ignoriert (z.&nbsp;B. \"café\" = \"Cafe\").";
-          body.appendChild(expl);
         },
         () => { direction = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
         null
@@ -1260,6 +1256,13 @@
           sel.onchange = () => { temp = sel.value === "ON"; };
           wrap.appendChild(sel);
           body.appendChild(wrap);
+          const expl = document.createElement("div");
+          expl.className = "small";
+          expl.innerHTML =
+            "• <span class=\"mono\">aus</span>: Deine Eingabe muss exakt passen.<br>" +
+            "• <span class=\"mono\">an</span>: Groß/Klein und Akzente werden ignoriert (z.&nbsp;B. \"café\" = \"Cafe\").";
+          expl.style.marginTop = "8px";
+          body.appendChild(expl);
         },
         () => { lenient = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
         null
