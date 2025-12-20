@@ -431,7 +431,6 @@
 <div class="overlayPanel">
 <div class="row" style="margin-bottom: 10px;">
 <strong>Lernen</strong>
-<span class="right small" id="overlayStatus"></span>
 <button id="closeOverlayBtn">Zurück</button>
 <button disabled="" id="nextBtn2">Nächste</button>
 <button class="danger" disabled="" id="endBtn2">Beenden</button>
@@ -1025,15 +1024,6 @@
       return "Eingabe";
     }
 
-    function updateTopStats() {
-      const a = $("statTotal");
-      const b = $("statLearned");
-      const c = $("statPracticed");
-      if (a) a.textContent = String(vocab.length);
-      if (b) b.textContent = "0";
-      if (c) c.textContent = "0";
-    }
-    
     function updateLabels() {
       $("labelLang").textContent = (selectedLang === "ALL") ? "Alle Sprachen" : selectedLang;
       $("labelDirection").textContent = directionLabel(direction);
@@ -1045,7 +1035,6 @@
       else if (selectedTags.size === 1) $("labelTags").textContent = [...selectedTags][0];
       else $("labelTags").textContent = `${selectedTags.size} ausgewählt`;
 
-      updateTopStats();
     }
 
     // -------------------------
@@ -1386,7 +1375,6 @@
 
       // defaults on labels
       updateLabels();
-      updateTopStats();
 
       try {
         const r = await fetch(CSV_URL, { cache: "no-store" });
