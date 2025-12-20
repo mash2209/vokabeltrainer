@@ -925,26 +925,66 @@
     // CSV table
     // -------------------------
     function renderCsvTable() {
-      const tb = $("csvTable").querySelector("tbody");
-      tb.innerHTML = "";
-
+      const host = $("vocabList");
+      if (!host) return;
+      host.innerHTML = "";
+    
+      // Neueste zuerst (wie vorher)
       const rows = vocab.slice().sort((a, b) => {
         const ia = Number(a.id);
         const ib = Number(b.id);
         if (!Number.isNaN(ia) && !Number.isNaN(ib)) return ib - ia;
         return String(b.id || "").localeCompare(String(a.id || ""));
       });
-
+    
       for (const it of rows) {
-        const tr = document.createElement("tr");
-        const cells = [it.id, it.added, it.de, it.foreign, it.lang, it.tags, it.example];
-        for (const c of cells) {
-          const td = document.createElement("td");
-          td.textContent = (c ?? "").toString();
-          tr.appendChild(td);
-        }
-        tb.appendChild(tr);
+        const d = document.createElement("details");
+        d.className = "vocabEntry";
+    
+        const s = document.createElement("summary");
+    
+        const w = document.createElement("div");
+        w.className = "vocabWord";
+        w.textContent = (it.foreign || "").trim() || "—";
+    
+        const m = document.createElement("div");
+        m.className = "vocabMeta";
+        // optional: Sprache anzeigen
+        m.textContent = (it.lang || "").toUpperCase();
+    
+        s.appendChild(w);
+        s.appendChild(m);
+    
+        const body = document.createElement("div");
+        body.className = "vocabBody";
+    
+        const lineDe = document.createElement("div");
+        lineDe.className = "vocabLine";
+        lineDe.innerHTML = `<span class="k">DE:</span>${(it.de || "—")}`;
+    
+        const lineEx = document.createElement("div");
+        lineEx.className = "vocabLine";
+        const ex = (it.example || "").trim();
+        lineEx.innerHTML = ex ? `<span class="k">Beispiel:</span>${ex}` : `<span class="k">Beispiel:</span>—`;
+    
+        const lineTags = document.createElement("div");
+        lineTags.className = "vocabLine";
+        const tags = (it.tags || "").trim();
+        lineTags.innerHTML = tags ? `<span class="k">Tags:</span>${tags}` : `<span class="k">Tags:</span>—`;
+    
+        body.appendChild(lineDe);
+        body.appendChild(lineEx);
+        body.appendChild(lineTags);
+    
+        d.appendChild(s);
+        d.appendChild(body);
+    
+        host.appendChild(d);
       }
+    
+      $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
+    }
+
 
       $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
     }
