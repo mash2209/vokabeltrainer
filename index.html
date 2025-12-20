@@ -922,7 +922,6 @@
         inSession = false;
         renderLearnInner($("learnCardInner"));
         syncOverlayButtons();
-        status("Session fertig");
         }
     }
 
@@ -932,7 +931,6 @@
       idx = 0;
       renderLearnInner($("learnCardInner"));
       syncOverlayButtons();
-      status("Session beendet");
     }
 
     // -------------------------
@@ -1122,7 +1120,7 @@
           note.textContent = "Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { selectedLang = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => { selectedLang = temp; updateLabels(); },
         null
       );
     }
@@ -1151,7 +1149,7 @@
           body.appendChild(wrap);
 
         },
-        () => { direction = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => { direction = temp; updateLabels(); },
         null
       );
     }
@@ -1184,7 +1182,7 @@
           note.textContent = "Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { mode = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => { mode = temp; updateLabels(); },
         null
       );
     }
@@ -1228,7 +1226,6 @@
           const n = Number(temp);
           limitN = (!Number.isFinite(n) || n <= 0) ? 0 : n;
           updateLabels();
-          status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit");
         },
         null
       );
@@ -1258,7 +1255,7 @@
           expl.style.marginTop = "8px";
           body.appendChild(expl);
         },
-        () => { lenient = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => { lenient = temp; updateLabels(); },
         null
       );
     }
@@ -1351,7 +1348,7 @@
           note.textContent = "Sortierung: neueste Units oben (nach Added-Datum). Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { selectedTags = temp; updateLabels(); status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit"); },
+        () => { selectedTags = temp; updateLabels(); },
         null
       );
     }
@@ -1369,7 +1366,6 @@
       if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
       inSession = true;
       syncOverlayButtons();
-      status("Session läuft");
       openOverlay();
     });
 
@@ -1393,7 +1389,6 @@
       updateTopStats();
 
       try {
-        status("lade CSV…");
         const r = await fetch(CSV_URL, { cache: "no-store" });
         if (!r.ok) throw new Error("CSV not found");
         const text = await r.text();
@@ -1426,12 +1421,10 @@
         $("startBtn").disabled = vocab.length === 0;
 
         updateLabels();
-        status(vocab.length ? "bereit" : "CSV leer");
       } catch (e) {
         vocab = [];
         renderCsvTable();
         updateLabels();
-        status(`Keine CSV gefunden: ${CSV_URL}`);
         $("startBtn").disabled = true;
       }
     }
