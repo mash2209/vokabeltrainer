@@ -561,12 +561,6 @@
     let vocabSearchQuery = "";
 
     const $ = (id) => document.getElementById(id);
-    const status = (msg) => {
-      const s = $("status");
-      if (s) s.textContent = msg;
-      const o = $("overlayStatus");
-      if (o) o.textContent = msg;
-    };
 
     function parseISODate(s) {
       if (!s) return null;
