@@ -929,12 +929,11 @@
       if (!host) return;
       host.innerHTML = "";
     
-      // Neueste zuerst (wie vorher)
+      // Alphabetisch nach Fremdsprache
       const rows = vocab.slice().sort((a, b) => {
-        const ia = Number(a.id);
-        const ib = Number(b.id);
-        if (!Number.isNaN(ia) && !Number.isNaN(ib)) return ib - ia;
-        return String(b.id || "").localeCompare(String(a.id || ""));
+        const fa = (a.foreign || "").trim();
+        const fb = (b.foreign || "").trim();
+        return fa.localeCompare(fb, "de", { sensitivity: "base" });
       });
     
       for (const it of rows) {
@@ -975,6 +974,12 @@
         body.appendChild(lineDe);
         body.appendChild(lineEx);
         body.appendChild(lineTags);
+        const lineAdded = document.createElement("div");
+        lineAdded.className = "vocabLine";
+        const added = (it.added || "").trim();
+        lineAdded.innerHTML = added ? `<span class="k">Added:</span>${added}` : `<span class="k">Added:</span>—`;
+
+        body.appendChild(lineAdded);
     
         d.appendChild(s);
         d.appendChild(body);
