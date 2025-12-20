@@ -347,6 +347,21 @@
       text-align: left;
       color: rgba(15,23,42,.7);
     }
+    
+    .vocabSearchRow{
+      margin-top: 10px;
+    }
+    .vocabSearch{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--r16);
+      border: 1px solid var(--line);
+      background: #fff;
+      outline: none;
+    }
+    .vocabSearch::placeholder{
+      color: rgba(100,116,139,.9);
+    }
 
     .vocabList{
       display:grid;
@@ -508,6 +523,10 @@
 <span>Vokabeltabelle anzeigen</span>
 <span class="right small" id="csvCountLabel"></span>
 </summary>
+<div class="vocabSearchRow">
+  <input id="vocabSearch" class="vocabSearch" type="search" placeholder="Vokabel suchen (Fremdsprache oder Deutsch) …">
+</div>
+
 <div id="vocabList" class="vocabList"></div>
 <div class="small" style="margin-top:8px;">
           Read-only Anzeige der CSV-Daten
@@ -539,6 +558,7 @@
     let score = 0;
     let inSession = false;
     let currentDirForQuestion = "DE_TO_FOREIGN";
+    let vocabSearchQuery = "";
 
     const $ = (id) => document.getElementById(id);
     const status = (msg) => {
@@ -935,8 +955,17 @@
         const fb = (b.foreign || "").trim();
         return fa.localeCompare(fb, "de", { sensitivity: "base" });
       });
-    
-      for (const it of rows) {
+
+      const q = normalize(vocabSearchQuery, true);
+      const filtered = q
+        ? rows.filter(it => {
+            const f = normalize(it.foreign || "", true);
+            const d = normalize(it.de || "", true);
+            return f.includes(q) || d.includes(q);
+          })
+        : rows;
+        
+      for (const it of filtered) {
         const d = document.createElement("details");
         d.className = "vocabEntry";
     
@@ -987,7 +1016,7 @@
         host.appendChild(d);
       }
     
-      $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
+      $("csvCountLabel").textContent = `${filtered.length} / ${vocab.length}`;
     }
 
     // -------------------------
@@ -1388,6 +1417,15 @@
 
         renderCsvTable();
 
+        const searchEl = $("vocabSearch");
+        if (searchEl) {
+          searchEl.value = "";
+          searchEl.oninput = () => {
+            vocabSearchQuery = searchEl.value || "";
+            renderCsvTable();
+          };
+        }
+          
         $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
         $("startBtn").disabled = vocab.length === 0;
 
