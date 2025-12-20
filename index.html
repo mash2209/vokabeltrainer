@@ -347,6 +347,67 @@
       text-align: left;
       color: rgba(15,23,42,.7);
     }
+
+    .vocabList{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .vocabEntry{
+      border: 1px solid var(--line);
+      border-radius: var(--r18);
+      background:#fff;
+      overflow:hidden;
+    }
+    
+    .vocabEntry summary{
+      list-style:none;
+      cursor:pointer;
+      user-select:none;
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    
+    .vocabEntry summary::-webkit-details-marker{ display:none; }
+    
+    .vocabWord{
+      font-weight: 900;
+      font-size: 15px;
+      line-height: 1.2;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .vocabMeta{
+      margin-left:auto;
+      font-size: 12px;
+      color: var(--muted);
+      flex: 0 0 auto;
+    }
+    
+    .vocabBody{
+      padding: 0 12px 12px;
+      display:grid;
+      gap: 8px;
+    }
+    
+    .vocabLine{
+      font-size: 13px;
+      color: rgba(15,23,42,.9);
+      word-break: break-word;   /* bleibt in der Breite */
+    }
+    
+    .vocabLine .k{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-right: 6px;
+    }
+
   </style>
 </head>
 <body>
