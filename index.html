@@ -1099,110 +1099,43 @@
     }
 
     function openLimitModal() {
-      let tempChoice = (limitN === 0) ? "ALL" : "CUSTOM";
-      let tempN = (limitN === 0) ? 10 : limitN;
-
+      let temp = (limitN === 0) ? "0" : String(limitN);
+    
       openModal(
         "Anzahl Fragen",
         (body) => {
           const wrap = document.createElement("div");
           wrap.className = "field";
-
-          const label = document.createElement("label");
-          label.textContent = "Auswahl";
-          wrap.appendChild(label);
-
-          // Radio: ALL
-          const rAll = document.createElement("div");
-          rAll.style.display = "flex";
-          rAll.style.alignItems = "center";
-          rAll.style.gap = "10px";
-          rAll.style.fontWeight = "700";
-          rAll.style.color = "rgba(15,23,42,.8)";
-          rAll.style.cursor = "pointer";
-
-          const inAll = document.createElement("input");
-          inAll.type = "radio";
-          inAll.name = "limitChoice";
-          inAll.value = "ALL";
-          inAll.checked = tempChoice === "ALL";
-
-          const tAll = document.createElement("span");
-          tAll.textContent = "Alle";
-          tAll.style.display = "inline";
-          tAll.style.color = "rgba(15,23,42,.9)";
-          tAll.style.fontSize = "14px";
-          rAll.appendChild(inAll);
-          rAll.appendChild(tAll);
-
-          // Radio: CUSTOM + input
-          const rCustom = document.createElement("div");
-          rCustom.style.display = "grid";
-          rCustom.style.gap = "8px";
-          rCustom.style.fontWeight = "700";
-          rCustom.style.color = "rgba(15,23,42,.8)";
-          rCustom.style.cursor = "pointer";
-
-          const top = document.createElement("div");
-          top.style.display = "flex";
-          top.style.alignItems = "center";
-          top.style.gap = "10px";
-
-          const inCustom = document.createElement("input");
-          inCustom.type = "radio";
-          inCustom.name = "limitChoice";
-          inCustom.value = "CUSTOM";
-          inCustom.checked = tempChoice === "CUSTOM";
-
-          const tCustom = document.createElement("span");
-          tCustom.textContent = "Selbsteinstellung";
-          tCustom.style.display = "inline";
-          tCustom.style.color = "rgba(15,23,42,.9)";
-          tCustom.style.fontSize = "14px";
-          top.appendChild(inCustom);
-          top.appendChild(tCustom);
-
-          const inp = document.createElement("input");
-          inp.type = "number";
-          inp.min = "1";
-          inp.step = "1";
-          inp.value = String(tempN);
-
-          function syncEnabled() {
-            inp.disabled = (tempChoice !== "CUSTOM");
-          }
-          syncEnabled();
-
-          // events
-          inAll.onchange = () => { tempChoice = "ALL"; syncEnabled(); };
-          inCustom.onchange = () => { tempChoice = "CUSTOM"; syncEnabled(); inp.focus(); inp.select(); };
-          inp.oninput = () => {
-            const n = Math.max(1, Number(inp.value || 1));
-            tempN = n;
-          };
-
-          rCustom.appendChild(top);
-          rCustom.appendChild(inp);
-
-          // clicking label should switch radio
-          rAll.addEventListener("click", () => { inAll.checked = true; inAll.dispatchEvent(new Event("change")); });
-          rCustom.addEventListener("click", (e) => {
-            if (e.target === inp) return;
-            inCustom.checked = true; inCustom.dispatchEvent(new Event("change"));
+          wrap.innerHTML = `<label>Anzahl auswählen</label>`;
+    
+          const sel = document.createElement("select");
+          [
+            ["0", "Unbegrenzt"],
+            ["25", "25"],
+            ["50", "50"],
+            ["75", "75"],
+            ["100", "100"]
+          ].forEach(([v, t]) => {
+            const o = document.createElement("option");
+            o.value = v;
+            o.textContent = t;
+            sel.appendChild(o);
           });
-
-          wrap.appendChild(rAll);
-          wrap.appendChild(rCustom);
-
+    
+          sel.value = temp;
+          sel.onchange = () => { temp = sel.value; };
+    
+          wrap.appendChild(sel);
           body.appendChild(wrap);
-
+    
           const note = document.createElement("div");
           note.className = "small";
           note.textContent = "Die Einstellung wirkt bei neuer Session.";
           body.appendChild(note);
         },
         () => {
-          limitN = (tempChoice === "ALL") ? 0 : Math.max(1, Number(tempN || 1));
+          const n = Number(temp);
+          limitN = (!Number.isFinite(n) || n <= 0) ? 0 : n;
           updateLabels();
           status(inSession ? "Session läuft (Änderung wirkt erst bei neuer Session)" : "bereit");
         },
