@@ -922,11 +922,14 @@
     }
 
     function updateTopStats() {
-      $("statTotal").textContent = String(vocab.length);
-      $("statLearned").textContent = "0";    // später echtes Tracking
-      $("statPracticed").textContent = "0";  // später echtes Tracking
+      const a = $("statTotal");
+      const b = $("statLearned");
+      const c = $("statPracticed");
+      if (a) a.textContent = String(vocab.length);
+      if (b) b.textContent = "0";
+      if (c) c.textContent = "0";
     }
-
+    
     function updateLabels() {
       $("labelLang").textContent = (selectedLang === "ALL") ? "Alle Sprachen" : selectedLang;
       $("labelDirection").textContent = directionLabel(direction);
