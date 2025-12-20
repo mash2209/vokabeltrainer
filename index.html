@@ -1041,16 +1041,14 @@
     // Modal helpers
     // -------------------------
     let modalOnOk = null;
-    let modalOnCancel = null;
 
-    function openModal(title, buildBodyFn, onOkFn, onCancelFn) {
+    function openModal(title, buildBodyFn, onOkFn) {
       $("modalTitle").textContent = title;
       const body = $("modalBody");
       body.innerHTML = "";
       buildBodyFn(body);
 
       modalOnOk = onOkFn || null;
-      modalOnCancel = onCancelFn || null;
 
       $("modal").classList.add("open");
       $("modal").setAttribute("aria-hidden", "false");
@@ -1063,10 +1061,8 @@
       document.body.classList.remove("noscroll");
 
       if (trigger === "ok" && typeof modalOnOk === "function") modalOnOk();
-      if (trigger === "cancel" && typeof modalOnCancel === "function") modalOnCancel();
 
       modalOnOk = null;
-      modalOnCancel = null;
     }
 
             $("modalOkBtn").addEventListener("click", () => closeModal("ok"));
