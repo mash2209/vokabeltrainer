@@ -4,791 +4,1127 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vokabeltrainer</title>
+
   <style>
-    :root { --gap: 12px; --radius: 12px; }
-    body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #e9ecf2; color: #111; }
-    main { padding: 16px; display: grid; gap: 16px; width: 100%; max-width: clamp(320px, 100vw, 1100px); margin: 0 auto; }
-    .card { background: white; border: 1px solid #e6e8ee; border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 0 rgba(0,0,0,0.03); }
-    .row { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: center; }
-    .pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; border: 1px solid #e6e8ee; background: #fafbfc; font-size: 12px; }
-    .small { font-size: 12px; color: #555; }
-    .muted { opacity: .75; }
+    :root{
+      --gap: 12px;
+
+      --bg1:#f6f3ff;
+      --bg2:#eef2ff;
+
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+
+      --line: rgba(15,23,42,.08);
+      --shadow1: 0 10px 30px rgba(15,23,42,.06);
+      --shadow2: 0 2px 10px rgba(15,23,42,.06);
+
+      --r18: 18px;
+      --r16: 16px;
+      --r14: 14px;
+      --r12: 12px;
+
+      --primaryA:#2563eb;
+      --primaryB:#7c3aed;
+
+      --okBorder:#bfe5c9;
+      --okBg:#f2fbf4;
+      --badBorder:#f0c0c6;
+      --badBg:#fff7f8;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+
+    body{
+      margin:0;
+      font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 500px at 50% 0%, var(--bg1), transparent 60%),
+        radial-gradient(900px 600px at 40% 30%, var(--bg2), transparent 60%),
+        #f7f7fb;
+    }
+
+    main{
+      width:100%;
+      max-width: 460px;
+      margin: 28px auto;
+      padding: 0 16px 24px;
+      display:grid;
+      gap: 14px;
+    }
+
+    /* typography helpers */
+    .small { font-size: 12px; color: var(--muted); }
+    .muted { opacity: .85; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .big { font-size: 20px; font-weight: 800; line-height: 1.25; }
     .right { margin-left: auto; }
 
-    button, select, input { font: inherit; }
-    button { border: 1px solid #d6d9e2; background: #fff; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
-    button.primary { background: #111; color: #fff; border-color: #111; }
-    button.danger { background: #fff; color: #b00020; border-color: #f0c0c6; }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    label { font-size: 12px; color: #444; display: grid; gap: 6px; }
+    /* layout helpers */
+    .row { display:flex; flex-wrap: wrap; gap: var(--gap); align-items:center; }
+    .stack { display:grid; gap: 10px; }
 
-    .big { font-size: 20px; font-weight: 700; }
-    .answer { padding: 12px; border: 1px dashed #d6d9e2; border-radius: 12px; background: #fbfcfe; }
-    .choices { display: grid; gap: 8px; }
-    .choices button { text-align: left; }
-    .ok { border-color: #bfe5c9 !important; background: #f2fbf4 !important; }
-    .bad { border-color: #f0c0c6 !important; background: #fff7f8 !important; }
+    /* card */
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r18);
+      box-shadow: var(--shadow2);
+      padding: 14px;
+    }
 
-    /* Overlay fürs Lernen */
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; z-index: 999; }
-    .overlay.open { display: block; }
-    .overlayPanel {
-      position: absolute; inset: 10px;
-      background: #f6f7f9;
-      border-radius: 16px;
+    /* top title */
+    .appTitle{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      font-weight:900;
+      font-size: 22px;
+      color:#5b21b6;
+      margin: 6px 0 10px;
+    }
+    .appTitle .spark{
+      width:20px;height:20px;
+      display:inline-grid; place-items:center;
+      color:#7c3aed;
+    }
+
+    /* stats */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .stat{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r16);
       padding: 10px;
-      overflow: auto;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .stat .num{ font-size: 20px; font-weight: 900; line-height:1; }
+    .stat .lbl{ font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* buttons / inputs */
+    button, select, input { font: inherit; }
+    button{
+      border: 1px solid rgba(15,23,42,.12);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: var(--r14);
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    button:disabled{ opacity:.5; cursor:not-allowed; }
+    button.danger{
+      background:#fff;
+      color:#b00020;
+      border-color: rgba(176,0,32,.18);
+    }
+    .btnPrimary{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border: 0;
+      padding: 12px 14px;
+      border-radius: var(--r16);
+      color:#fff;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primaryA), var(--primaryB));
+      box-shadow: var(--shadow1);
+    }
+
+    label{
+      font-size: 12px;
+      color: rgba(15,23,42,.85);
+      display:grid;
+      gap: 6px;
+    }
+    select, input{
+      width:100%;
+      padding: 10px;
+      border-radius: var(--r14);
+      border: 1px solid var(--line);
+      background:#fff;
+      outline: none;
+    }
+
+    /* list-style items (tiles) */
+    .item{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      padding: 12px 12px;
+      border-radius: var(--r16);
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+      cursor: pointer;
+    }
+    .item:active{ transform: translateY(1px); }
+    .item .ic{
+      width: 32px; height: 32px;
+      border-radius: 999px;
+      display:grid; place-items:center;
+      background: rgba(124,58,237,.12);
+      color:#7c3aed;
+      flex: 0 0 auto;
+      font-weight: 900;
+    }
+    .item .txt{ display:grid; }
+    .item .txt strong{ font-size: 14px; }
+    .item .txt span{ font-size: 12px; color: var(--muted); margin-top:2px; }
+    .item .chev{ margin-left:auto; color: rgba(15,23,42,.35); font-size: 20px; }
+
+    .sectionLbl{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 13px;
+      margin-top: 10px;
+      margin-bottom: 2px;
+    }
+    .sectionLbl .mini{
+      width:18px;height:18px;
+      display:grid; place-items:center;
+      color:#f59e0b;
+    }
+
+    /* pills */
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      font-size: 12px;
+      color: rgba(15,23,42,.85);
+    }
+
+    /* advanced options collapsible */
+    details.advanced{
+      border: 1px solid var(--line);
+      border-radius: var(--r18);
+      background:#fff;
+      box-shadow: var(--shadow2);
+      padding: 10px 12px;
+    }
+    details.advanced summary{
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      cursor:pointer;
+      user-select:none;
+      font-weight:900;
+      color: rgba(15,23,42,.92);
+    }
+    details.advanced summary::-webkit-details-marker{ display:none; }
+    details.advanced summary span{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    details.advanced .advBody{
+      margin-top: 10px;
+      display:grid;
+      gap: 10px;
+    }
+
+    /* learn overlay */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      z-index: 999;
+    }
+    .overlay.open{ display:block; }
+    .overlayPanel{
+      position:absolute;
+      inset: 10px;
+      background: rgba(247,247,251,1);
+      border-radius: var(--r18);
+      padding: 10px;
+      overflow:auto;
+      border: 1px solid rgba(255,255,255,.55);
+      box-shadow: var(--shadow1);
     }
     body.noscroll { overflow: hidden; }
 
-    @media (max-width: 600px) {
-      .row > label { width: 100%; }
-      .row > button { width: 100%; }
-      .right { margin-left: 0; }
+    .answer{
+      padding: 12px;
+      border: 1px dashed rgba(15,23,42,.18);
+      border-radius: var(--r16);
+      background: rgba(255,255,255,.72);
     }
+    .choices{ display:grid; gap: 8px; }
+    .choices button{ text-align:left; }
 
-    html, body { max-width: 100%; overflow-x: hidden; }
+    .ok{ border-color: var(--okBorder) !important; background: var(--okBg) !important; }
+    .bad{ border-color: var(--badBorder) !important; background: var(--badBg) !important; }
 
-    /* Collapsible cards */
-    details summary { cursor: pointer; user-select: none; }
-    details summary::-webkit-details-marker { display:none; }
-    .summaryRow { display:flex; align-items:center; gap:10px; }
-    .chev { font-size: 12px; opacity: .7; }
-    details[open] .chev { transform: rotate(90deg); display:inline-block; }
+    /* csv section */
+    details.csvBlock summary{
+      list-style:none;
+      cursor:pointer;
+      user-select:none;
+      font-weight: 900;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    details.csvBlock summary::-webkit-details-marker{ display:none; }
 
-    /* CSV table view */
-    .tableWrap {
-      overflow: auto;
-      border: 1px solid #e6e8ee;
-      border-radius: 12px;
+    .tableWrap{
+      overflow:auto;
+      border: 1px solid var(--line);
+      border-radius: var(--r16);
       background: #fff;
-      max-height: 280px;
+      max-height: 300px;
+      margin-top: 12px;
     }
-    table.csv { border-collapse: collapse; width: max-content; min-width: 100%; }
-    table.csv th, table.csv td {
-      border-bottom: 1px solid #eef0f5;
+    table.csv{
+      border-collapse: collapse;
+      width: max-content;
+      min-width: 100%;
+    }
+    table.csv th, table.csv td{
+      border-bottom: 1px solid rgba(15,23,42,.06);
       padding: 8px 10px;
       white-space: nowrap;
       font-size: 12px;
       vertical-align: top;
     }
-    table.csv th { position: sticky; top: 0; background: #fbfcfe; text-align: left; color:#444; }
+    table.csv th{
+      position: sticky;
+      top: 0;
+      background: #fbfcfe;
+      text-align: left;
+      color: rgba(15,23,42,.75);
+    }
+
+    @media (max-width: 600px) {
+      .right { margin-left: 0; }
+    }
   </style>
 </head>
 
 <body>
 
-<!-- Lern-Overlay -->
-<div id="learnOverlay" class="overlay" aria-hidden="true">
-  <div class="overlayPanel">
-    <div class="row" style="margin-bottom: 10px;">
-      <strong>Lernen</strong>
-      <span class="right small muted" id="overlayStatus"></span>
-      <button id="closeOverlayBtn">Zurück</button>
-      <button id="nextBtn2" disabled>Nächste</button>
-      <button id="endBtn2" class="danger" disabled>Beenden</button>
-    </div>
+  <!-- Lern-Overlay -->
+  <div id="learnOverlay" class="overlay" aria-hidden="true">
+    <div class="overlayPanel">
+      <div class="row" style="margin-bottom: 10px;">
+        <strong>Lernen</strong>
+        <span class="right small muted" id="overlayStatus"></span>
+        <button id="closeOverlayBtn">Zurück</button>
+        <button id="nextBtn2" disabled>Nächste</button>
+        <button id="endBtn2" class="danger" disabled>Beenden</button>
+      </div>
 
-    <div id="learnCardInner"></div>
+      <div id="learnCardInner"></div>
+    </div>
   </div>
-</div>
 
-<main>
+  <main>
 
-  <!-- Lernen -->
-  <section class="card" id="learnStartCard">
-    <div class="row" style="margin-bottom: 10px;">
-      <strong>Vokabeltrainer</strong>
-      <span class="right small muted">CSV: <span class="mono" id="csvLabel"></span></span>
-      <button id="startBtn" class="primary" disabled>Session starten</button>
-    </div>
+    <!-- HOME / START -->
+    <section class="card" id="learnStartCard">
 
-    <div class="row" style="margin-bottom: 10px;">
-      <label>
-        Sprache
-        <select id="langSelect"></select>
-      </label>
-
-      <label>
-        Richtung
-        <select id="directionSelect">
-          <option value="DE_TO_FOREIGN">DE → Foreign</option>
-          <option value="FOREIGN_TO_DE">Foreign → DE</option>
-          <option value="BOTH">Beide Richtungen (gemischt)</option>
-        </select>
-      </label>
-
-      <label>
-        Modus
-        <select id="modeSelect">
-          <option value="FLASH">Karteikarten (richtig/falsch)</option>
-          <option value="MCQ">Multiple Choice</option>
-          <option value="TYPE">Eingabe</option>
-        </select>
-      </label>
-
-      <label>
-        Anzahl Fragen (0 = alle)
-        <input id="limitInput" type="number" min="0" step="1" value="0" style="width:160px; padding:10px; border-radius:12px; border:1px solid #e6e8ee;">
-      </label>
-
-      <label>
-        Groß-/Kleinschreibung und Akzente ignorieren (nur Eingabe)
-        <select id="lenientSelect" style="width:200px; padding:10px; border-radius:12px; border:1px solid #e6e8ee;">
-          <option value="OFF" selected>aus</option>
-          <option value="ON">an</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="row" style="margin-bottom: 10px;">
-      <label style="flex:1; min-width: 260px;">
-        Units/Tags auswählen (mehrfach möglich)
-        <select id="tagSelect" multiple size="5" style="width:100%; padding:8px; border-radius:12px; border:1px solid #e6e8ee;"></select>
-      </label>
-
-      <div style="display:grid; gap:10px; min-width:240px;">
-        <button id="tags30Btn" disabled>Tags letzte 30 Tage</button>
-        <button id="tags90Btn" disabled>Tags letzte 90 Tage</button>
-        <button id="selectAllTagsBtn" disabled>Alle Tags auswählen</button>
-        <button id="clearTagsBtn" disabled>Alle Tags abwählen</button>
+      <div class="appTitle">
+        <span class="spark">✦</span>
+        <span>Vokabeltrainer</span>
       </div>
-    </div>
 
-    <div class="row">
-      <span class="pill">Score: <span id="score">0</span></span>
-      <span class="pill">Frage: <span id="progress">0/0</span></span>
-      <span class="pill">Aktive Wörter: <span id="activeCount">0</span></span>
-      <span class="right small muted">Status: <span id="status">lade…</span></span>
-    </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="num" id="statTotal">0</div>
+          <div class="lbl">Vokabeln</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statLearned">0</div>
+          <div class="lbl">Gelernt</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statPracticed">0</div>
+          <div class="lbl">Geübt</div>
+        </div>
+      </div>
 
-    <div class="small muted" style="margin-top:10px;">
-      Hinweis: Bei Multiple Choice kommen falsche Antworten aus allen Vokabeln derselben Sprache (z.B. alle EN).
-    </div>
-  </section>
+      <button id="startBtn" class="btnPrimary" disabled>➕ Session starten</button>
 
-  <!-- (2a) CSV Tabelle -->
-  <section class="card">
-    <details id="csvDetails">
-      <summary>
-        <div class="summaryRow">
-          <span class="chev">▶</span>
-          <strong>Vokabeltabelle anzeigen</strong>
+      <div class="stack" style="margin-top: 12px;">
+        <div class="item" id="openFlash">
+          <div class="ic">📇</div>
+          <div class="txt">
+            <strong>Karteikarten-Modus</strong>
+            <span>Übe mit Karteikarten</span>
+          </div>
+          <div class="chev">›</div>
+        </div>
+
+        <div class="sectionLbl">
+          <span class="mini">🏆</span>
+          <span>Trainingsmodus</span>
+        </div>
+
+        <div class="small muted" id="homeLangLabel">Sprache: —</div>
+
+        <div class="item" id="openEnDe">
+          <div class="ic" style="background: rgba(37,99,235,.12); color: #2563eb;">↗</div>
+          <div class="txt">
+            <strong>Englisch → Deutsch</strong>
+            <span><span id="countEnDe">0</span> Wörter</span>
+          </div>
+          <div class="chev">›</div>
+        </div>
+
+        <div class="item" id="openDeEn">
+          <div class="ic" style="background: rgba(124,58,237,.12); color: #7c3aed;">↘</div>
+          <div class="txt">
+            <strong>Deutsch → Englisch</strong>
+            <span><span id="countDeEn">0</span> Wörter</span>
+          </div>
+          <div class="chev">›</div>
+        </div>
+
+        <div class="item" id="openLibrary">
+          <div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">📚</div>
+          <div class="txt">
+            <strong>Vokabel-Bibliothek</strong>
+            <span>Alle Wörter anzeigen</span>
+          </div>
+          <div class="chev">›</div>
+        </div>
+      </div>
+
+      <!-- Optionen / Filter -->
+      <details class="advanced" style="margin-top: 12px;">
+        <summary>
+          <div>Optionen</div>
+          <span>Sprache · Richtung · Modus · Tags · Limit</span>
+        </summary>
+
+        <div class="advBody">
+
+          <label>
+            Sprache
+            <select id="langSelect"></select>
+          </label>
+
+          <label>
+            Richtung
+            <select id="directionSelect">
+              <option value="DE_TO_FOREIGN">DE → Foreign</option>
+              <option value="FOREIGN_TO_DE">Foreign → DE</option>
+              <option value="BOTH">Beide Richtungen (gemischt)</option>
+            </select>
+          </label>
+
+          <label>
+            Modus
+            <select id="modeSelect">
+              <option value="FLASH">Karteikarten (richtig/falsch)</option>
+              <option value="MCQ">Multiple Choice</option>
+              <option value="TYPE">Eingabe</option>
+            </select>
+          </label>
+
+          <label>
+            Anzahl Fragen (0 = alle)
+            <input id="limitInput" type="number" min="0" step="1" value="0">
+          </label>
+
+          <label>
+            Groß-/Kleinschreibung und Akzente ignorieren (nur Eingabe)
+            <select id="lenientSelect">
+              <option value="OFF" selected>aus</option>
+              <option value="ON">an</option>
+            </select>
+          </label>
+
+          <label>
+            Units/Tags auswählen (mehrfach möglich)
+            <select id="tagSelect" multiple size="5"></select>
+          </label>
+
+          <div class="row" style="gap:10px;">
+            <button id="tags30Btn" disabled>Tags letzte 30 Tage</button>
+            <button id="tags90Btn" disabled>Tags letzte 90 Tage</button>
+            <button id="selectAllTagsBtn" disabled>Alle Tags auswählen</button>
+            <button id="clearTagsBtn" disabled>Alle Tags abwählen</button>
+          </div>
+
+          <div class="row">
+            <span class="pill">Score: <span id="score">0</span></span>
+            <span class="pill">Frage: <span id="progress">0/0</span></span>
+            <span class="pill">Aktive Wörter: <span id="activeCount">0</span></span>
+            <span class="right small muted">Status: <span id="status">lade…</span></span>
+          </div>
+
+          <div class="small muted">
+            CSV: <span class="mono" id="csvLabel"></span>
+          </div>
+
+          <div class="small muted">
+            Hinweis: Bei Multiple Choice kommen falsche Antworten aus allen Vokabeln derselben Sprache
+          </div>
+        </div>
+      </details>
+
+    </section>
+
+    <!-- CSV Tabelle -->
+    <section class="card">
+      <details id="csvDetails" class="csvBlock">
+        <summary>
+          <span>Vokabeltabelle anzeigen</span>
           <span class="right small muted" id="csvCountLabel"></span>
+        </summary>
+
+        <div class="tableWrap">
+          <table class="csv" id="csvTable">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>added</th>
+                <th>de</th>
+                <th>foreign</th>
+                <th>lang</th>
+                <th>tags</th>
+                <th>example</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
-      </summary>
 
-      <div style="margin-top: 12px;" class="tableWrap">
-        <table class="csv" id="csvTable">
-          <thead>
-            <tr>
-              <th>id</th>
-              <th>added</th>
-              <th>de</th>
-              <th>foreign</th>
-              <th>lang</th>
-              <th>tags</th>
-              <th>example</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+        <div class="small muted" style="margin-top:10px;">
+          Read-only Anzeige der CSV-Daten
+        </div>
+      </details>
+    </section>
 
-      <div class="small muted" style="margin-top:10px;">
-        Read-only Anzeige der CSV-Daten.
-      </div>
-    </details>
-  </section>
+  </main>
 
-</main>
-
-<script>
-  function getListKey() {
-    const p = new URLSearchParams(location.search);
-    return (p.get("list") || "default").trim().toLowerCase();
-  }
-  const LIST_KEY = getListKey();
-  const CSV_URL = `csv/vocab_${LIST_KEY}.csv`;
-
-  let vocab = [];
-
-  // Session state
-  let session = [];
-  let idx = 0;
-  let score = 0;
-  let inSession = false;
-  let currentDirForQuestion = "DE_TO_FOREIGN";
-
-  const $ = (id) => document.getElementById(id);
-  const status = (msg) => { $("status").textContent = msg; $("overlayStatus").textContent = msg; };
-
-  function parseISODate(s) {
-    if (!s) return null;
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim());
-    if (!m) return null;
-    const d = new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00`);
-    return isNaN(d.getTime()) ? null : d;
-  }
-
-  function normalize(str, lenient=true) {
-    if (!str) return "";
-    let s = str.trim();
-    if (lenient) {
-      s = s.toLowerCase();
-      s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  <script>
+    function getListKey() {
+      const p = new URLSearchParams(location.search);
+      return (p.get("list") || "default").trim().toLowerCase();
     }
-    s = s.replace(/\s+/g, " ");
-    return s;
-  }
+    const LIST_KEY = getListKey();
+    const CSV_URL = `csv/vocab_${LIST_KEY}.csv`;
 
-  function parseTags(tags) {
-    return (tags || "")
-      .split(";")
-      .map(t => t.trim())
-      .filter(Boolean);
-  }
+    let vocab = [];
 
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+    // Session state
+    let session = [];
+    let idx = 0;
+    let score = 0;
+    let inSession = false;
+    let currentDirForQuestion = "DE_TO_FOREIGN";
+
+    const $ = (id) => document.getElementById(id);
+    const status = (msg) => { $("status").textContent = msg; $("overlayStatus").textContent = msg; };
+
+    function parseISODate(s) {
+      if (!s) return null;
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim());
+      if (!m) return null;
+      const d = new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00`);
+      return isNaN(d.getTime()) ? null : d;
     }
-    return a;
-  }
 
-  // -------------------------
-  // CSV parser
-  // -------------------------
-  function fromCsv(text) {
-    const rows = [];
-    let i = 0, field = "", row = [], inQuotes = false;
-
-    function pushField() { row.push(field); field = ""; }
-    function pushRow() { rows.push(row); row = []; }
-
-    while (i < text.length) {
-      const c = text[i];
-      if (inQuotes) {
-        if (c === '"') {
-          if (text[i+1] === '"') { field += '"'; i += 2; continue; }
-          inQuotes = false; i++; continue;
-        } else { field += c; i++; continue; }
-      } else {
-        if (c === '"') { inQuotes = true; i++; continue; }
-        if (c === ',') { pushField(); i++; continue; }
-        if (c === '\n') { pushField(); pushRow(); i++; continue; }
-        if (c === '\r') { i++; continue; }
-        field += c; i++; continue;
+    function normalize(str, lenient=true) {
+      if (!str) return "";
+      let s = str.trim();
+      if (lenient) {
+        s = s.toLowerCase();
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       }
+      s = s.replace(/\s+/g, " ");
+      return s;
     }
-    pushField();
-    if (row.length > 1 || (row[0] ?? "").trim() !== "") pushRow();
-    if (rows.length === 0) return [];
 
-    const header = rows[0].map(h => (h ?? "").trim().toLowerCase());
-    const dataRows = rows.slice(1);
-    const ix = (name) => header.indexOf(name);
+    function parseTags(tags) {
+      return (tags || "")
+        .split(";")
+        .map(t => t.trim())
+        .filter(Boolean);
+    }
 
-    const idxMap = {
-      id: ix("id"),
-      added: ix("added"),
-      de: ix("de"),
-      foreign: ix("foreign"),
-      lang: ix("lang"),
-      tags: ix("tags"),
-      example: ix("example")
-    };
+    function shuffle(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
 
-    const out = [];
-    for (const r of dataRows) {
-      const get = (k) => {
-        const j = idxMap[k];
-        return j >= 0 ? ((r[j] ?? "").toString().trim()) : "";
+    // -------------------------
+    // CSV parser
+    // -------------------------
+    function fromCsv(text) {
+      const rows = [];
+      let i = 0, field = "", row = [], inQuotes = false;
+
+      function pushField() { row.push(field); field = ""; }
+      function pushRow() { rows.push(row); row = []; }
+
+      while (i < text.length) {
+        const c = text[i];
+        if (inQuotes) {
+          if (c === '"') {
+            if (text[i+1] === '"') { field += '"'; i += 2; continue; }
+            inQuotes = false; i++; continue;
+          } else { field += c; i++; continue; }
+        } else {
+          if (c === '"') { inQuotes = true; i++; continue; }
+          if (c === ',') { pushField(); i++; continue; }
+          if (c === '\n') { pushField(); pushRow(); i++; continue; }
+          if (c === '\r') { i++; continue; }
+          field += c; i++; continue;
+        }
+      }
+      pushField();
+      if (row.length > 1 || (row[0] ?? "").trim() !== "") pushRow();
+      if (rows.length === 0) return [];
+
+      const header = rows[0].map(h => (h ?? "").trim().toLowerCase());
+      const dataRows = rows.slice(1);
+      const ix = (name) => header.indexOf(name);
+
+      const idxMap = {
+        id: ix("id"),
+        added: ix("added"),
+        de: ix("de"),
+        foreign: ix("foreign"),
+        lang: ix("lang"),
+        tags: ix("tags"),
+        example: ix("example")
       };
 
-      const rawId = get("id");
-      out.push({
-        id: rawId ? rawId : "",
-        added: get("added"),
-        de: get("de"),
-        foreign: get("foreign"),
-        lang: (get("lang") || "EN").toUpperCase(),
-        tags: get("tags"),
-        example: get("example")
-      });
-    }
-    return out;
-  }
-
-  // -------------------------
-  // UI meta (langs + tags)
-  // -------------------------
-  function computeTagRecency() {
-    const map = new Map();
-    for (const v of vocab) {
-      const d = parseISODate(v.added) || new Date(0);
-      for (const t of parseTags(v.tags)) {
-        const prev = map.get(t);
-        if (!prev || d > prev) map.set(t, d);
-      }
-    }
-    return map;
-  }
-
-  function refreshMeta() {
-    const langs = [...new Set(vocab.map(v => (v.lang || "EN").toUpperCase()).filter(Boolean))]
-      .sort((a,b)=>a.localeCompare(b, "de"));
-
-    const langSel = $("langSelect");
-    const currentLang = langSel.value || "ALL";
-    langSel.innerHTML = "";
-
-    const optAll = document.createElement("option");
-    optAll.value = "ALL";
-    optAll.textContent = "Alle Sprachen";
-    langSel.appendChild(optAll);
-
-    langs.forEach(l => {
-      const o = document.createElement("option");
-      o.value = l;
-      o.textContent = l;
-      langSel.appendChild(o);
-    });
-
-    if ([...langSel.options].some(o => o.value === currentLang)) langSel.value = currentLang;
-
-    const tagLatest = computeTagRecency();
-    const allTags = [...tagLatest.keys()].sort((a,b) => {
-      const da = tagLatest.get(a) || new Date(0);
-      const db = tagLatest.get(b) || new Date(0);
-      if (db.getTime() !== da.getTime()) return db - da;
-      return a.localeCompare(b, "de");
-    });
-
-    const tagSel = $("tagSelect");
-    const selected = new Set([...tagSel.selectedOptions].map(o => o.value));
-    tagSel.innerHTML = "";
-
-    allTags.forEach(t => {
-      const o = document.createElement("option");
-      o.value = t;
-      const d = tagLatest.get(t);
-      const dStr = d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}` : "";
-      o.textContent = dStr ? `${t}  (${dStr})` : t;
-      if (selected.has(t)) o.selected = true;
-      tagSel.appendChild(o);
-    });
-  }
-
-  function getFilters() {
-    const lang = $("langSelect").value;
-    const selectedTags = [...$("tagSelect").selectedOptions].map(o => o.value);
-    return { lang, selectedTags };
-  }
-
-  function buildSession() {
-    const { lang, selectedTags } = getFilters();
-    const limitRaw = Number($("limitInput").value || 0);
-    const limit = Math.max(0, limitRaw);
-
-    let pool = vocab.slice();
-
-    if (lang !== "ALL") pool = pool.filter(v => (v.lang || "").toUpperCase() === lang);
-
-    if (selectedTags.length > 0) {
-      const set = new Set(selectedTags);
-      pool = pool.filter(v => parseTags(v.tags).some(t => set.has(t)));
-    }
-
-    pool = pool.filter(v => (v.de || "").trim() && (v.foreign || "").trim());
-    shuffle(pool);
-
-    session = (limit === 0) ? pool : pool.slice(0, Math.min(limit, pool.length));
-    idx = 0;
-    score = 0;
-    inSession = session.length > 0;
-
-    $("score").textContent = String(score);
-    $("progress").textContent = `${inSession ? 1 : 0}/${session.length}`;
-    $("activeCount").textContent = String(session.length);
-
-    return inSession;
-  }
-
-  function currentItem() { return session[idx]; }
-
-  function qText(item) {
-    const dir = currentDirForQuestion;
-    return dir === "DE_TO_FOREIGN" ? item.de : item.foreign;
-  }
-  function aText(item) {
-    const dir = currentDirForQuestion;
-    return dir === "DE_TO_FOREIGN" ? item.foreign : item.de;
-  }
-
-  // -------------------------
-  // Learn UI (example under solution)
-  // -------------------------
-  function renderExampleUnder(targetEl, item) {
-    const ex = (item.example || "").trim();
-    if (!ex) return;
-    const div = document.createElement("div");
-    div.className = "small muted";
-    div.style.marginTop = "6px";
-    div.textContent = `Beispiel: ${ex}`;
-    targetEl.appendChild(div);
-  }
-
-  function renderLearnInner(container) {
-    container.innerHTML = "";
-
-    if (!inSession) {
-      container.innerHTML = `<div class="small muted">Keine aktive Session. Tippe auf „Session starten“.</div>`;
-      return;
-    }
-
-    const item = currentItem();
-    const dirSetting = $("directionSelect").value;
-    currentDirForQuestion = (dirSetting === "BOTH")
-      ? (Math.random() < 0.5 ? "DE_TO_FOREIGN" : "FOREIGN_TO_DE")
-      : dirSetting;
-    const mode = $("modeSelect").value;
-
-    const head = document.createElement("div");
-    head.innerHTML = `
-      <div class="small muted">
-        Sprache: <span class="mono">${(item.lang||"").toUpperCase()}</span>
-        · Tags: <span class="mono">${item.tags||"-"}</span>
-        · Added: <span class="mono">${item.added||"-"}</span>
-      </div>
-      <div class="big">${qText(item)}</div>
-    `;
-    container.appendChild(head);
-
-    if (mode === "FLASH") {
-      const ans = document.createElement("div");
-      ans.className = "answer";
-      ans.innerHTML = `
-        <div class="small muted">Klicke „Aufdecken“, dann bewerte dich selbst.</div>
-        <button id="revealBtn">Aufdecken</button>
-        <div id="revealArea" style="margin-top:10px; display:none;"></div>
-        <div class="row" style="margin-top:10px;">
-          <button id="selfOkBtn" disabled class="primary">Richtig</button>
-          <button id="selfBadBtn" disabled>Falsch</button>
-        </div>
-      `;
-      container.appendChild(ans);
-
-      $("revealBtn").onclick = () => {
-        const revealArea = $("revealArea");
-        revealArea.style.display = "block";
-        revealArea.innerHTML = ""; // reset
-
-        const sol = document.createElement("div");
-        sol.className = "big";
-        sol.textContent = aText(item);
-        revealArea.appendChild(sol);
-
-        // Beispiel direkt UNTER der Lösung
-        renderExampleUnder(revealArea, item);
-
-        $("selfOkBtn").disabled = false;
-        $("selfBadBtn").disabled = false;
-      };
-      $("selfOkBtn").onclick = () => { score++; $("score").textContent = score; next(); };
-      $("selfBadBtn").onclick = () => { next(); };
-
-    } else if (mode === "MCQ") {
-      const allSameLang = vocab.filter(v => (v.lang||"").toUpperCase() === (item.lang||"").toUpperCase());
-      const correct = aText(item);
-
-      const distractors = shuffle(
-        allSameLang
-          .filter(v => v !== item)
-          .map(v => aText(v))
-          .filter(t => normalize(t, true) !== normalize(correct, true))
-      ).slice(0, 3);
-
-      const choices = shuffle([correct, ...distractors]);
-
-      const wrap = document.createElement("div");
-      wrap.className = "choices";
-
-      choices.forEach(ch => {
-        const b = document.createElement("button");
-        b.textContent = ch;
-        b.onclick = () => {
-          const ok = normalize(ch, true) === normalize(correct, true);
-          if (ok) { b.classList.add("ok"); score++; $("score").textContent = score; }
-          else { b.classList.add("bad"); }
-
-          [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
-
-          const reveal = document.createElement("div");
-          reveal.className = "small";
-          reveal.style.marginTop = "8px";
-
-          // Korrekte Lösung anzeigen + Beispiel DIREKT darunter
-          if (ok) {
-            reveal.innerHTML = `<span class="pill ok">✔ richtig</span>`;
-          } else {
-            reveal.innerHTML = `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
-          }
-          renderExampleUnder(reveal, item);
-
-          container.appendChild(reveal);
+      const out = [];
+      for (const r of dataRows) {
+        const get = (k) => {
+          const j = idxMap[k];
+          return j >= 0 ? ((r[j] ?? "").toString().trim()) : "";
         };
-        wrap.appendChild(b);
-      });
-      container.appendChild(wrap);
 
-      const hint = document.createElement("div");
-      hint.className = "small muted";
-      hint.textContent = "Danach auf „Nächste“ tippen.";
-      container.appendChild(hint);
-
-    } else if (mode === "TYPE") {
-      const lenient = $("lenientSelect").value === "ON";
-      const correct = aText(item);
-
-      const area = document.createElement("div");
-      area.className = "answer";
-      area.innerHTML = `
-        <label>
-          Deine Antwort
-          <input id="typeInput" style="width:100%; padding:10px; border-radius:12px; border:1px solid #e6e8ee;" placeholder="Antwort eintippen">
-        </label>
-        <div class="row">
-          <button id="checkBtn" class="primary">Prüfen</button>
-          <button id="showBtn">Lösung zeigen</button>
-        </div>
-        <div id="feedback" class="small" style="margin-top:8px;"></div>
-      `;
-      container.appendChild(area);
-
-      const renderSolutionWithExample = (html) => {
-        const fb = $("feedback");
-        fb.innerHTML = html;
-        // Beispiel direkt unter dem Feedback (wo auch die korrekte Lösung steht)
-        renderExampleUnder(fb, item);
-      };
-
-      $("checkBtn").onclick = () => {
-        const user = $("typeInput").value;
-        const ok = normalize(user, lenient) === normalize(correct, lenient);
-        if (ok) { score++; $("score").textContent = score; }
-
-        renderSolutionWithExample(
-          ok
-            ? `<span class="pill ok">✔ richtig</span>`
-            : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`
-        );
-      };
-
-      $("showBtn").onclick = () => {
-        renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
-      };
-
-      const hint = document.createElement("div");
-      hint.className = "small muted";
-      hint.textContent = "Danach auf „Nächste“ tippen.";
-      container.appendChild(hint);
+        out.push({
+          id: get("id"),
+          added: get("added"),
+          de: get("de"),
+          foreign: get("foreign"),
+          lang: (get("lang") || "EN").toUpperCase(),
+          tags: get("tags"),
+          example: get("example")
+        });
+      }
+      return out;
     }
-  }
 
-  function openOverlay() {
-    $("learnOverlay").classList.add("open");
-    $("learnOverlay").setAttribute("aria-hidden", "false");
-    document.body.classList.add("noscroll");
-    syncOverlayButtons();
-    renderLearnInner($("learnCardInner"));
-    $("learnOverlay").querySelector(".overlayPanel").scrollTop = 0;
-  }
+    // -------------------------
+    // UI meta (langs + tags)
+    // -------------------------
+    function computeTagRecency() {
+      const map = new Map();
+      for (const v of vocab) {
+        const d = parseISODate(v.added) || new Date(0);
+        for (const t of parseTags(v.tags)) {
+          const prev = map.get(t);
+          if (!prev || d > prev) map.set(t, d);
+        }
+      }
+      return map;
+    }
 
-  function closeOverlay() {
-    $("learnOverlay").classList.remove("open");
-    $("learnOverlay").setAttribute("aria-hidden", "true");
-    document.body.classList.remove("noscroll");
-  }
+    function refreshMeta() {
+      const langs = [...new Set(vocab.map(v => (v.lang || "EN").toUpperCase()).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b, "de"));
 
-  function syncOverlayButtons() {
-    const can = inSession;
-    $("nextBtn2").disabled = !can;
-    $("endBtn2").disabled = !can;
-  }
+      const langSel = $("langSelect");
+      const currentLang = langSel.value || "ALL";
+      langSel.innerHTML = "";
 
-  function next() {
-    if (!inSession) return;
-    if (idx < session.length - 1) {
-      idx++;
-      $("progress").textContent = `${idx+1}/${session.length}`;
+      const optAll = document.createElement("option");
+      optAll.value = "ALL";
+      optAll.textContent = "Alle Sprachen";
+      langSel.appendChild(optAll);
+
+      langs.forEach(l => {
+        const o = document.createElement("option");
+        o.value = l;
+        o.textContent = l;
+        langSel.appendChild(o);
+      });
+
+      if ([...langSel.options].some(o => o.value === currentLang)) langSel.value = currentLang;
+
+      const tagLatest = computeTagRecency();
+      const allTags = [...tagLatest.keys()].sort((a,b) => {
+        const da = tagLatest.get(a) || new Date(0);
+        const db = tagLatest.get(b) || new Date(0);
+        if (db.getTime() !== da.getTime()) return db - da;
+        return a.localeCompare(b, "de");
+      });
+
+      const tagSel = $("tagSelect");
+      const selected = new Set([...tagSel.selectedOptions].map(o => o.value));
+      tagSel.innerHTML = "";
+
+      allTags.forEach(t => {
+        const o = document.createElement("option");
+        o.value = t;
+        const d = tagLatest.get(t);
+        const dStr = d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}` : "";
+        o.textContent = dStr ? `${t}  (${dStr})` : t;
+        if (selected.has(t)) o.selected = true;
+        tagSel.appendChild(o);
+      });
+    }
+
+    function getFilters() {
+      const lang = $("langSelect").value;
+      const selectedTags = [...$("tagSelect").selectedOptions].map(o => o.value);
+      return { lang, selectedTags };
+    }
+
+    function buildSession() {
+      const { lang, selectedTags } = getFilters();
+      const limitRaw = Number($("limitInput").value || 0);
+      const limit = Math.max(0, limitRaw);
+
+      let pool = vocab.slice();
+
+      if (lang !== "ALL") pool = pool.filter(v => (v.lang || "").toUpperCase() === lang);
+
+      if (selectedTags.length > 0) {
+        const set = new Set(selectedTags);
+        pool = pool.filter(v => parseTags(v.tags).some(t => set.has(t)));
+      }
+
+      pool = pool.filter(v => (v.de || "").trim() && (v.foreign || "").trim());
+      shuffle(pool);
+
+      session = (limit === 0) ? pool : pool.slice(0, Math.min(limit, pool.length));
+      idx = 0;
+      score = 0;
+      inSession = session.length > 0;
+
+      $("score").textContent = String(score);
+      $("progress").textContent = `${inSession ? 1 : 0}/${session.length}`;
+      $("activeCount").textContent = String(session.length);
+
+      return inSession;
+    }
+
+    function currentItem() { return session[idx]; }
+
+    function qText(item) {
+      const dir = currentDirForQuestion;
+      return dir === "DE_TO_FOREIGN" ? item.de : item.foreign;
+    }
+    function aText(item) {
+      const dir = currentDirForQuestion;
+      return dir === "DE_TO_FOREIGN" ? item.foreign : item.de;
+    }
+
+    // -------------------------
+    // Learn UI
+    // -------------------------
+    function renderExampleUnder(targetEl, item) {
+      const ex = (item.example || "").trim();
+      if (!ex) return;
+      const div = document.createElement("div");
+      div.className = "small muted";
+      div.style.marginTop = "6px";
+      div.textContent = `Beispiel: ${ex}`;
+      targetEl.appendChild(div);
+    }
+
+    function renderLearnInner(container) {
+      container.innerHTML = "";
+
+      if (!inSession) {
+        container.innerHTML = `<div class="small muted">Keine aktive Session. Tippe auf „Session starten“.</div>`;
+        return;
+      }
+
+      const item = currentItem();
+      const dirSetting = $("directionSelect").value;
+      currentDirForQuestion = (dirSetting === "BOTH")
+        ? (Math.random() < 0.5 ? "DE_TO_FOREIGN" : "FOREIGN_TO_DE")
+        : dirSetting;
+      const mode = $("modeSelect").value;
+
+      const head = document.createElement("div");
+      head.innerHTML = `
+        <div class="small muted" style="margin-bottom:8px;">
+          Sprache: <span class="mono">${(item.lang||"").toUpperCase()}</span>
+          · Tags: <span class="mono">${item.tags||"-"}</span>
+          · Added: <span class="mono">${item.added||"-"}</span>
+        </div>
+        <div class="big">${qText(item)}</div>
+      `;
+      container.appendChild(head);
+
+      if (mode === "FLASH") {
+        const ans = document.createElement("div");
+        ans.className = "answer";
+        ans.innerHTML = `
+          <div class="small muted">Klicke „Aufdecken“, dann bewerte dich selbst.</div>
+          <div class="row" style="margin-top:10px;">
+            <button id="revealBtn">Aufdecken</button>
+            <span class="right"></span>
+          </div>
+          <div id="revealArea" style="margin-top:10px; display:none;"></div>
+          <div class="row" style="margin-top:10px;">
+            <button id="selfOkBtn" disabled class="btnPrimary" style="width:auto; padding:10px 12px;">Richtig</button>
+            <button id="selfBadBtn" disabled>Falsch</button>
+          </div>
+        `;
+        container.appendChild(ans);
+
+        $("revealBtn").onclick = () => {
+          const revealArea = $("revealArea");
+          revealArea.style.display = "block";
+          revealArea.innerHTML = "";
+
+          const sol = document.createElement("div");
+          sol.className = "big";
+          sol.textContent = aText(item);
+          revealArea.appendChild(sol);
+
+          renderExampleUnder(revealArea, item);
+
+          $("selfOkBtn").disabled = false;
+          $("selfBadBtn").disabled = false;
+        };
+        $("selfOkBtn").onclick = () => { score++; $("score").textContent = score; next(); };
+        $("selfBadBtn").onclick = () => { next(); };
+
+      } else if (mode === "MCQ") {
+        const allSameLang = vocab.filter(v => (v.lang||"").toUpperCase() === (item.lang||"").toUpperCase());
+        const correct = aText(item);
+
+        const distractors = shuffle(
+          allSameLang
+            .filter(v => v !== item)
+            .map(v => aText(v))
+            .filter(t => normalize(t, true) !== normalize(correct, true))
+        ).slice(0, 3);
+
+        const choices = shuffle([correct, ...distractors]);
+
+        const wrap = document.createElement("div");
+        wrap.className = "choices";
+
+        choices.forEach(ch => {
+          const b = document.createElement("button");
+          b.textContent = ch;
+          b.onclick = () => {
+            const ok = normalize(ch, true) === normalize(correct, true);
+            if (ok) { b.classList.add("ok"); score++; $("score").textContent = score; }
+            else { b.classList.add("bad"); }
+
+            [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
+
+            const reveal = document.createElement("div");
+            reveal.className = "small";
+            reveal.style.marginTop = "10px";
+
+            if (ok) reveal.innerHTML = `<span class="pill ok">✔ richtig</span>`;
+            else reveal.innerHTML = `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`;
+
+            renderExampleUnder(reveal, item);
+            container.appendChild(reveal);
+          };
+          wrap.appendChild(b);
+        });
+        container.appendChild(wrap);
+
+        const hint = document.createElement("div");
+        hint.className = "small muted";
+        hint.style.marginTop = "8px";
+        hint.textContent = "Danach auf „Nächste“ tippen.";
+        container.appendChild(hint);
+
+      } else if (mode === "TYPE") {
+        const lenient = $("lenientSelect").value === "ON";
+        const correct = aText(item);
+
+        const area = document.createElement("div");
+        area.className = "answer";
+        area.innerHTML = `
+          <label>
+            Deine Antwort
+            <input id="typeInput" placeholder="Antwort eintippen">
+          </label>
+          <div class="row">
+            <button id="checkBtn" class="btnPrimary" style="width:auto; padding:10px 12px;">Prüfen</button>
+            <button id="showBtn">Lösung zeigen</button>
+          </div>
+          <div id="feedback" class="small" style="margin-top:10px;"></div>
+        `;
+        container.appendChild(area);
+
+        const renderSolutionWithExample = (html) => {
+          const fb = $("feedback");
+          fb.innerHTML = html;
+          renderExampleUnder(fb, item);
+        };
+
+        $("checkBtn").onclick = () => {
+          const user = $("typeInput").value;
+          const ok = normalize(user, lenient) === normalize(correct, lenient);
+          if (ok) { score++; $("score").textContent = score; }
+          renderSolutionWithExample(
+            ok
+              ? `<span class="pill ok">✔ richtig</span>`
+              : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`
+          );
+        };
+
+        $("showBtn").onclick = () => {
+          renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
+        };
+
+        const hint = document.createElement("div");
+        hint.className = "small muted";
+        hint.style.marginTop = "8px";
+        hint.textContent = "Danach auf „Nächste“ tippen.";
+        container.appendChild(hint);
+      }
+    }
+
+    function openOverlay() {
+      $("learnOverlay").classList.add("open");
+      $("learnOverlay").setAttribute("aria-hidden", "false");
+      document.body.classList.add("noscroll");
+      syncOverlayButtons();
       renderLearnInner($("learnCardInner"));
-    } else {
+      $("learnOverlay").querySelector(".overlayPanel").scrollTop = 0;
+    }
+
+    function closeOverlay() {
+      $("learnOverlay").classList.remove("open");
+      $("learnOverlay").setAttribute("aria-hidden", "true");
+      document.body.classList.remove("noscroll");
+    }
+
+    function syncOverlayButtons() {
+      const can = inSession;
+      $("nextBtn2").disabled = !can;
+      $("endBtn2").disabled = !can;
+    }
+
+    function next() {
+      if (!inSession) return;
+      if (idx < session.length - 1) {
+        idx++;
+        $("progress").textContent = `${idx+1}/${session.length}`;
+        renderLearnInner($("learnCardInner"));
+      } else {
+        inSession = false;
+        renderLearnInner($("learnCardInner"));
+        syncOverlayButtons();
+        status("Session fertig");
+        $("progress").textContent = `${session.length}/${session.length}`;
+      }
+    }
+
+    function endSession() {
       inSession = false;
+      session = [];
+      idx = 0;
       renderLearnInner($("learnCardInner"));
       syncOverlayButtons();
-      status("Session fertig");
-      $("progress").textContent = `${session.length}/${session.length}`;
-    }
-  }
-
-  function endSession() {
-    inSession = false;
-    session = [];
-    idx = 0;
-    renderLearnInner($("learnCardInner"));
-    syncOverlayButtons();
-    $("progress").textContent = `0/0`;
-    $("activeCount").textContent = "0";
-    status("Session beendet");
-  }
-
-  // -------------------------
-  // Tag quick select
-  // -------------------------
-  function selectTagsByRecency(days) {
-    const tagLatest = computeTagRecency();
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - days);
-
-    const tagSel = $("tagSelect");
-    [...tagSel.options].forEach(o => {
-      const d = tagLatest.get(o.value) || new Date(0);
-      o.selected = d >= cutoff;
-    });
-  }
-
-  // -------------------------
-  // Bottom cards: CSV table + upload history
-  // -------------------------
-  function renderCsvTable() {
-    const tb = $("csvTable").querySelector("tbody");
-    tb.innerHTML = "";
-  
-    const rows = vocab.slice().sort((a, b) => {
-      const ia = Number(a.id);
-      const ib = Number(b.id);
-  
-      // Numerisch absteigend sortieren
-      if (!Number.isNaN(ia) && !Number.isNaN(ib)) {
-        return ib - ia;
-      }
-  
-      // Fallback, falls id kein sauberer Zahlenwert ist
-      return String(b.id || "").localeCompare(String(a.id || ""));
-    });
-  
-    for (const it of rows) {
-      const tr = document.createElement("tr");
-      const cells = [
-        it.id,
-        it.added,
-        it.de,
-        it.foreign,
-        it.lang,
-        it.tags,
-        it.example
-      ];
-
-      for (const c of cells) {
-        const td = document.createElement("td");
-        td.textContent = (c ?? "").toString();
-        tr.appendChild(td);
-      }
-
-      tb.appendChild(tr);
+      $("progress").textContent = `0/0`;
+      $("activeCount").textContent = "0";
+      status("Session beendet");
     }
 
-    $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
-  }
+    // -------------------------
+    // Tag quick select
+    // -------------------------
+    function selectTagsByRecency(days) {
+      const tagLatest = computeTagRecency();
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - days);
 
-  // -------------------------
-  // Wiring
-  // -------------------------
-  $("closeOverlayBtn").addEventListener("click", closeOverlay);
-  $("nextBtn2").addEventListener("click", next);
-  $("endBtn2").addEventListener("click", endSession);
+      const tagSel = $("tagSelect");
+      [...tagSel.options].forEach(o => {
+        const d = tagLatest.get(o.value) || new Date(0);
+        o.selected = d >= cutoff;
+      });
+    }
 
-  $("selectAllTagsBtn").addEventListener("click", () => {
-    [...$("tagSelect").options].forEach(o => o.selected = true);
-  });
-  $("clearTagsBtn").addEventListener("click", () => {
-    [...$("tagSelect").options].forEach(o => o.selected = false);
-  });
-  $("tags30Btn").addEventListener("click", () => selectTagsByRecency(30));
-  $("tags90Btn").addEventListener("click", () => selectTagsByRecency(90));
+    // -------------------------
+    // CSV table view
+    // -------------------------
+    function renderCsvTable() {
+      const tb = $("csvTable").querySelector("tbody");
+      tb.innerHTML = "";
 
-  $("startBtn").addEventListener("click", () => {
-    if (vocab.length === 0) return alert("Keine Vokabeln vorhanden.");
-    const ok = buildSession();
-    if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
-    inSession = true;
-    syncOverlayButtons();
-    $("progress").textContent = `1/${session.length}`;
-    status("Session läuft");
-    openOverlay();
-  });
+      const rows = vocab.slice().sort((a, b) => {
+        const ia = Number(a.id);
+        const ib = Number(b.id);
+        if (!Number.isNaN(ia) && !Number.isNaN(ib)) return ib - ia;
+        return String(b.id || "").localeCompare(String(a.id || ""));
+      });
 
-  ["langSelect","tagSelect","directionSelect","modeSelect","limitInput","lenientSelect"].forEach(id => {
-    $(id).addEventListener("change", () => {
-      if (inSession) status("Session läuft (Filter ändern wirkt erst bei neuer Session)");
-      else status("bereit");
-    });
-  });
+      for (const it of rows) {
+        const tr = document.createElement("tr");
+        const cells = [it.id, it.added, it.de, it.foreign, it.lang, it.tags, it.example];
 
-  // -------------------------
-  // INIT: fetch CSV and enable UI
-  // -------------------------
-  async function init() {
-    $("csvLabel").textContent = CSV_URL;
-    $("activeCount").textContent = "0";
-    $("progress").textContent = "0/0";
-    $("score").textContent = "0";
-    $("startBtn").disabled = true;
+        for (const c of cells) {
+          const td = document.createElement("td");
+          td.textContent = (c ?? "").toString();
+          tr.appendChild(td);
+        }
+        tb.appendChild(tr);
+      }
 
-    ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = true);
-
-    try {
-      status("lade CSV…");
-      const r = await fetch(CSV_URL, { cache: "no-store" });
-      if (!r.ok) throw new Error("CSV not found");
-      const text = await r.text();
-      const items = fromCsv(text);
-
-      vocab = items
-        .filter(it => (it.de || it.foreign) && (it.lang || "").trim())
-        .map(it => ({
-          id: (it.id || "").toString().trim(),
-          added: (it.added || "").trim(),
-          de: (it.de || "").trim(),
-          foreign: (it.foreign || "").trim(),
-          lang: (it.lang || "EN").toUpperCase().trim(),
-          tags: (it.tags || "").trim(),
-          example: (it.example || "").trim()
-        }))
-        .filter(it => it.de && it.foreign);
-
-      refreshMeta();
-      renderCsvTable();
-      
       $("csvCountLabel").textContent = `${vocab.length} Zeilen`;
-
-      $("startBtn").disabled = vocab.length === 0;
-      ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = vocab.length === 0);
-
-      status(vocab.length ? "bereit" : "CSV leer");
-    } catch (e) {
-      vocab = [];
-      refreshMeta();
-      renderCsvTable();
-      status(`Keine CSV gefunden: ${CSV_URL}`);
-      $("startBtn").disabled = true;
     }
-  }
 
-  init();
-</script>
+    // -------------------------
+    // Home tiles
+    // -------------------------
+    function updateHomeCounts() {
+      $("statTotal").textContent = String(vocab.length);
+
+      // Platzhalter: wenn du später echtes Tracking willst, können wir das auf localStorage umbauen
+      $("statLearned").textContent = "0";
+      $("statPracticed").textContent = "0";
+
+      const enCount = vocab.filter(v => (v.lang||"").toUpperCase() === "EN").length;
+      $("countEnDe").textContent = String(enCount);
+      $("countDeEn").textContent = String(enCount);
+
+      const langSel = $("langSelect");
+      const shown = langSel && langSel.value ? langSel.value : "ALL";
+      $("homeLangLabel").textContent = shown === "ALL" ? "Sprache: Alle" : `Sprache: ${shown}`;
+    }
+
+    // -------------------------
+    // Wiring
+    // -------------------------
+    $("closeOverlayBtn").addEventListener("click", closeOverlay);
+    $("nextBtn2").addEventListener("click", next);
+    $("endBtn2").addEventListener("click", endSession);
+
+    $("selectAllTagsBtn").addEventListener("click", () => {
+      [...$("tagSelect").options].forEach(o => o.selected = true);
+    });
+    $("clearTagsBtn").addEventListener("click", () => {
+      [...$("tagSelect").options].forEach(o => o.selected = false);
+    });
+    $("tags30Btn").addEventListener("click", () => selectTagsByRecency(30));
+    $("tags90Btn").addEventListener("click", () => selectTagsByRecency(90));
+
+    $("startBtn").addEventListener("click", () => {
+      if (vocab.length === 0) return alert("Keine Vokabeln vorhanden.");
+      const ok = buildSession();
+      if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
+      inSession = true;
+      syncOverlayButtons();
+      $("progress").textContent = `1/${session.length}`;
+      status("Session läuft");
+      openOverlay();
+    });
+
+    // Home tiles -> setzen Modus/Richtung und starten
+    $("openFlash").addEventListener("click", () => {
+      $("modeSelect").value = "FLASH";
+      $("directionSelect").value = "BOTH";
+      $("startBtn").click();
+    });
+    $("openEnDe").addEventListener("click", () => {
+      $("directionSelect").value = "FOREIGN_TO_DE";
+      $("startBtn").click();
+    });
+    $("openDeEn").addEventListener("click", () => {
+      $("directionSelect").value = "DE_TO_FOREIGN";
+      $("startBtn").click();
+    });
+    $("openLibrary").addEventListener("click", () => {
+      $("csvDetails").open = true;
+      $("csvDetails").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    ["langSelect","tagSelect","directionSelect","modeSelect","limitInput","lenientSelect"].forEach(id => {
+      $(id).addEventListener("change", () => {
+        if (inSession) status("Session läuft (Filter ändern wirkt erst bei neuer Session)");
+        else status("bereit");
+        updateHomeCounts();
+      });
+    });
+
+    // -------------------------
+    // INIT
+    // -------------------------
+    async function init() {
+      $("csvLabel").textContent = CSV_URL;
+      $("activeCount").textContent = "0";
+      $("progress").textContent = "0/0";
+      $("score").textContent = "0";
+      $("startBtn").disabled = true;
+
+      ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = true);
+
+      try {
+        status("lade CSV…");
+        const r = await fetch(CSV_URL, { cache: "no-store" });
+        if (!r.ok) throw new Error("CSV not found");
+        const text = await r.text();
+        const items = fromCsv(text);
+
+        vocab = items
+          .filter(it => (it.de || it.foreign) && (it.lang || "").trim())
+          .map(it => ({
+            id: (it.id || "").toString().trim(),
+            added: (it.added || "").trim(),
+            de: (it.de || "").trim(),
+            foreign: (it.foreign || "").trim(),
+            lang: (it.lang || "EN").toUpperCase().trim(),
+            tags: (it.tags || "").trim(),
+            example: (it.example || "").trim()
+          }))
+          .filter(it => it.de && it.foreign);
+
+        refreshMeta();
+        renderCsvTable();
+
+        $("startBtn").disabled = vocab.length === 0;
+        ["tags30Btn","tags90Btn","selectAllTagsBtn","clearTagsBtn"].forEach(id => $(id).disabled = vocab.length === 0);
+
+        updateHomeCounts();
+        status(vocab.length ? "bereit" : "CSV leer");
+      } catch (e) {
+        vocab = [];
+        refreshMeta();
+        renderCsvTable();
+        updateHomeCounts();
+        status(`Keine CSV gefunden: ${CSV_URL}`);
+        $("startBtn").disabled = true;
+      }
+    }
+
+    init();
+  </script>
+
 </body>
 </html>
