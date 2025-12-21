@@ -744,7 +744,9 @@
       }
 
       const item = currentItem();
-
+        
+      $("nextBtn2").disabled = true;
+        
       // direction logic per question
       currentDirForQuestion = (direction === "BOTH")
         ? (Math.random() < 0.5 ? "DE_TO_FOREIGN" : "FOREIGN_TO_DE")
