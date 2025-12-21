@@ -862,25 +862,43 @@
         `;
         container.appendChild(area);
 
+        let typeAnswered = false;
+
+        const markAnswered = () => {
+          typeAnswered = true;
+          $("checkBtn").disabled = true;
+          $("typeInput").disabled = true;
+          $("nextBtn2").disabled = false;
+        };
+        
         const renderSolutionWithExample = (html) => {
           const fb = $("feedback");
           fb.innerHTML = html;
           renderExampleUnder(fb, item);
         };
-
+        
         $("checkBtn").onclick = () => {
+          if (typeAnswered) return;
+        
           const user = $("typeInput").value;
           const ok = normalize(user, lenient) === normalize(correct, lenient);
-          if (ok) { score++; }
+        
+          if (ok) score++;
+        
           renderSolutionWithExample(
             ok
               ? `<span class="pill ok">✔ richtig</span>`
               : `<span class="pill bad">✘ falsch</span> <span class="mono">Richtig: ${correct}</span>`
           );
+        
+          markAnswered();
         };
-
+        
         $("showBtn").onclick = () => {
+          if (typeAnswered) return;
+        
           renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
+          markAnswered();
         };
 
         const hint = document.createElement("div");
@@ -907,9 +925,7 @@
     }
 
     function syncOverlayButtons() {
-      const can = inSession;
-      $("nextBtn2").disabled = !can;
-      $("endBtn2").disabled = !can;
+      $("endBtn2").disabled = !inSession;
     }
 
     function next() {
