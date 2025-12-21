@@ -834,6 +834,8 @@
 
             renderExampleUnder(reveal, item);
             container.appendChild(reveal);
+              
+            $("nextBtn2").disabled = false;
           };
           wrap.appendChild(b);
         });
@@ -863,7 +865,8 @@
           <div id="feedback" class="small" style="margin-top:10px;"></div>
         `;
         container.appendChild(area);
-
+        $("typeInput").focus();
+          
         let typeAnswered = false;
 
         const markAnswered = () => {
