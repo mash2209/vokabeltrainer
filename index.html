@@ -823,16 +823,13 @@
     
       const m = (mode || "FLASH").toUpperCase();
     
-      // 1) Delta je Modus
       let delta = 0;
       if (m === "MCQ")  delta = isCorrect ? 0.5 : -0.25;
       if (m === "TYPE") delta = isCorrect ? 2.0 : -1.0;
       if (m === "FLASH") delta = isCorrect ? 1.0 : -0.5;
     
-      // 2) Score aktualisieren + clamp
       s.score = clampScore((s.score || 0) + delta);
     
-      // 3) Zähler aktualisieren
       s.seen = (s.seen || 0) + 1;
       if (isCorrect) s.correct = (s.correct || 0) + 1;
       else s.wrong = (s.wrong || 0) + 1;
@@ -844,15 +841,19 @@
       if (isCorrect) s.byMode[m].correct = (s.byMode[m].correct || 0) + 1;
       else s.byMode[m].wrong = (s.byMode[m].wrong || 0) + 1;
     
-      // 4) lastSeenAt setzen + decayStage resetten
       s.lastSeenAt = Date.now();
       s.decayStage = 0;
     
-      // 5) speichern
       if (APP_STATE) saveRootState(APP_STATE);
     }
 
-    // UI state
+    function getCategoryFromScore(score) {
+      const s = Number(score) || 0;
+      if (s < 3) return 1;
+      if (s < 8) return 2;
+      return 3;
+    }
+    
     let selectedLang = "ALL";
     let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
@@ -860,7 +861,6 @@
     let lenient = false;
     let selectedTags = new Set();
 
-    // Session state
     let session = [];
     let idx = 0;
     let score = 0;
@@ -1011,7 +1011,23 @@
 
       pool = pool.filter(v => (v.de || "").trim() && (v.foreign || "").trim());
       shuffle(pool);
-
+    
+      const catCounts = { 1: 0, 2: 0, 3: 0 };
+    
+      for (const it of pool) {
+        const st = getVocabStateForId(it.id);
+        const sc = st ? st.score : 0;
+        const cat = getCategoryFromScore(sc);
+        catCounts[cat] = (catCounts[cat] || 0) + 1;
+      }
+    
+      console.log("[Session pool categories]", {
+        total: pool.length,
+        cat1: catCounts[1],
+        cat2: catCounts[2],
+        cat3: catCounts[3]
+      });
+        
       session = (limitN === 0) ? pool : pool.slice(0, Math.min(limitN, pool.length));
       idx = 0;
       score = 0;
