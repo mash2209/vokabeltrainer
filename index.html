@@ -546,14 +546,19 @@
     </div>
   </section>
 
-  <!-- Card 3: Platzhalter für "Vokabeln lernen" (kommt später) -->
-  <section class="card">
-    <div class="sectionLbl">
-      <span class="mini">📚</span>
-      <span>Vokabeln lernen</span>
+  <!-- Card 3: Vokabeln lernen (Startseite) -->
+  <section class="card" id="learnCard">
+    <button class="btnPrimary btnLearn" disabled id="learnStartBtn">Vokabeln lernen</button>
+
+    <div class="sectionLbl" style="margin-top:12px;">
+      <span class="mini">🏷</span>
+      <span>Zuletzt gelernt</span>
     </div>
-    <div class="small" style="margin-top:6px;">
-      (kommt im nächsten Schritt)
+
+    <div id="recentLearnTags" class="learnPills" style="margin-top:8px;"></div>
+
+    <div class="small" style="margin-top:10px;">
+      Tipp: Klicke eine Unit/Tag an, um direkt zur Lerntabelle zu springen.
     </div>
   </section>
 
