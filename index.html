@@ -815,8 +815,6 @@
       return APP_STATE.vocabById[id];
     }
     
-    // mode: "MCQ" | "TYPE" | "FLASH"
-    // isCorrect: boolean
     function applyAnswerScore(id, mode, isCorrect) {
       const s = getVocabStateForId(id);
       if (!s) return;
@@ -846,7 +844,52 @@
     
       if (APP_STATE) saveRootState(APP_STATE);
     }
-
+    
+    const DAY = 24 * 60 * 60 * 1000;
+    
+    function applyDecayIfNeededForId(id) {
+      const s = getVocabStateForId(id);
+      if (!s) return;
+    
+      const now = Date.now();
+      const last = Number(s.lastSeenAt || 0);
+    
+      if (!last || last <= 0) return;
+    
+      const age = now - last;
+    
+      if (age >= 90 * DAY) {
+        if ((s.score || 0) !== 0 || (s.decayStage || 0) !== 4) {
+          s.score = 0;
+          s.decayStage = 4;
+          saveRootState(APP_STATE);
+        }
+        return;
+      }
+    
+      let stage = Number(s.decayStage || 0);
+    
+      if (age >= 42 * DAY && stage < 3) {
+        s.score = clampScore((s.score || 0) - 0.75);
+        stage = 3;
+      }
+    
+      if (age >= 21 * DAY && stage < 2) {
+        s.score = clampScore((s.score || 0) - 0.5);
+        stage = 2;
+      }
+    
+      if (age >= 7 * DAY && stage < 1) {
+        s.score = clampScore((s.score || 0) - 0.25);
+        stage = 1;
+      }
+    
+      if (stage !== (s.decayStage || 0)) {
+        s.decayStage = stage;
+        saveRootState(APP_STATE);
+      }
+    }
+    
     function getCategoryFromScore(score) {
       const s = Number(score) || 0;
       if (s <= 1.5) return 1;
