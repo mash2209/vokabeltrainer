@@ -1165,9 +1165,6 @@
       modalOnOk = null;
     }
 
-            $("modalCancelBtn").addEventListener("click", () => closeModal("cancel"));
-            $("modalGoBtn").addEventListener("click", () => closeModal("ok"));
-
     // -------------------------
     // Option modals
     // -------------------------
@@ -1584,6 +1581,10 @@
       openOverlay();
     });
 
+    $("modal").addEventListener("click", (e) => {
+      if (e.target === $("modal")) closeModal("cancel");
+    });
+    
     // Open modals
     $("pickLang").addEventListener("click", openLangModal);
     $("pickDirection").addEventListener("click", openDirectionModal);
@@ -1592,6 +1593,8 @@
     $("pickLenient").addEventListener("click", openLenientModal);
     $("pickTags").addEventListener("click", openTagsModal);
     $("learnStartBtn").addEventListener("click", openLearnModal);
+    $("modalCancelBtn").addEventListener("click", () => closeModal("cancel"));
+    $("modalGoBtn").addEventListener("click", () => closeModal("ok"));
 
     // -------------------------
     // INIT
