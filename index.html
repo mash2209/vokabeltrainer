@@ -473,86 +473,108 @@
 </div>
 </div>
 <main>
-<section class="card">
-<div class="appTitle">
-  <span>Vokabeltrainer</span>
-  <span class="spark sparkBot">✦</span>
-  <span class="spark sparkMid">✦</span>
-  <span class="spark sparkTop">✦</span>
-</div>
-<button class="btnPrimary" disabled="" id="startBtn">Session starten</button>
-<div class="stack" style="margin-top:12px;">
+  <!-- Card 1: Nur Überschrift -->
+  <section class="card">
+    <div class="appTitle">
+      <span>Vokabeltrainer</span>
+      <span class="spark sparkBot">✦</span>
+      <span class="spark sparkMid">✦</span>
+      <span class="spark sparkTop">✦</span>
+    </div>
+  </section>
 
-<!-- Optionen direkt sichtbar, öffnen Modals -->
-<div class="item" id="pickLang">
-<div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">🌐</div>
-<div class="txt">
-<strong>Sprache</strong>
-<span id="labelLang">—</span>
-</div>
-<div class="chev">›</div>
-</div>
-<div class="item" id="pickDirection">
-<div class="ic" style="background: rgba(37,99,235,.12); color:#2563eb;">⇄</div>
-<div class="txt">
-<strong>Richtung</strong>
-<span id="labelDirection">—</span>
-</div>
-<div class="chev">›</div>
-</div>
-<div class="item" id="pickMode">
-<div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🧩</div>
-<div class="txt">
-<strong>Modus</strong>
-<span id="labelMode">—</span>
-</div>
-<div class="chev">›</div>
-</div>
-<div class="item" id="pickLimit">
-<div class="ic" style="background: rgba(245,158,11,.14); color:#b45309;">#</div>
-<div class="txt">
-<strong>Anzahl Fragen</strong>
-<span id="labelLimit">—</span>
-</div>
-<div class="chev">›</div>
-</div>
-<div class="item" id="pickLenient">
-<div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">Aa</div>
-<div class="txt">
-<strong>Akzente & Groß/klein ignorieren</strong>
-<span id="labelLenient">—</span>
-</div>
-<div class="chev">›</div>
-</div>
-<div class="item" id="pickTags">
-<div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🏷</div>
-<div class="txt">
-<strong>Units/Tags</strong>
-<span id="labelTags">—</span>
-</div>
-<div class="chev">›</div>
-</div>
+  <!-- Card 2: Session (wie bisher, nur ohne Überschrift) -->
+  <section class="card">
+    <button class="btnPrimary" disabled="" id="startBtn">Session starten</button>
 
-<div class="small">CSV: <span class="mono" id="csvLabel"></span></div>
-</div>
-</section>
-<!-- CSV -->
-<section class="card">
-<details class="csvBlock" id="csvDetails">
-<summary>
-<span>Vokabeltabelle anzeigen</span>
-<span class="right small" id="csvCountLabel"></span>
-</summary>
-<div class="vocabSearchRow">
-  <input id="vocabSearch" class="vocabSearch" type="search" placeholder="Vokabel suchen (Fremdsprache oder Deutsch) …">
-</div>
-
-<div id="vocabList" class="vocabList"></div>
-<div class="small" style="margin-top:8px;">
-          Read-only Anzeige der CSV-Daten
+    <div class="stack" style="margin-top:12px;">
+      <div class="item" id="pickLang">
+        <div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">🌐</div>
+        <div class="txt">
+          <strong>Sprache</strong>
+          <span id="labelLang">—</span>
         </div>
-</details>
-</section>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="item" id="pickDirection">
+        <div class="ic" style="background: rgba(37,99,235,.12); color:#2563eb;">⇄</div>
+        <div class="txt">
+          <strong>Richtung</strong>
+          <span id="labelDirection">—</span>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="item" id="pickMode">
+        <div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🧩</div>
+        <div class="txt">
+          <strong>Modus</strong>
+          <span id="labelMode">—</span>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="item" id="pickLimit">
+        <div class="ic" style="background: rgba(245,158,11,.14); color:#b45309;">#</div>
+        <div class="txt">
+          <strong>Anzahl Fragen</strong>
+          <span id="labelLimit">—</span>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="item" id="pickLenient">
+        <div class="ic" style="background: rgba(15,23,42,.06); color:#0f172a;">Aa</div>
+        <div class="txt">
+          <strong>Akzente & Groß/klein ignorieren</strong>
+          <span id="labelLenient">—</span>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="item" id="pickTags">
+        <div class="ic" style="background: rgba(124,58,237,.12); color:#7c3aed;">🏷</div>
+        <div class="txt">
+          <strong>Units/Tags</strong>
+          <span id="labelTags">—</span>
+        </div>
+        <div class="chev">›</div>
+      </div>
+
+      <div class="small">CSV: <span class="mono" id="csvLabel"></span></div>
+    </div>
+  </section>
+
+  <!-- Card 3: Platzhalter für "Vokabeln lernen" (kommt später) -->
+  <section class="card">
+    <div class="sectionLbl">
+      <span class="mini">📚</span>
+      <span>Vokabeln lernen</span>
+    </div>
+    <div class="small" style="margin-top:6px;">
+      (kommt im nächsten Schritt)
+    </div>
+  </section>
+
+  <!-- Card 4: CSV bleibt -->
+  <section class="card">
+    <details class="csvBlock" id="csvDetails">
+      <summary>
+        <span>Vokabeltabelle anzeigen</span>
+        <span class="right small" id="csvCountLabel"></span>
+      </summary>
+
+      <div class="vocabSearchRow">
+        <input id="vocabSearch" class="vocabSearch" type="search" placeholder="Vokabel suchen (Fremdsprache oder Deutsch) …">
+      </div>
+
+      <div id="vocabList" class="vocabList"></div>
+      <div class="small" style="margin-top:8px;">
+        Read-only Anzeige der CSV-Daten
+      </div>
+    </details>
+  </section>
 </main>
 <script>
     function getListKey() {
