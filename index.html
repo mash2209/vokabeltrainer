@@ -1648,10 +1648,6 @@
         parseTags(v.tags).some(t => tags.has(t))
       );
     
-      pool.sort((a,b) =>
-        (a.foreign || "").localeCompare((b.foreign || ""), "de", { sensitivity: "base" })
-      );
-    
       openModal(
         "Lerntabelle (Fremdsprache → Deutsch)",
         (body) => {
