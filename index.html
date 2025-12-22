@@ -497,7 +497,15 @@
       color: rgba(15,23,42,.75);
       overflow-wrap: anywhere;
     }
-    
+
+    .learnRow .ex{
+      grid-column: 1 / -1;   /* über beide Spalten */
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(15,23,42,.6);
+      overflow-wrap: anywhere;
+    }
+
     .learnRow .meta{
       margin-top: 6px;
       font-size: 11px;
@@ -1697,15 +1705,14 @@
             d.className = "d";
             d.textContent = it.de || "—";
     
-            const meta = document.createElement("div");
-            meta.className = "meta";
-            meta.innerHTML =
-              `<span class="mono">${(it.lang || "").toUpperCase()}</span>` +
-              `<span class="mono">${it.added || "-"}</span>`;
-    
+            const ex = document.createElement("div");
+            ex.className = "ex";
+            const example = (it.example || "").trim();
+            ex.textContent = example ? example : ""; // wenn leer: einfach nichts
+            
             row.appendChild(f);
             row.appendChild(d);
-            row.appendChild(meta);
+            if (example) row.appendChild(ex);
     
             list.appendChild(row);
           }
