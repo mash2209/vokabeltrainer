@@ -523,7 +523,6 @@
 <div class="overlayPanel">
 <div class="row" style="margin-bottom: 10px;">
 <strong>Lernen</strong>
-<button id="closeOverlayBtn">Zurück</button>
 <button disabled="" id="nextBtn2">Nächste</button>
 <button class="danger" disabled="" id="endBtn2">Beenden</button>
 </div>
@@ -867,7 +866,8 @@
 
       const item = currentItem();
         
-      $("nextBtn2").disabled = true;
+      const nextBtn = $("nextBtn2");
+      if (nextBtn) nextBtn.disabled = true;
         
       // direction logic per question
       currentDirForQuestion = (direction === "BOTH")
@@ -1052,19 +1052,24 @@
     }
 
     function syncOverlayButtons() {
+      const isFlash = (mode === "FLASH");
+    
       $("endBtn2").disabled = !inSession;
+    
+      $("nextBtn2").style.display = isFlash ? "none" : "";
     }
 
     function next() {
       if (!inSession) return;
+    
       if (idx < session.length - 1) {
         idx++;
-        renderLearnInner($("learnCardInner"));
       } else {
         inSession = false;
-        renderLearnInner($("learnCardInner"));
-        syncOverlayButtons();
-        }
+      }
+    
+      syncOverlayButtons();
+      renderLearnInner($("learnCardInner"));
     }
 
     function endSession() {
@@ -1073,6 +1078,7 @@
       idx = 0;
       renderLearnInner($("learnCardInner"));
       syncOverlayButtons();
+      closeOverlay();
     }
 
     // -------------------------
@@ -1322,7 +1328,7 @@
           note.textContent = "Filter wirkt bei neuer Session.";
           body.appendChild(note);
         },
-        () => { mode = temp; updateLabels(); }
+        () => { mode = temp; updateLabels(); syncOverlayButtons(); }
       );
     }
 
@@ -1726,7 +1732,6 @@
     // -------------------------
     // Wiring
     // -------------------------
-    $("closeOverlayBtn").addEventListener("click", closeOverlay);
     $("nextBtn2").addEventListener("click", next);
     $("endBtn2").addEventListener("click", endSession);
 
@@ -1735,7 +1740,6 @@
       const ok = buildSession();
       if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
       inSession = true;
-      syncOverlayButtons();
       openOverlay();
     });
 
