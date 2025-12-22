@@ -1433,6 +1433,96 @@
       );
     }
 
+    function openLearnModal() {
+      if (!vocab || vocab.length === 0) return;
+    
+      const tagLatest = computeTagRecency();
+    
+      // Alle Tags: neueste oben
+      const sortedAll = [...tagLatest.keys()].sort((a,b) => {
+        const da = tagLatest.get(a) || new Date(0);
+        const db = tagLatest.get(b) || new Date(0);
+        if (db.getTime() !== da.getTime()) return db - da;
+        return a.localeCompare(b, "de");
+      });
+    
+      // Auswahl unten im Modal (Checkbox-Liste)
+      const temp = new Set();
+    
+      openModal(
+        "Units/Tags auswählen",
+        (body) => {
+          const syncGo = () => {
+            $("modalGoBtn").disabled = temp.size === 0;
+          };
+    
+          const h = document.createElement("div");
+          h.className = "sectionLbl";
+          h.style.marginTop = "0";
+          h.innerHTML = `<span class="mini">🏷</span><span>Alle Units/Tags</span>`;
+          body.appendChild(h);
+    
+          const list = document.createElement("div");
+          list.className = "tagList";
+    
+          function renderList() {
+            list.innerHTML = "";
+            sortedAll.forEach(t => {
+              const d = tagLatest.get(t) || new Date(0);
+    
+              const row = document.createElement("div");
+              row.className = "tagRow";
+    
+              const cb = document.createElement("input");
+              cb.type = "checkbox";
+              cb.checked = temp.has(t);
+              cb.onchange = () => {
+                if (cb.checked) temp.add(t);
+                else temp.delete(t);
+                syncGo();
+              };
+    
+              const name = document.createElement("div");
+              name.className = "name";
+              name.textContent = t;
+    
+              const date = document.createElement("div");
+              date.className = "date";
+              date.textContent = tagDateStr(d);
+    
+              row.appendChild(cb);
+              row.appendChild(name);
+              row.appendChild(date);
+    
+              row.addEventListener("click", (e) => {
+                if (e.target === cb) return;
+                cb.checked = !cb.checked;
+                cb.dispatchEvent(new Event("change"));
+              });
+    
+              list.appendChild(row);
+            });
+          }
+    
+          renderList();
+          body.appendChild(list);
+    
+          const note = document.createElement("div");
+          note.className = "small";
+          note.textContent = "Sortierung: neueste Units oben (nach Added-Datum).";
+          body.appendChild(note);
+    
+          syncGo();
+        },
+        () => {
+          // Los geht's (nur wenn unten ausgewählt)
+          const chosen = [...temp];
+          alert(`(Nächster Schritt) Start Lerntabelle mit: ${chosen.join(", ")}`);
+        }
+      );
+    }
+
+    
     // -------------------------
     // Card 3: Zuletzt gelernt
     // -------------------------
@@ -1501,6 +1591,7 @@
     $("pickLimit").addEventListener("click", openLimitModal);
     $("pickLenient").addEventListener("click", openLenientModal);
     $("pickTags").addEventListener("click", openTagsModal);
+    $("learnStartBtn").addEventListener("click", openLearnModal);
 
     // -------------------------
     // INIT
