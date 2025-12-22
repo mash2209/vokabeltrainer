@@ -693,7 +693,115 @@
 
     let vocab = [];
 
+    // =========================
+    // STORAGE (Root per LIST_KEY)
+    // =========================
+    function stateKey(listKey) {
+      return `vocab_state_${(listKey || "default").trim().toLowerCase()}`;
+    }
+    
+    const SCHEMA_VERSION = 1;
+    
+    function nowTs() { return Date.now(); }
+    
+    function makeEmptyVocabState() {
+      return {
+        score: 0,
+        seen: 0,
+        correct: 0,
+        wrong: 0,
+        byMode: {
+          FLASH: { seen: 0, correct: 0, wrong: 0 },
+          MCQ:   { seen: 0, correct: 0, wrong: 0 },
+          TYPE:  { seen: 0, correct: 0, wrong: 0 }
+        },
+        lastSeenAt: 0,
+        decayStage: 0
+      };
+    }
+    
+    function makeDefaultRootState() {
+      return {
+        schemaVersion: SCHEMA_VERSION,
+        updatedAt: 0,
+        vocabById: {},
+        challengesByTag: {},
+        prefs: {
+          selectedLang: "ALL",
+          direction: "DE_TO_FOREIGN",
+          mode: "FLASH",
+          limitN: 0,
+          lenient: false,
+          selectedTags: [],
+          recentLearnTags: [],
+          lastBackupPromptAt: 0,
+          lastExportAt: 0
+        }
+      };
+    }
+    
+    function loadRootState() {
+      const key = stateKey(LIST_KEY);
+      const raw = localStorage.getItem(key);
+      if (!raw) return makeDefaultRootState();
+    
+      try {
+        const parsed = JSON.parse(raw);
+    
+        if (!parsed || typeof parsed !== "object") return makeDefaultRootState();
+        // schemaVersion später für Migration nutzen – hier erstmal tolerant
+    
+        const d = makeDefaultRootState();
+        return {
+          ...d,
+          ...parsed,
+          vocabById: parsed.vocabById && typeof parsed.vocabById === "object" ? parsed.vocabById : {},
+          challengesByTag: parsed.challengesByTag && typeof parsed.challengesByTag === "object" ? parsed.challengesByTag : {},
+          prefs: { ...d.prefs, ...(parsed.prefs || {}) }
+        };
+      } catch {
+        return makeDefaultRootState();
+      }
+    }
+    
+    function saveRootState(state) {
+      state.updatedAt = nowTs();
+      const key = stateKey(LIST_KEY);
+      localStorage.setItem(key, JSON.stringify(state));
+    }
+    
+    function ensureVocabStatesFromCsv(state, vocabItems) {
+      if (!state.vocabById) state.vocabById = {};
+    
+      for (const it of vocabItems) {
+        const id = (it.id || "").toString().trim();
+        if (!id) continue;
+    
+        if (!state.vocabById[id]) {
+          state.vocabById[id] = makeEmptyVocabState();
+        } else {
+          const base = makeEmptyVocabState();
+          const cur = state.vocabById[id] || {};
+          state.vocabById[id] = {
+            ...base,
+            ...cur,
+            byMode: {
+              ...base.byMode,
+              ...(cur.byMode || {}),
+              FLASH: { ...base.byMode.FLASH, ...(cur.byMode?.FLASH || {}) },
+              MCQ:   { ...base.byMode.MCQ,   ...(cur.byMode?.MCQ   || {}) },
+              TYPE:  { ...base.byMode.TYPE,  ...(cur.byMode?.TYPE  || {}) }
+            }
+          };
+          if (!Number.isFinite(state.vocabById[id].score) || state.vocabById[id].score < 0) {
+            state.vocabById[id].score = 0;
+          }
+        }
+      }
+    }
+
     // UI state
+    let APP_STATE = null;
     let selectedLang = "ALL";
     let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
@@ -1816,6 +1924,10 @@
           }))
           .filter(it => it.de && it.foreign);
 
+        APP_STATE = loadRootState();
+        ensureVocabStatesFromCsv(APP_STATE, vocab);
+        saveRootState(APP_STATE);
+          
         renderCsvTable();
 
         const searchEl = $("vocabSearch");
