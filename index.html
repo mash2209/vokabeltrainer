@@ -441,7 +441,34 @@
       font-weight: 800;
       margin-right: 6px;
     }
-
+    
+    /* Card 3: dunklere Variante des Primary Buttons */
+    .btnLearn{
+      background: linear-gradient(90deg, #f59e0b, #c2410c); /* etwas dunkler als CTA */
+    }
+    
+    /* Card 3: zuletzt gelernt (Pills) */
+    .learnPills{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .learnPillBtn{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.85);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    
+    .learnPillBtn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    
   </style>
 </head>
 <body>
