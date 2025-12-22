@@ -1565,6 +1565,19 @@
       });
     }
     
+    function saveRecentLearnTagsFromSet(tagSet) {
+      const chosen = [...tagSet].filter(Boolean);
+      if (chosen.length === 0) return;
+    
+      const current = loadRecentLearnTags();
+    
+      const next = [];
+      for (const t of chosen) if (!next.includes(t)) next.push(t);
+      for (const t of current) if (!next.includes(t)) next.push(t);
+    
+      localStorage.setItem(LS_LEARN_TAGS_KEY, JSON.stringify(next.slice(0, 10)));
+    }
+    
     // -------------------------
     // Wiring
     // -------------------------
