@@ -1497,6 +1497,7 @@
       openModal(
         "Units/Tags auswählen",
         (body) => {
+          $("modalGoBtn").textContent = "Los geht's";
           const syncGo = () => {
             $("modalGoBtn").disabled = temp.size === 0;
           };
