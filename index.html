@@ -692,6 +692,7 @@
     const LS_LEARN_TAGS_KEY = `vocab_learn_last_tags_${LIST_KEY}`;
 
     let vocab = [];
+    let APP_STATE = null;
 
     // =========================
     // STORAGE (Root per LIST_KEY)
@@ -848,12 +849,10 @@
       s.decayStage = 0;
     
       // 5) speichern
-      saveRootState(APP_STATE);
+      if (APP_STATE) saveRootState(APP_STATE);
     }
 
-    
     // UI state
-    let APP_STATE = null;
     let selectedLang = "ALL";
     let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
