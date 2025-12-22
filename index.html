@@ -912,7 +912,25 @@
       }
       return out;
     }
+
+    function weightedShuffleForSmallPool(items) {
+      // Gewichtung nach Kategorie
+      function weight(it) {
+        const st = getVocabStateForId(it.id);
+        const sc = st ? st.score : 0;
+        const cat = getCategoryFromScore(sc);
+        if (cat === 1) return 3;
+        if (cat === 2) return 2;
+        return 1;
+      }
     
+      // jedem Item eine Zufallszahl mit Gewicht geben
+      return items
+        .map(it => ({ it, key: Math.random() ** (1 / weight(it)) }))
+        .sort((a, b) => b.key - a.key)
+        .map(x => x.it);
+    }
+
     let selectedLang = "ALL";
     let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
@@ -1072,6 +1090,16 @@
       const sessionSize = (limitN === 0)
         ? pool.length
         : Math.min(limitN, pool.length);
+       if (sessionSize > 0 && sessionSize < 7) {
+        const mixed = weightedShuffleForSmallPool(pool);
+        session = mixed.slice(0, sessionSize);
+        idx = 0;
+        score = 0;
+        inSession = session.length > 0;
+       
+        console.log("[Small pool weighted mix]", countCats(session));
+        return inSession;
+      }
       const poolCats = countCats(pool);
       console.log("[Pool categories]", poolCats);
     
