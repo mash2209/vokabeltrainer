@@ -1540,12 +1540,18 @@
           
         $("startBtn").disabled = vocab.length === 0;
 
+        // Card 3 aktivieren, sobald CSV geladen ist
+        $("learnStartBtn").disabled = vocab.length === 0;
+        renderRecentLearnPills();
+          
         updateLabels();
       } catch (e) {
         vocab = [];
         renderCsvTable();
         updateLabels();
         $("startBtn").disabled = true;
+        if ($("learnStartBtn")) $("learnStartBtn").disabled = true;
+        renderRecentLearnPills();
       }
     }
 
