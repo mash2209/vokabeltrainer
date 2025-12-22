@@ -1501,7 +1501,8 @@
           const syncGo = () => {
             $("modalGoBtn").disabled = temp.size === 0;
           };
-    
+          syncGo();
+
           const h = document.createElement("div");
           h.className = "sectionLbl";
           h.style.marginTop = "0";
@@ -1652,7 +1653,10 @@
       openModal(
         "Lerntabelle (Fremdsprache → Deutsch)",
         (body) => {
-          if ($("modalGoBtn")) $("modalGoBtn").disabled = true;
+          if ($("modalGoBtn")) {
+            $("modalGoBtn").disabled = true;
+            $("modalGoBtn").textContent = "OK";
+          }
     
           const sel = document.createElement("div");
           sel.className = "small";
