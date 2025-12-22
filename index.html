@@ -469,6 +469,42 @@
       cursor:not-allowed;
     }
     
+    /* Learn list modal (foreign -> de) */
+    .learnList{
+      display:grid;
+      gap: 8px;
+    }
+    
+    .learnRow{
+      border: 1px solid var(--line);
+      border-radius: var(--r16);
+      background: #fff;
+      padding: 10px 10px;
+    }
+    
+    .learnRow .f{
+      font-weight: 900;
+      font-size: 13px;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+    
+    .learnRow .d{
+      margin-top: 4px;
+      font-size: 12px;
+      color: rgba(15,23,42,.75);
+      overflow-wrap: anywhere;
+    }
+    
+    .learnRow .meta{
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
   </style>
 </head>
 <body>
