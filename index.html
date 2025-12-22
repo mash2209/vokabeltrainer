@@ -1184,8 +1184,8 @@
       buildBodyFn(body);
     
       modalOnOk = onOkFn || null;
-    
-      // Default: Los geht's deaktiviert (aktiviert sich in speziellen Modals)
+      if ($("modalCancelBtn")) $("modalCancelBtn").style.display = "";
+        
       if ($("modalGoBtn")) $("modalGoBtn").disabled = true;
     
       $("modal").classList.add("open");
@@ -1655,7 +1655,8 @@
             $("modalGoBtn").disabled = true;
             $("modalGoBtn").textContent = "OK";
           }
-    
+          if ($("modalCancelBtn")) $("modalCancelBtn").style.display = "none";
+
           const sel = document.createElement("div");
           sel.className = "small";
           sel.innerHTML = `Auswahl: <span class="mono">${[...tags].join(" · ")}</span>`;
