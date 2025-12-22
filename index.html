@@ -494,8 +494,8 @@
 </div>
 <div class="modalBody" id="modalBody"></div>
 <div class="modalFoot">
-
-<button class="btnPrimary" id="modalOkBtn" style="width:auto; padding:10px 12px;">OK</button>
+  <button id="modalCancelBtn">Abbrechen</button>
+  <button class="btnPrimary" id="modalGoBtn" style="width:auto; padding:10px 12px;" disabled>Los geht's</button>
 </div>
 </div>
 </div>
@@ -1138,15 +1138,18 @@
     // Modal helpers
     // -------------------------
     let modalOnOk = null;
-
+    
     function openModal(title, buildBodyFn, onOkFn) {
       $("modalTitle").textContent = title;
       const body = $("modalBody");
       body.innerHTML = "";
       buildBodyFn(body);
-
+    
       modalOnOk = onOkFn || null;
-
+    
+      // Default: Los geht's deaktiviert (aktiviert sich in speziellen Modals)
+      if ($("modalGoBtn")) $("modalGoBtn").disabled = true;
+    
       $("modal").classList.add("open");
       $("modal").setAttribute("aria-hidden", "false");
       document.body.classList.add("noscroll");
@@ -1162,7 +1165,8 @@
       modalOnOk = null;
     }
 
-            $("modalOkBtn").addEventListener("click", () => closeModal("ok"));
+            $("modalCancelBtn").addEventListener("click", () => closeModal("cancel"));
+            $("modalGoBtn").addEventListener("click", () => closeModal("ok"));
 
     // -------------------------
     // Option modals
