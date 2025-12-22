@@ -1090,7 +1090,10 @@
       const sessionSize = (limitN === 0)
         ? pool.length
         : Math.min(limitN, pool.length);
-       if (sessionSize > 0 && sessionSize < 7) {
+      for (const it of pool) {
+        applyDecayIfNeededForId(it.id);
+      } 
+      if (sessionSize > 0 && sessionSize < 7) {
         const mixed = weightedShuffleForSmallPool(pool);
         session = mixed.slice(0, sessionSize);
         idx = 0;
