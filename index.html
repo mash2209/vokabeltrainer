@@ -897,6 +897,22 @@
       return 3;
     }
     
+    function countCats(items) {
+      const out = { total: 0, cat1: 0, cat2: 0, cat3: 0 };
+      out.total = items.length;
+    
+      for (const it of items) {
+        const st = getVocabStateForId(it.id);
+        const sc = st ? st.score : 0;
+        const cat = getCategoryFromScore(sc);
+    
+        if (cat === 1) out.cat1++;
+        else if (cat === 2) out.cat2++;
+        else out.cat3++;
+      }
+      return out;
+    }
+    
     let selectedLang = "ALL";
     let direction = "DE_TO_FOREIGN";
     let mode = "FLASH";
@@ -1056,6 +1072,8 @@
       const sessionSize = (limitN === 0)
         ? pool.length
         : Math.min(limitN, pool.length);
+      const poolCats = countCats(pool);
+      console.log("[Pool categories]", poolCats);
     
       const c1 = [];
       const c2 = [];
@@ -1130,17 +1148,20 @@
     
       shuffle(picked);
     
-      console.log("[Session categories/targets]", {
-        pool: pool.length,
+      const pickedCats = countCats(picked);
+        
+      const note = [];
+      if (pickedCats.cat1 < t1) note.push(`cat1 fehlen ${t1 - pickedCats.cat1}`);
+      if (pickedCats.cat2 < t2) note.push(`cat2 fehlen ${t2 - pickedCats.cat2}`);
+      if (pickedCats.cat3 < t3) note.push(`cat3 fehlen ${t3 - pickedCats.cat3}`);
+        
+      console.log("[Session targets]", {
         sessionSize,
-        targets: { cat1: t1, cat2: t2, cat3: t3 },
-        available: {
-          cat1: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 1).length,
-          cat2: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 2).length,
-          cat3: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 3).length
-        }
+        targets: { cat1: t1, cat2: t2, cat3: t3 }
       });
-    
+      console.log("[Session picked]", pickedCats);
+      if (note.length) console.log("[Auto-fill notice]", note.join(" · "));
+
       session = picked;
       idx = 0;
       score = 0;
