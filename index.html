@@ -849,8 +849,8 @@
 
     function getCategoryFromScore(score) {
       const s = Number(score) || 0;
-      if (s < 3) return 1;
-      if (s < 8) return 2;
+      if (s <= 1.5) return 1;
+      if (s <= 3.5) return 2;
       return 3;
     }
     
@@ -1010,25 +1010,94 @@
       }
 
       pool = pool.filter(v => (v.de || "").trim() && (v.foreign || "").trim());
-      shuffle(pool);
+      const sessionSize = (limitN === 0)
+        ? pool.length
+        : Math.min(limitN, pool.length);
     
-      const catCounts = { 1: 0, 2: 0, 3: 0 };
+      const c1 = [];
+      const c2 = [];
+      const c3 = [];
     
       for (const it of pool) {
         const st = getVocabStateForId(it.id);
         const sc = st ? st.score : 0;
         const cat = getCategoryFromScore(sc);
-        catCounts[cat] = (catCounts[cat] || 0) + 1;
+        if (cat === 1) c1.push(it);
+        else if (cat === 2) c2.push(it);
+        else c3.push(it);
       }
     
-      console.log("[Session pool categories]", {
-        total: pool.length,
-        cat1: catCounts[1],
-        cat2: catCounts[2],
-        cat3: catCounts[3]
+      shuffle(c1); shuffle(c2); shuffle(c3);
+    
+      function computeTargets(n) {
+        if (n <= 0) return { t1: 0, t2: 0, t3: 0 };
+    
+        const w1 = 4, w2 = 3, w3 = 2;
+        const sum = w1 + w2 + w3;
+    
+        let t1 = Math.floor(n * w1 / sum);
+        let t2 = Math.floor(n * w2 / sum);
+        let t3 = Math.floor(n * w3 / sum);
+    
+        let used = t1 + t2 + t3;
+        const remainders = [
+          { k: 1, r: n * w1 / sum - t1 },
+          { k: 2, r: n * w2 / sum - t2 },
+          { k: 3, r: n * w3 / sum - t3 }
+        ].sort((a,b) => b.r - a.r);
+    
+        let i = 0;
+        while (used < n) {
+          const k = remainders[i % remainders.length].k;
+          if (k === 1) t1++;
+          else if (k === 2) t2++;
+          else t3++;
+          used++;
+          i++;
+        }
+    
+        return { t1, t2, t3 };
+      }
+    
+      const { t1, t2, t3 } = computeTargets(sessionSize);
+    
+      const picked = [];
+      function take(arr, n) {
+        const out = arr.slice(0, Math.max(0, n));
+        arr.splice(0, out.length);
+        return out;
+      }
+    
+      picked.push(...take(c1, t1));
+      picked.push(...take(c2, t2));
+      picked.push(...take(c3, t3));
+    
+      function fillToSize() {
+        while (picked.length < sessionSize) {
+          if (c1.length) picked.push(c1.shift());
+          else if (c2.length) picked.push(c2.shift());
+          else if (c3.length) picked.push(c3.shift());
+          else break; // nichts mehr da
+        }
+      }
+      fillToSize();
+    
+      if (picked.length > sessionSize) picked.length = sessionSize;
+    
+      shuffle(picked);
+    
+      console.log("[Session categories/targets]", {
+        pool: pool.length,
+        sessionSize,
+        targets: { cat1: t1, cat2: t2, cat3: t3 },
+        available: {
+          cat1: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 1).length,
+          cat2: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 2).length,
+          cat3: picked.filter(x => getCategoryFromScore(getVocabStateForId(x.id)?.score || 0) === 3).length
+        }
       });
-        
-      session = (limitN === 0) ? pool : pool.slice(0, Math.min(limitN, pool.length));
+    
+      session = picked;
       idx = 0;
       score = 0;
       inSession = session.length > 0;
