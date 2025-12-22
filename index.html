@@ -1062,6 +1062,7 @@
       const c3 = [];
     
       for (const it of pool) {
+        applyDecayIfNeededForId(it.id);
         const st = getVocabStateForId(it.id);
         const sc = st ? st.score : 0;
         const cat = getCategoryFromScore(sc);
@@ -2117,6 +2118,9 @@
 
         APP_STATE = loadRootState();
         ensureVocabStatesFromCsv(APP_STATE, vocab);
+        for (const it of vocab) {
+          applyDecayIfNeededForId(it.id);
+        }
         saveRootState(APP_STATE);
           
         renderCsvTable();
