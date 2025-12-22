@@ -1211,6 +1211,8 @@
       openModal(
         "Sprache",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const wrap = document.createElement("div");
           wrap.className = "field";
           wrap.innerHTML = `<label>Sprache auswählen</label>`;
@@ -1397,6 +1399,8 @@
       openModal(
         "Units/Tags",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const quick = document.createElement("div");
           quick.className = "row";
           quick.style.gap = "10px";
