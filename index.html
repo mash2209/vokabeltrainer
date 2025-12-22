@@ -800,6 +800,58 @@
       }
     }
 
+    // =========================
+    // SCORE UPDATE (ohne Decay)
+    // =========================
+    function clampScore(x) {
+      return Math.max(0, Number.isFinite(x) ? x : 0);
+    }
+    
+    function getVocabStateForId(id) {
+      if (!APP_STATE) return null;
+      if (!APP_STATE.vocabById) APP_STATE.vocabById = {};
+      if (!APP_STATE.vocabById[id]) APP_STATE.vocabById[id] = makeEmptyVocabState();
+      return APP_STATE.vocabById[id];
+    }
+    
+    // mode: "MCQ" | "TYPE" | "FLASH"
+    // isCorrect: boolean
+    function applyAnswerScore(id, mode, isCorrect) {
+      const s = getVocabStateForId(id);
+      if (!s) return;
+    
+      const m = (mode || "FLASH").toUpperCase();
+    
+      // 1) Delta je Modus
+      let delta = 0;
+      if (m === "MCQ")  delta = isCorrect ? 0.5 : -0.25;
+      if (m === "TYPE") delta = isCorrect ? 2.0 : -1.0;
+      if (m === "FLASH") delta = isCorrect ? 1.0 : -0.5;
+    
+      // 2) Score aktualisieren + clamp
+      s.score = clampScore((s.score || 0) + delta);
+    
+      // 3) Zähler aktualisieren
+      s.seen = (s.seen || 0) + 1;
+      if (isCorrect) s.correct = (s.correct || 0) + 1;
+      else s.wrong = (s.wrong || 0) + 1;
+    
+      if (!s.byMode) s.byMode = makeEmptyVocabState().byMode;
+      if (!s.byMode[m]) s.byMode[m] = { seen: 0, correct: 0, wrong: 0 };
+    
+      s.byMode[m].seen = (s.byMode[m].seen || 0) + 1;
+      if (isCorrect) s.byMode[m].correct = (s.byMode[m].correct || 0) + 1;
+      else s.byMode[m].wrong = (s.byMode[m].wrong || 0) + 1;
+    
+      // 4) lastSeenAt setzen + decayStage resetten
+      s.lastSeenAt = Date.now();
+      s.decayStage = 0;
+    
+      // 5) speichern
+      saveRootState(APP_STATE);
+    }
+
+    
     // UI state
     let APP_STATE = null;
     let selectedLang = "ALL";
@@ -1055,8 +1107,16 @@
           $("selfBadBtn").disabled = false;
         };
 
-        $("selfOkBtn").onclick = () => { score++; next(); };
-        $("selfBadBtn").onclick = () => { next(); };
+        $("selfOkBtn").onclick = () => { 
+          score++; 
+          applyAnswerScore(item.id, "FLASH", true);
+          next(); 
+        };
+        
+        $("selfBadBtn").onclick = () => { 
+          applyAnswerScore(item.id, "FLASH", false);
+          next(); 
+        };
 
       } else if (mode === "MCQ") {
         const allSameLang = vocab.filter(v => (v.lang||"").toUpperCase() === (item.lang||"").toUpperCase());
@@ -1081,6 +1141,8 @@
             const ok = normalize(ch, true) === normalize(correct, true);
             if (ok) { b.classList.add("ok"); score++; }
             else { b.classList.add("bad"); }
+
+            applyAnswerScore(item.id, "MCQ", ok);
 
             [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
 
@@ -1148,6 +1210,7 @@
           const ok = normalize(user, lenient) === normalize(correct, lenient);
         
           if (ok) score++;
+          applyAnswerScore(item.id, "TYPE", ok);
         
           renderSolutionWithExample(
             ok
@@ -1162,6 +1225,7 @@
           if (typeAnswered) return;
         
           renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
+          applyAnswerScore(item.id, "TYPE", false);
           markAnswered();
         };
 
