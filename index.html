@@ -1547,14 +1547,17 @@
     
           syncGo();
         },
-        () => {
-          // Los geht's (nur wenn unten ausgewählt)
-          const chosen = [...temp];
-          alert(`(Nächster Schritt) Start Lerntabelle mit: ${chosen.join(", ")}`);
+        
+          () => {
+          // speichern & Card 3 aktualisieren
+          saveRecentLearnTagsFromSet(temp);
+          renderRecentLearnPills();
+        
+          // Lerntabelle öffnen
+          openLearnListModal(temp);
         }
       );
     }
-
     
     // -------------------------
     // Card 3: Zuletzt gelernt
@@ -1595,7 +1598,12 @@
         b.textContent = t;
     
         // Platzhalter – echte Funktion kommt später
-        b.onclick = () => alert(`(Später) Direkt lernen mit: ${t}`);
+        b.onclick = () => {
+          // Klick zählt als "neueste Auswahl"
+          saveRecentLearnTagsFromSet(new Set([t]));
+          renderRecentLearnPills();
+          openLearnListModal(new Set([t]));
+        };
     
         host.appendChild(b);
       });
@@ -1613,7 +1621,78 @@
     
       localStorage.setItem(LS_LEARN_TAGS_KEY, JSON.stringify(next.slice(0, 10)));
     }
+
+    function openLearnListModal(tagSet) {
+      if (!vocab || vocab.length === 0) return;
     
+      const tags = new Set([...tagSet].filter(Boolean));
+      if (tags.size === 0) return;
+    
+      let pool = vocab.filter(v =>
+        parseTags(v.tags).some(t => tags.has(t))
+      );
+    
+      pool.sort((a,b) =>
+        (a.foreign || "").localeCompare((b.foreign || ""), "de", { sensitivity: "base" })
+      );
+    
+      openModal(
+        "Lerntabelle (Fremdsprache → Deutsch)",
+        (body) => {
+          if ($("modalGoBtn")) $("modalGoBtn").disabled = true;
+    
+          const sel = document.createElement("div");
+          sel.className = "small";
+          sel.innerHTML = `Auswahl: <span class="mono">${[...tags].join(" · ")}</span>`;
+          body.appendChild(sel);
+    
+          const cnt = document.createElement("div");
+          cnt.className = "small";
+          cnt.textContent = `${pool.length} Vokabeln`;
+          body.appendChild(cnt);
+    
+          const list = document.createElement("div");
+          list.className = "learnList";
+    
+          if (pool.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "small";
+            empty.textContent = "Keine passenden Vokabeln.";
+            body.appendChild(empty);
+            return;
+          }
+    
+          for (const it of pool) {
+            const row = document.createElement("div");
+            row.className = "learnRow";
+    
+            const f = document.createElement("div");
+            f.className = "f";
+            f.textContent = it.foreign || "—";
+    
+            const d = document.createElement("div");
+            d.className = "d";
+            d.textContent = it.de || "—";
+    
+            const meta = document.createElement("div");
+            meta.className = "meta";
+            meta.innerHTML =
+              `<span class="mono">${(it.lang || "").toUpperCase()}</span>` +
+              `<span class="mono">${it.added || "-"}</span>`;
+    
+            row.appendChild(f);
+            row.appendChild(d);
+            row.appendChild(meta);
+    
+            list.appendChild(row);
+          }
+    
+          body.appendChild(list);
+        },
+        null
+      );
+    }
+
     // -------------------------
     // Wiring
     // -------------------------
