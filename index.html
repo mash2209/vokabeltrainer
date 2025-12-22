@@ -1250,6 +1250,8 @@
       openModal(
         "Richtung",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const wrap = document.createElement("div");
           wrap.className = "field";
           wrap.innerHTML = `<label>Richtung auswählen</label>`;
@@ -1278,6 +1280,8 @@
       openModal(
         "Modus",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const wrap = document.createElement("div");
           wrap.className = "field";
           wrap.innerHTML = `<label>Modus auswählen</label>`;
@@ -1311,6 +1315,8 @@
       openModal(
         "Anzahl Fragen",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const wrap = document.createElement("div");
           wrap.className = "field";
           wrap.innerHTML = `<label>Anzahl auswählen</label>`;
@@ -1353,6 +1359,8 @@
       openModal(
         "Akzente & Groß/klein ignorieren",
         (body) => {
+          $("modalGoBtn").disabled = false;
+          $("modalGoBtn").textContent = "OK";
           const wrap = document.createElement("div");
           wrap.className = "field";
           wrap.innerHTML = `<label>Groß/Klein & Akzente ignorieren (nur Eingabe)</label>`;
