@@ -689,10 +689,21 @@
       <div class="small">CSV: <span class="mono" id="csvLabel"></span></div>
     </div>
   </section>
-
+  
   <section class="card" id="challengeCard">
     <button class="btnPrimary btnChallenge" disabled id="challengeStartBtn">Challenge starten</button>
 
+    <!-- Letzte 3 Challenges -->
+    <div class="sectionLbl" style="margin-top:12px;">
+      <span class="mini">🕘</span>
+      <span>Letzte Challenges</span>
+    </div>
+
+    <div id="challengeHistory" class="challengeList">
+      <div class="small">Noch keine Challenges gespeichert.</div>
+    </div>
+
+    <!-- Aktive Challenge -->
     <div class="sectionLbl" style="margin-top:12px;">
       <span class="mini">🏁</span>
       <span>Aktive Challenge</span>
@@ -704,7 +715,7 @@
 
     <div class="small" style="margin-top:10px;">
       Tipp: Eine Challenge endet automatisch, sobald das Ziel erreicht ist.
-    </div>
+  </div>
   </section>
     
   <section class="card" id="learnCard">
