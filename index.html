@@ -802,6 +802,101 @@
       localStorage.setItem(key, JSON.stringify(state));
     }
     
+    // =========================
+    // CHALLENGES (State helpers)
+    // =========================
+    function makeChallengeId() {
+      return "ch_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 7);
+    }
+    
+    function ensureChallengeStore() {
+      if (!APP_STATE) return;
+      if (!APP_STATE.challengesByTag || typeof APP_STATE.challengesByTag !== "object") APP_STATE.challengesByTag = {};
+      if (!("activeChallenge" in APP_STATE)) APP_STATE.activeChallenge = null;
+    }
+    
+    function getActiveChallenge() {
+      ensureChallengeStore();
+      const c = APP_STATE?.activeChallenge;
+      if (!c || typeof c !== "object") return null;
+      if (!Array.isArray(c.uniqueIds)) c.uniqueIds = [];
+      return c;
+    }
+
+    function startChallenge(tag, targetN) {
+      if (!APP_STATE) return false;
+      ensureChallengeStore();
+    
+      const t = String(tag || "").trim();
+      const n = Math.max(1, Number(targetN || 0));
+    
+      if (!t || !Number.isFinite(n)) return false;
+    
+      const ch = {
+        id: makeChallengeId(),
+        tag: t,
+        targetN: n,
+        doneN: 0,
+        correctN: 0,
+        uniqueIds: [],
+        startedAt: nowTs(),
+        finishedAt: null
+      };
+    
+      APP_STATE.activeChallenge = ch;
+      saveRootState(APP_STATE);
+    
+      inChallenge = true; // du hast das Flag schon vorbereitet
+      return true;
+    }
+    
+    function recordChallengeAnswer(vocabId, isCorrect) {
+      const ch = getActiveChallenge();
+      if (!APP_STATE || !ch) return;
+    
+      const id = String(vocabId || "").trim();
+      if (!id) return;
+    
+      // correctN zählt jede korrekte Antwort (nicht unique)
+      if (isCorrect) ch.correctN = (ch.correctN || 0) + 1;
+    
+      // doneN zählt unique beantwortete Vokabeln
+      if (!ch.uniqueIds.includes(id)) {
+        ch.uniqueIds.push(id);
+        ch.doneN = ch.uniqueIds.length;
+      }
+    
+      // Ziel erreicht?
+      if (ch.doneN >= ch.targetN) {
+        finishChallenge("targetReached");
+      } else {
+        saveRootState(APP_STATE);
+      }
+    }
+    
+    function finishChallenge(reason = "") {
+      const ch = getActiveChallenge();
+      if (!APP_STATE || !ch) return false;
+    
+      ch.finishedAt = nowTs();
+    
+      const tag = ch.tag;
+      if (!APP_STATE.challengesByTag[tag]) APP_STATE.challengesByTag[tag] = [];
+      if (!Array.isArray(APP_STATE.challengesByTag[tag])) APP_STATE.challengesByTag[tag] = [];
+    
+      // neueste oben
+      APP_STATE.challengesByTag[tag].unshift({ ...ch });
+    
+      // optional: History pro Tag begrenzen
+      APP_STATE.challengesByTag[tag] = APP_STATE.challengesByTag[tag].slice(0, 50);
+    
+      APP_STATE.activeChallenge = null;
+      saveRootState(APP_STATE);
+    
+      inChallenge = false;
+      return true;
+    }
+    
     function ensureVocabStatesFromCsv(state, vocabItems) {
       if (!state.vocabById) state.vocabById = {};
     
