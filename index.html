@@ -832,6 +832,7 @@
                 targetN: Number(parsed.activeChallenge.targetN || 0),
                 doneN: Number(parsed.activeChallenge.doneN || 0),
                 correctN: Number(parsed.activeChallenge.correctN || 0),
+                answerN: Number(parsed.activeChallenge.answerN || 0),
                 uniqueIds: Array.isArray(parsed.activeChallenge.uniqueIds)
                   ? parsed.activeChallenge.uniqueIds.map(x => String(x))
                   : [],
@@ -897,6 +898,7 @@
         targetN: n,
         doneN: 0,
         correctN: 0,
+        answerN: 0,
         uniqueIds: [],
         startedAt: nowTs(),
         finishedAt: null
@@ -917,6 +919,7 @@
       if (!id) return;
     
       // correctN zählt jede korrekte Antwort (nicht unique)
+      ch.answerN = (ch.answerN || 0) + 1;
       if (isCorrect) ch.correctN = (ch.correctN || 0) + 1;
     
       // doneN zählt unique beantwortete Vokabeln
@@ -972,14 +975,11 @@
         return;
       }
     
-      // Alle Challenges über alle Tags einsammeln
       const all = [];
       for (const tag of Object.keys(APP_STATE.challengesByTag)) {
         const arr = APP_STATE.challengesByTag[tag];
         if (!Array.isArray(arr)) continue;
-        for (const ch of arr) {
-          all.push(ch);
-        }
+        for (const ch of arr) all.push(ch);
       }
     
       if (all.length === 0) {
@@ -987,11 +987,16 @@
         return;
       }
     
-      // Neueste zuerst
       all.sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
     
-      // Nur die letzten 3
       const last3 = all.slice(0, 3);
+    
+      const fmt = (ts) => {
+        const d = new Date(ts);
+        const dd = d.toLocaleDateString("de-DE");
+        const tt = d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        return `${dd} - ${tt} h`;
+      };
     
       last3.forEach(ch => {
         const row = document.createElement("div");
@@ -1004,17 +1009,28 @@
         tag.className = "tag";
         tag.textContent = ch.tag || "—";
     
+        // Prozent rechts
         const meta = document.createElement("div");
         meta.className = "meta";
-        meta.textContent = `${ch.doneN}/${ch.targetN}`;
+        const done = Number(ch.doneN || 0);
+        const corr = Number(ch.correctN || 0);
+        const pct = done > 0 ? Math.round((corr / done) * 100) : 0;
+        meta.textContent = `${pct}%`;
     
         top.appendChild(tag);
         top.appendChild(meta);
     
+        // Unterzeile: "10 Vokabeln · 29.12.2025 - 17:30 h"
         const sub = document.createElement("div");
         sub.className = "sub";
-        sub.textContent =
-          `Richtig: ${ch.correctN || 0} · ${new Date(ch.finishedAt).toLocaleDateString("de-DE")}`;
+        
+        const target = Number(ch.targetN || 0);
+        const dt = new Date(ch.finishedAt || ch.startedAt || Date.now());
+        
+        const dateStr = dt.toLocaleDateString("de-DE");
+        const timeStr = dt.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        
+        sub.textContent = `${target} Vokabeln – ${dateStr} – ${timeStr} h`;
     
         row.appendChild(top);
         row.appendChild(sub);
