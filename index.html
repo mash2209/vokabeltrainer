@@ -724,6 +724,7 @@
         updatedAt: 0,
         vocabById: {},
         challengesByTag: {},
+        activeChallenge: null, 
         prefs: {
           selectedLang: "ALL",
           direction: "DE_TO_FOREIGN",
@@ -765,6 +766,20 @@
           ...parsed,
           vocabById: parsed.vocabById && typeof parsed.vocabById === "object" ? parsed.vocabById : {},
           challengesByTag: parsed.challengesByTag && typeof parsed.challengesByTag === "object" ? parsed.challengesByTag : {},
+          activeChallenge: (parsed.activeChallenge && typeof parsed.activeChallenge === "object")
+            ? {
+                id: String(parsed.activeChallenge.id || ""),
+                tag: String(parsed.activeChallenge.tag || ""),
+                targetN: Number(parsed.activeChallenge.targetN || 0),
+                doneN: Number(parsed.activeChallenge.doneN || 0),
+                correctN: Number(parsed.activeChallenge.correctN || 0),
+                uniqueIds: Array.isArray(parsed.activeChallenge.uniqueIds)
+                  ? parsed.activeChallenge.uniqueIds.map(x => String(x))
+                  : [],
+                startedAt: Number(parsed.activeChallenge.startedAt || 0),
+                finishedAt: (parsed.activeChallenge.finishedAt == null) ? null : Number(parsed.activeChallenge.finishedAt),
+              }
+            : null,
           prefs: {
             ...d.prefs,
             ...(parsed.prefs || {}),
