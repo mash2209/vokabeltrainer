@@ -953,6 +953,11 @@
       saveRootState(APP_STATE);
     
       inChallenge = false;
+      // ✅ UI sofort beenden, sobald Challenge fertig
+      if (inSession) {
+        endSession();           // schließt Overlay und setzt inSession=false
+      }
+      renderChallengeHistory(); // Home-Karte aktualisieren
       return true;
     }
 
@@ -1988,6 +1993,13 @@
     }
 
     function endSession() {
+      // ✅ Wenn Challenge läuft: verwerfen (nicht speichern)
+      if (inChallenge && APP_STATE) {
+        APP_STATE.activeChallenge = null;
+        saveRootState(APP_STATE);
+        inChallenge = false;
+      }
+    
       inSession = false;
       session = [];
       idx = 0;
