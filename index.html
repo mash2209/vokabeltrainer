@@ -758,7 +758,6 @@
         const parsed = JSON.parse(raw);
     
         if (!parsed || typeof parsed !== "object") return makeDefaultRootState();
-        // schemaVersion später für Migration nutzen – hier erstmal tolerant
     
         const d = makeDefaultRootState();
         return {
@@ -770,9 +769,14 @@
             ...d.prefs,
             ...(parsed.prefs || {}),
             streak: { ...d.prefs.streak, ...((parsed.prefs && parsed.prefs.streak) || {}) },
-            daily: (parsed.prefs && typeof parsed.prefs.daily === "object" && parsed.prefs.daily) ? parsed.prefs.daily : {}
+            daily:
+              (parsed.prefs && typeof parsed.prefs.daily === "object" && parsed.prefs.daily)
+                ? parsed.prefs.daily
+                : {}
           }
         };
+      } catch (e) {
+        console.warn("[loadRootState] invalid JSON in localStorage -> reset", e);
         return makeDefaultRootState();
       }
     }
