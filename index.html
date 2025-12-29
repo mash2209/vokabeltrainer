@@ -2888,8 +2888,7 @@
     async function init() {
       $("csvLabel").textContent = CSV_URL;
       $("startBtn").disabled = true;
-
-      // defaults on labels
+      $("challengeStartBtn").disabled = vocab.length === 0;
       updateLabels();
 
       try {
@@ -2929,6 +2928,7 @@
 
         // Card 3 aktivieren, sobald CSV geladen ist
         $("learnStartBtn").disabled = vocab.length === 0;
+        $("challengeStartBtn").disabled = !hasVocab; // 👈 GENAU HIER
         renderRecentLearnPills();
         renderChallengeHistory();
           
