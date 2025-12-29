@@ -937,14 +937,17 @@
     let limitN = 0;
     let lenient = false;
     let selectedTags = new Set();
-
+    
     let session = [];
     let idx = 0;
     let score = 0;
+    
     let inSession = false;
+    let inChallenge = false; // (für später) – blockiert Reload während Challenge
+    
     let currentDirForQuestion = "DE_TO_FOREIGN";
     let vocabSearchQuery = "";
-
+    
     const $ = (id) => document.getElementById(id);
 
     function parseISODate(s) {
@@ -2122,6 +2125,24 @@
       if (!ok) return alert("Keine passenden Vokabeln für deine Filter (Sprache/Tags).");
       inSession = true;
       openOverlay();
+    });
+
+    // -------------------------
+    // Auto-Reload beim Zurückkommen (nur wenn keine Session/Challenge läuft)
+    // -------------------------
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible") return;
+    
+      // Falls init noch nicht fertig ist
+      if (!APP_STATE) return;
+    
+      // Wichtig: während aktiver Session/Challenge NICHT reloaden
+      if (inSession || inChallenge) {
+        console.log("[visibilitychange] skip reload (active):", { inSession, inChallenge });
+        return;
+      }
+    
+      reloadCsvAndSyncState("visibilitychange-visible");
     });
 
     $("modal").addEventListener("click", (e) => {
