@@ -963,6 +963,68 @@
       inChallenge = false;
       return true;
     }
+
+    function renderChallengeHistory() {
+      const host = document.getElementById("challengeHistory");
+      if (!host) return;
+    
+      host.innerHTML = "";
+    
+      if (!APP_STATE || !APP_STATE.challengesByTag) {
+        host.innerHTML = `<div class="small">Noch keine Challenges gespeichert.</div>`;
+        return;
+      }
+    
+      // Alle Challenges über alle Tags einsammeln
+      const all = [];
+      for (const tag of Object.keys(APP_STATE.challengesByTag)) {
+        const arr = APP_STATE.challengesByTag[tag];
+        if (!Array.isArray(arr)) continue;
+        for (const ch of arr) {
+          all.push(ch);
+        }
+      }
+    
+      if (all.length === 0) {
+        host.innerHTML = `<div class="small">Noch keine Challenges gespeichert.</div>`;
+        return;
+      }
+    
+      // Neueste zuerst
+      all.sort((a, b) => (b.finishedAt || 0) - (a.finishedAt || 0));
+    
+      // Nur die letzten 3
+      const last3 = all.slice(0, 3);
+    
+      last3.forEach(ch => {
+        const row = document.createElement("div");
+        row.className = "challengeRow";
+    
+        const top = document.createElement("div");
+        top.className = "top";
+    
+        const tag = document.createElement("div");
+        tag.className = "tag";
+        tag.textContent = ch.tag || "—";
+    
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.textContent = `${ch.doneN}/${ch.targetN}`;
+    
+        top.appendChild(tag);
+        top.appendChild(meta);
+    
+        const sub = document.createElement("div");
+        sub.className = "sub";
+        sub.textContent =
+          `Richtig: ${ch.correctN || 0} · ${new Date(ch.finishedAt).toLocaleDateString("de-DE")}`;
+    
+        row.appendChild(top);
+        row.appendChild(sub);
+    
+        host.appendChild(row);
+      });
+    }
     
     function ensureVocabStatesFromCsv(state, vocabItems) {
       if (!state.vocabById) state.vocabById = {};
