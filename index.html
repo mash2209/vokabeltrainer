@@ -736,7 +736,18 @@
           selectedTags: [],
           recentLearnTags: [],
           lastBackupPromptAt: 0,
-          lastExportAt: 0
+          lastExportAt: 0,
+    
+          // --- Streaks (neu) ---
+          streak: {
+            current: 0,
+            best: 0,
+            lastActiveDay: "",  // "YYYY-MM-DD"
+            lastPopupDay: ""    // "YYYY-MM-DD"
+          },
+    
+          // daily: { "YYYY-MM-DD": { uniqueIds: ["id1","id2", ...] } }
+          daily: {}
         }
       };
     }
@@ -2208,14 +2219,12 @@
         renderRecentLearnPills();
         updateLabels();
     
-        // Buttons neu setzen
         $("startBtn").disabled = vocab.length === 0;
         if ($("learnStartBtn")) $("learnStartBtn").disabled = vocab.length === 0;
     
         console.log("[reload] done:", reason, "items:", vocab.length);
       } catch (e) {
         console.error("[reload] failed:", reason, e);
-        // Bei Reload-Fehler lassen wir die App weiterlaufen und zerstören nichts.
       }
     }
 
