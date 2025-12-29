@@ -769,9 +769,13 @@
           ...parsed,
           vocabById: parsed.vocabById && typeof parsed.vocabById === "object" ? parsed.vocabById : {},
           challengesByTag: parsed.challengesByTag && typeof parsed.challengesByTag === "object" ? parsed.challengesByTag : {},
-          prefs: { ...d.prefs, ...(parsed.prefs || {}) }
+          prefs: {
+            ...d.prefs,
+            ...(parsed.prefs || {}),
+            streak: { ...d.prefs.streak, ...((parsed.prefs && parsed.prefs.streak) || {}) },
+            daily: (parsed.prefs && typeof parsed.prefs.daily === "object" && parsed.prefs.daily) ? parsed.prefs.daily : {}
+          }
         };
-      } catch {
         return makeDefaultRootState();
       }
     }
@@ -826,6 +830,145 @@
       return APP_STATE.vocabById[id];
     }
     
+    // =========================
+    // STREAKS (Daily tracking + Popup)
+    // =========================
+    function pad2(n) { return String(n).padStart(2, "0"); }
+    
+    function dayKeyLocal(d = new Date()) {
+      const y = d.getFullYear();
+      const m = pad2(d.getMonth() + 1);
+      const da = pad2(d.getDate());
+      return `${y}-${m}-${da}`; // "YYYY-MM-DD"
+    }
+    
+    function dayKeyFromKeyPlusDays(key, deltaDays) {
+      // key: "YYYY-MM-DD"
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key || "");
+      if (!m) return "";
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      d.setDate(d.getDate() + deltaDays);
+      return dayKeyLocal(d);
+    }
+    
+    function ensureStreakState() {
+      if (!APP_STATE) return null;
+      if (!APP_STATE.prefs) APP_STATE.prefs = {};
+      if (!APP_STATE.prefs.streak) {
+        APP_STATE.prefs.streak = { current: 0, best: 0, lastActiveDay: "", lastPopupDay: "" };
+      } else {
+        const s = APP_STATE.prefs.streak;
+        if (!Number.isFinite(s.current)) s.current = 0;
+        if (!Number.isFinite(s.best)) s.best = 0;
+        if (typeof s.lastActiveDay !== "string") s.lastActiveDay = "";
+        if (typeof s.lastPopupDay !== "string") s.lastPopupDay = "";
+      }
+      if (!APP_STATE.prefs.daily || typeof APP_STATE.prefs.daily !== "object") {
+        APP_STATE.prefs.daily = {};
+      }
+      return APP_STATE.prefs.streak;
+    }
+    
+    function ensureDailyEntry(dayKey) {
+      const prefs = APP_STATE.prefs;
+      if (!prefs.daily[dayKey]) prefs.daily[dayKey] = { uniqueIds: [] };
+      if (!Array.isArray(prefs.daily[dayKey].uniqueIds)) prefs.daily[dayKey].uniqueIds = [];
+      return prefs.daily[dayKey];
+    }
+    
+    function countDaysOver50InCurrentStreak(todayKey, streakLen) {
+      let over50 = 0;
+      for (let i = 0; i < streakLen; i++) {
+        const k = dayKeyFromKeyPlusDays(todayKey, -i);
+        const entry = APP_STATE.prefs.daily[k];
+        const n = entry && Array.isArray(entry.uniqueIds) ? entry.uniqueIds.length : 0;
+        if (n > 50) over50++;
+      }
+      return over50;
+    }
+    
+    function showStreakPopup(streakDays, daysOver50) {
+      // Minimal-Popup über bestehendes Modal-System (Feuerwerk kommt später)
+      openModal(
+        "🔥 Streak!",
+        (body) => {
+          if ($("modalGoBtn")) {
+            $("modalGoBtn").disabled = false;
+            $("modalGoBtn").textContent = "OK";
+          }
+          if ($("modalCancelBtn")) $("modalCancelBtn").style.display = "none";
+    
+          const msg = document.createElement("div");
+          msg.className = "big";
+          msg.style.fontSize = "18px";
+          msg.style.lineHeight = "1.3";
+          msg.textContent = `Du hast jetzt schon ${streakDays} Tage am Stück gelernt.`;
+          body.appendChild(msg);
+    
+          const sub = document.createElement("div");
+          sub.className = "small";
+          sub.style.marginTop = "8px";
+          sub.textContent = `Besonders: Davon hast du an ${daysOver50} Tagen mehr als 50 Vokabeln gelernt.`;
+          body.appendChild(sub);
+        },
+        null
+      );
+    }
+    
+    function recordLearningAndMaybeShowStreak(vocabId) {
+      const s = ensureStreakState();
+      if (!s) return;
+    
+      const today = dayKeyLocal(new Date());
+      const yesterday = dayKeyFromKeyPlusDays(today, -1);
+    
+      // 1) Daily uniqueIds pflegen
+      const entry = ensureDailyEntry(today);
+      const ids = entry.uniqueIds;
+    
+      // unique add
+      if (!ids.includes(vocabId)) ids.push(vocabId);
+    
+      // 2) Streak nur beim ersten "Lernen" des Tages updaten + ggf. Popup zeigen
+      // (d.h. nur wenn lastActiveDay noch nicht today war)
+      if (s.lastActiveDay !== today) {
+        const continues = (s.lastActiveDay === yesterday);
+    
+        s.current = continues ? (Number(s.current || 0) + 1) : 1;
+        s.best = Math.max(Number(s.best || 0), s.current);
+        s.lastActiveDay = today;
+    
+        // Popup nur einmal pro Tag und erst ab 2 Tagen Streak
+        if (s.current >= 2 && s.lastPopupDay !== today) {
+          const over50 = countDaysOver50InCurrentStreak(today, s.current);
+          s.lastPopupDay = today;
+    
+          saveRootState(APP_STATE); // sicherstellen, dass Popup-Status persistiert ist
+          showStreakPopup(s.current, over50);
+        }
+      }
+    }
+    
+    function maybeShowStreakPopupIfDue(reason = "") {
+      const s = ensureStreakState();
+      if (!s) return;
+    
+      const today = dayKeyLocal(new Date());
+    
+      // Popup nur, wenn heute schon "aktiv" war (d.h. first learn today ist passiert)
+      // und das Popup heute noch nicht gezeigt wurde.
+      if (s.lastActiveDay !== today) return;
+      if (s.current < 2) return;
+      if (s.lastPopupDay === today) return;
+    
+      const over50 = countDaysOver50InCurrentStreak(today, s.current);
+      s.lastPopupDay = today;
+    
+      saveRootState(APP_STATE);
+      console.log("[streak] popup due on", reason);
+      showStreakPopup(s.current, over50);
+    }
+    
     function applyAnswerScore(id, mode, isCorrect) {
       const s = getVocabStateForId(id);
       if (!s) return;
@@ -853,9 +996,15 @@
       s.lastSeenAt = Date.now();
       s.decayStage = 0;
     
+      // --- Streak-Tracking: beim ersten Lernen des Tages Popup am Anfang ---
+      // (Counts: unique IDs pro Tag, Aktivität zählt ab erster beantworteter Vokabel)
+      if (APP_STATE && APP_STATE.prefs) {
+        recordLearningAndMaybeShowStreak(id);
+      }
+    
       if (APP_STATE) saveRootState(APP_STATE);
     }
-    
+
     const DAY = 24 * 60 * 60 * 1000;
     
     function applyDecayIfNeededForId(id) {
@@ -2144,16 +2293,19 @@
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState !== "visible") return;
     
-      // Falls init noch nicht fertig ist
       if (!APP_STATE) return;
     
-      // Wichtig: während aktiver Session/Challenge NICHT reloaden
+      // Während aktiver Session/Challenge NICHT reloaden / kein Popup
       if (inSession || inChallenge) {
         console.log("[visibilitychange] skip reload (active):", { inSession, inChallenge });
         return;
       }
     
-      reloadCsvAndSyncState("visibilitychange-visible");
+      // 1) erst reloaden (CSV+State sync)
+      reloadCsvAndSyncState("visibilitychange-visible").then(() => {
+        // 2) danach ggf. Streak-Popup zeigen (falls heute fällig)
+        maybeShowStreakPopupIfDue("visibilitychange-visible");
+      });
     });
 
     $("modal").addEventListener("click", (e) => {
@@ -2203,10 +2355,10 @@
         // 1) CSV neu laden
         vocab = await loadCsvAndBuildVocab();
     
-        // 2) State mit neuen Vokabeln synchronisieren (neue IDs anlegen, alte Scores behalten)
+        // 2) State mit neuen Vokabeln synchronisieren
         ensureVocabStatesFromCsv(APP_STATE, vocab);
     
-        // 3) Decay (wie bei dir in init, pro ID)
+        // 3) Decay pro ID
         for (const it of vocab) {
           applyDecayIfNeededForId(it.id);
         }
@@ -2214,20 +2366,29 @@
         // 4) Persistieren
         saveRootState(APP_STATE);
     
-        // 5) UI aktualisieren (nur außerhalb aktiver Session/Challenge triggern – machen wir in Schritt 4)
+        // 5) UI aktualisieren
         renderCsvTable();
         renderRecentLearnPills();
         updateLabels();
     
+        // Buttons neu setzen
         $("startBtn").disabled = vocab.length === 0;
         if ($("learnStartBtn")) $("learnStartBtn").disabled = vocab.length === 0;
     
         console.log("[reload] done:", reason, "items:", vocab.length);
+    
+        // Optional: wenn nach Reload ein Streak-Popup fällig ist (und idle), zeig es.
+        // (Das ist genau dein Wunsch "bei Reload / visibilityreturn")
+        if (!inSession && !inChallenge && APP_STATE) {
+          maybeShowStreakPopupIfDue("reload-" + reason);
+        }
+    
+        return true;
       } catch (e) {
         console.error("[reload] failed:", reason, e);
+        return false;
       }
     }
-
     
     // -------------------------
     // INIT
