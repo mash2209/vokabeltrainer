@@ -443,7 +443,53 @@
     .btnLearn{
       background: linear-gradient(90deg, #f59e0b, #c2410c); /* etwas dunkler als CTA */
     }
+
+    /* Card: Challenges Button (ähnlich wie Learn) */
+    .btnChallenge{
+      background: linear-gradient(90deg, #fbbf24, #ea580c);
+    }
     
+    /* Challenge-History (letzte 3) */
+    .challengeList{
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .challengeRow{
+      border: 1px solid var(--line);
+      border-radius: var(--r16);
+      background: rgba(255,255,255,.85);
+      padding: 10px 10px;
+      display: grid;
+      gap: 4px;
+    }
+    
+    .challengeRow .top{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    
+    .challengeRow .tag{
+      font-weight: 900;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+    
+    .challengeRow .meta{
+      margin-left:auto;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    
+    .challengeRow .sub{
+      font-size: 12px;
+      color: rgba(15,23,42,.72);
+      line-height: 1.25;
+    }
+
     /* Card 3: zuletzt gelernt (Pills) */
     .learnPills{
       display:flex;
