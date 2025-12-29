@@ -2139,6 +2139,66 @@
     $("modalCancelBtn").addEventListener("click", () => closeModal("cancel"));
     $("modalGoBtn").addEventListener("click", () => closeModal("ok"));
 
+    async function loadCsvAndBuildVocab() {
+      const r = await fetch(CSV_URL, { cache: "no-store" });
+      if (!r.ok) throw new Error("CSV not found");
+      const text = await r.text();
+      const items = fromCsv(text);
+    
+      const vocab = items
+        .filter(it => (it.de || it.foreign) && (it.lang || "").trim())
+        .map(it => ({
+          id: (it.id || "").toString().trim(),
+          added: (it.added || "").trim(),
+          de: (it.de || "").trim(),
+          foreign: (it.foreign || "").trim(),
+          lang: (it.lang || "EN").toUpperCase().trim(),
+          tags: (it.tags || "").trim(),
+          example: (it.example || "").trim()
+        }))
+        .filter(it => it.de && it.foreign);
+    
+      return vocab;
+    }
+    
+    // -------------------------
+    // CSV RELOAD + STATE SYNC
+    // -------------------------
+    async function reloadCsvAndSyncState(reason = "") {
+      try {
+        console.log("[reload] start:", reason);
+    
+        // 1) CSV neu laden
+        vocab = await loadCsvAndBuildVocab();
+    
+        // 2) State mit neuen Vokabeln synchronisieren (neue IDs anlegen, alte Scores behalten)
+        ensureVocabStatesFromCsv(APP_STATE, vocab);
+    
+        // 3) Decay (wie bei dir in init, pro ID)
+        for (const it of vocab) {
+          applyDecayIfNeededForId(it.id);
+        }
+    
+        // 4) Persistieren
+        saveRootState(APP_STATE);
+    
+        // 5) UI aktualisieren (nur außerhalb aktiver Session/Challenge triggern – machen wir in Schritt 4)
+        renderCsvTable();
+        renderRecentLearnPills();
+        updateLabels();
+    
+        // Buttons neu setzen
+        $("startBtn").disabled = vocab.length === 0;
+        if ($("learnStartBtn")) $("learnStartBtn").disabled = vocab.length === 0;
+    
+        console.log("[reload] done:", reason, "items:", vocab.length);
+      } catch (e) {
+        console.error("[reload] failed:", reason, e);
+        // Bei Reload-Fehler lassen wir die App weiterlaufen und zerstören nichts.
+      }
+    }
+
+    
     // -------------------------
     // INIT
     // -------------------------
@@ -2150,23 +2210,7 @@
       updateLabels();
 
       try {
-        const r = await fetch(CSV_URL, { cache: "no-store" });
-        if (!r.ok) throw new Error("CSV not found");
-        const text = await r.text();
-        const items = fromCsv(text);
-
-        vocab = items
-          .filter(it => (it.de || it.foreign) && (it.lang || "").trim())
-          .map(it => ({
-            id: (it.id || "").toString().trim(),
-            added: (it.added || "").trim(),
-            de: (it.de || "").trim(),
-            foreign: (it.foreign || "").trim(),
-            lang: (it.lang || "EN").toUpperCase().trim(),
-            tags: (it.tags || "").trim(),
-            example: (it.example || "").trim()
-          }))
-          .filter(it => it.de && it.foreign);
+        vocab = await loadCsvAndBuildVocab();
 
         APP_STATE = loadRootState();
         ensureVocabStatesFromCsv(APP_STATE, vocab);
