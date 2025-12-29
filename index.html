@@ -699,17 +699,9 @@
       <span>Letzte Challenges</span>
     </div>
 
-    <div id="challengeHistory" class="challengeList">
-      <div class="small">Noch keine Challenges gespeichert.</div>
+    <div id="challengeHistory" class="small" style="margin-top:8px;">
+      Noch keine Challenges gespeichert.
     </div>
-
-    <!-- Aktive Challenge -->
-    <div class="sectionLbl" style="margin-top:12px;">
-      <span class="mini">🏁</span>
-      <span>Aktive Challenge</span>
-    </div>
-
-  </div>
   </section>
     
   <section class="card" id="learnCard">
@@ -2518,6 +2510,125 @@
         }
       );
     }
+
+    function openChallengeModal() {
+      if (!vocab || vocab.length === 0) return;
+    
+      // Keine Challenge starten, wenn gerade gelernt wird
+      if (inSession) return alert("Bitte beende zuerst die aktuelle Session.");
+    
+      const tagLatest = computeTagRecency();
+    
+      // Alle Tags: neueste oben
+      const sortedAll = [...tagLatest.keys()].sort((a,b) => {
+        const da = tagLatest.get(a) || new Date(0);
+        const db = tagLatest.get(b) || new Date(0);
+        if (db.getTime() !== da.getTime()) return db - da;
+        return a.localeCompare(b, "de");
+      });
+    
+      let chosenTag = "";
+      let chosenTarget = 15; // Default (kannst du ändern)
+    
+      openModal(
+        "Challenge starten",
+        (body) => {
+          $("modalGoBtn").textContent = "Los geht's";
+          $("modalGoBtn").disabled = true;
+    
+          const syncGo = () => {
+            $("modalGoBtn").disabled = !(chosenTag && Number(chosenTarget) > 0);
+          };
+    
+          // Feld: Tag
+          const tagWrap = document.createElement("div");
+          tagWrap.className = "field";
+          tagWrap.innerHTML = `<label>Unit/Tag</label>`;
+          const tagSel = document.createElement("select");
+    
+          const opt0 = document.createElement("option");
+          opt0.value = "";
+          opt0.textContent = "Bitte auswählen …";
+          tagSel.appendChild(opt0);
+    
+          sortedAll.forEach(t => {
+            const o = document.createElement("option");
+            o.value = t;
+            o.textContent = `${t}  (${tagDateStr(tagLatest.get(t))})`;
+            tagSel.appendChild(o);
+          });
+    
+          tagSel.value = chosenTag;
+          tagSel.onchange = () => {
+            chosenTag = tagSel.value;
+            syncGo();
+          };
+    
+          tagWrap.appendChild(tagSel);
+          body.appendChild(tagWrap);
+    
+          // Feld: Ziel
+          const targetWrap = document.createElement("div");
+          targetWrap.className = "field";
+          targetWrap.innerHTML = `<label>Ziel (Anzahl Vokabeln)</label>`;
+          const targetSel = document.createElement("select");
+    
+          [
+            [10, "10"],
+            [15, "15"],
+            [25, "25"],
+            [50, "50"]
+          ].forEach(([v, txt]) => {
+            const o = document.createElement("option");
+            o.value = String(v);
+            o.textContent = txt;
+            targetSel.appendChild(o);
+          });
+    
+          targetSel.value = String(chosenTarget);
+          targetSel.onchange = () => {
+            const n = Number(targetSel.value);
+            chosenTarget = Number.isFinite(n) ? n : 15;
+            syncGo();
+          };
+    
+          targetWrap.appendChild(targetSel);
+          body.appendChild(targetWrap);
+    
+          const note = document.createElement("div");
+          note.className = "small";
+          note.style.marginTop = "6px";
+          note.textContent = "Hinweis: Wird die Challenge abgebrochen, wird sie nicht gespeichert.";
+          body.appendChild(note);
+    
+          syncGo();
+        },
+        () => {
+          // OK: Challenge starten + Lern-Overlay öffnen
+          const ok = startChallenge(chosenTag, chosenTarget);
+          if (!ok) return alert("Challenge konnte nicht gestartet werden.");
+    
+          // Für Challenges: wir erzwingen eine Session auf diesem Tag
+          selectedTags = new Set([chosenTag]);
+          updateLabels();
+    
+          const built = buildSession();
+          if (!built) {
+            // Wenn keine Vokabeln im Tag: Challenge wieder weg
+            inChallenge = false;
+            if (APP_STATE) {
+              APP_STATE.activeChallenge = null;
+              saveRootState(APP_STATE);
+            }
+            return alert("Keine passenden Vokabeln für diese Unit/Tag.");
+          }
+    
+          inSession = true;
+          openOverlay();
+        }
+      );
+    }
+
     
     // -------------------------
     // Card 3: Zuletzt gelernt
@@ -2666,6 +2777,8 @@
       openOverlay();
     });
 
+    $("challengeStartBtn").addEventListener("click", openChallengeModal); 
+    
     // -------------------------
     // Auto-Reload beim Zurückkommen (nur wenn keine Session/Challenge läuft)
     // -------------------------
