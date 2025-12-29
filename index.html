@@ -1696,14 +1696,16 @@
         };
 
         $("selfOkBtn").onclick = () => { 
-          score++; 
+          score++;
           applyAnswerScore(item.id, "FLASH", true);
-          next(); 
+          if (inChallenge) recordChallengeAnswer(item.id, true);
+          next();
         };
         
         $("selfBadBtn").onclick = () => { 
           applyAnswerScore(item.id, "FLASH", false);
-          next(); 
+          if (inChallenge) recordChallengeAnswer(item.id, false);
+          next();
         };
 
       } else if (mode === "MCQ") {
@@ -1731,6 +1733,7 @@
             else { b.classList.add("bad"); }
 
             applyAnswerScore(item.id, "MCQ", ok);
+            if (inChallenge) recordChallengeAnswer(item.id, ok);
 
             [...wrap.querySelectorAll("button")].forEach(x => x.disabled = true);
 
@@ -1799,7 +1802,8 @@
         
           if (ok) score++;
           applyAnswerScore(item.id, "TYPE", ok);
-        
+          if (inChallenge) recordChallengeAnswer(item.id, ok);
+            
           renderSolutionWithExample(
             ok
               ? `<span class="pill ok">✔ richtig</span>`
@@ -1814,6 +1818,7 @@
         
           renderSolutionWithExample(`<span class="mono">Lösung: ${correct}</span>`);
           applyAnswerScore(item.id, "TYPE", false);
+          if (inChallenge) recordChallengeAnswer(item.id, false);
           markAnswered();
         };
 
@@ -2585,7 +2590,7 @@
           tags: (it.tags || "").trim(),
           example: (it.example || "").trim()
         }))
-        .filter(it => it.de && it.foreign);
+        .filter(it => it.id && it.de && it.foreign);
     
       return vocab;
     }
@@ -2649,6 +2654,18 @@
         vocab = await loadCsvAndBuildVocab();
 
         APP_STATE = loadRootState();
+        inChallenge = !!(APP_STATE.activeChallenge && !APP_STATE.activeChallenge.finishedAt);
+          // daily entries sanieren
+        if (APP_STATE?.prefs?.daily && typeof APP_STATE.prefs.daily === "object") {
+          for (const k of Object.keys(APP_STATE.prefs.daily)) {
+            const e = APP_STATE.prefs.daily[k];
+            if (!e || typeof e !== "object") {
+              APP_STATE.prefs.daily[k] = { uniqueIds: [] };
+            } else if (!Array.isArray(e.uniqueIds)) {
+              APP_STATE.prefs.daily[k].uniqueIds = [];
+            }
+          }
+        }
         ensureVocabStatesFromCsv(APP_STATE, vocab);
         for (const it of vocab) {
           applyDecayIfNeededForId(it.id);
