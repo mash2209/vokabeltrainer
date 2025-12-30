@@ -2226,13 +2226,13 @@
           const row = document.createElement("div");
           row.style.display = "flex";
           row.style.justifyContent = "center";
-          row.style.gap = "10px";
+          row.style.gap = "12px";
           row.style.margin = "8px 0 10px";
     
           for (let i = 0; i < checkCount; i++) {
             const s = document.createElement("span");
             s.textContent = "✔";
-            s.style.fontSize = "26px";
+            s.style.fontSize = "52px";
             s.style.fontWeight = "900";
             s.style.lineHeight = "1";
             s.style.color = (checkColor === "gold") ? "#f59e0b" : "#16a34a"; // gold / grün
@@ -2781,7 +2781,16 @@
             }
             return alert("Keine passenden Vokabeln für diese Unit/Tag.");
           }
-    
+
+          const ch = getActiveChallenge();
+          if (ch && session && session.length > 0) {
+            const effTarget = Math.min(Number(ch.targetN || 0), session.length);
+            if (effTarget > 0 && effTarget !== Number(ch.targetN || 0)) {
+              ch.targetN = effTarget;
+              saveRootState(APP_STATE);
+            }
+          }
+            
           inSession = true;
           openOverlay();
         }
