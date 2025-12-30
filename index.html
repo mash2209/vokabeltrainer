@@ -837,6 +837,9 @@
                 uniqueIds: Array.isArray(parsed.activeChallenge.uniqueIds)
                   ? parsed.activeChallenge.uniqueIds.map(x => String(x))
                   : [],
+                wrongIds: Array.isArray(parsed.activeChallenge.wrongIds)
+                  ? parsed.activeChallenge.wrongIds.map(x => String(x))
+                  : [],
                 startedAt: Number(parsed.activeChallenge.startedAt || 0),
                 finishedAt: (parsed.activeChallenge.finishedAt == null) ? null : Number(parsed.activeChallenge.finishedAt),
               }
@@ -901,6 +904,7 @@
         correctN: 0,
         answerN: 0,
         uniqueIds: [],
+        wrongIds: [],
         startedAt: nowTs(),
         finishedAt: null
       };
@@ -919,17 +923,19 @@
       const id = String(vocabId || "").trim();
       if (!id) return;
     
-      // correctN zählt jede korrekte Antwort (nicht unique)
       ch.answerN = (ch.answerN || 0) + 1;
-      if (isCorrect) ch.correctN = (ch.correctN || 0) + 1;
-    
-      // doneN zählt unique beantwortete Vokabeln
+      if (isCorrect) {
+        ch.correctN = (ch.correctN || 0) + 1;
+      } else {
+        if (!Array.isArray(ch.wrongIds )) ch.wrongIds = [];
+        if (!ch.wrongIds.includes(id)) ch.wrongIds.push(id);
+      }
+
       if (!ch.uniqueIds.includes(id)) {
         ch.uniqueIds.push(id);
         ch.doneN = ch.uniqueIds.length;
       }
     
-      // Ziel erreicht?
       if (ch.doneN >= ch.targetN) {
         finishChallenge("targetReached");
       } else {
@@ -2257,9 +2263,10 @@
           }
         },
         () => {
-          // Placeholder: Review-Start kommt in Schritt 2/3
-          // Hier machen wir später den Sprung in den Review-Modus (nur bei wrong > 0).
-          // Für jetzt: einfach schließen.
+          const ids = Array.isArray(ch.wrongIds) ? ch.wrongIds : [];
+          if (ids.length > 0) {
+            openWrongVocabListModalByIds(ids);
+          }
         }
       );
     }
@@ -2931,6 +2938,141 @@
       );
     }
 
+    function openWrongVocabListModalByIds(ids) {
+      const idArr = Array.isArray(ids) ? ids.map(x => String(x)).filter(Boolean) : [];
+      if (!idArr.length) return;
+    
+      const idSet = new Set(idArr);
+    
+      // Pool: nur diese IDs, alphabetisch nach Fremdsprache
+      const pool = vocab
+        .filter(it => idSet.has(String(it.id || "").trim()))
+        .slice()
+        .sort((a, b) => {
+          const fa = (a.foreign || "").trim();
+          const fb = (b.foreign || "").trim();
+          return fa.localeCompare(fb, "de", { sensitivity: "base" });
+        });
+    
+      let q = "";
+    
+      openModal(
+        "Schwierige Vokabeln",
+        (body) => {
+          if ($("modalGoBtn")) {
+            $("modalGoBtn").disabled = false;
+            $("modalGoBtn").textContent = "OK";
+          }
+          if ($("modalCancelBtn")) $("modalCancelBtn").style.display = "none";
+    
+          const cnt = document.createElement("div");
+          cnt.className = "small";
+          cnt.textContent = `${pool.length} Vokabeln`;
+          body.appendChild(cnt);
+    
+          // Suche wie in "Vokabeltabelle anzeigen"
+          const searchRow = document.createElement("div");
+          searchRow.className = "vocabSearchRow";
+          searchRow.style.marginTop = "10px";
+          searchRow.innerHTML = `
+            <input id="wrongVocabSearch" class="vocabSearch" type="search"
+                   placeholder="Vokabel suchen (Fremdsprache oder Deutsch) …">
+          `;
+          body.appendChild(searchRow);
+    
+          const listHost = document.createElement("div");
+          listHost.className = "vocabList";
+          listHost.style.marginTop = "10px";
+          body.appendChild(listHost);
+    
+          const render = () => {
+            listHost.innerHTML = "";
+    
+            const nq = normalize(q, true);
+            const filtered = nq
+              ? pool.filter(it => {
+                  const f = normalize(it.foreign || "", true);
+                  const d = normalize(it.de || "", true);
+                  return f.includes(nq) || d.includes(nq);
+                })
+              : pool;
+    
+            if (!filtered.length) {
+              const empty = document.createElement("div");
+              empty.className = "small";
+              empty.textContent = "Keine Treffer.";
+              listHost.appendChild(empty);
+              return;
+            }
+    
+            for (const it of filtered) {
+              const d = document.createElement("details");
+              d.className = "vocabEntry";
+    
+              const s = document.createElement("summary");
+    
+              const w = document.createElement("div");
+              w.className = "vocabWord";
+              w.textContent = (it.foreign || "").trim() || "—";
+    
+              const m = document.createElement("div");
+              m.className = "vocabMeta";
+              m.textContent = (it.lang || "").toUpperCase();
+    
+              s.appendChild(w);
+              s.appendChild(m);
+    
+              const body2 = document.createElement("div");
+              body2.className = "vocabBody";
+    
+              const lineDe = document.createElement("div");
+              lineDe.className = "vocabLine";
+              lineDe.innerHTML = `<span class="k">DE:</span>${(it.de || "—")}`;
+    
+              const lineEx = document.createElement("div");
+              lineEx.className = "vocabLine";
+              const ex = (it.example || "").trim();
+              lineEx.innerHTML = ex ? `<span class="k">Beispiel:</span>${ex}` : `<span class="k">Beispiel:</span>—`;
+    
+              const lineTags = document.createElement("div");
+              lineTags.className = "vocabLine";
+              const tags = (it.tags || "").trim();
+              lineTags.innerHTML = tags ? `<span class="k">Tags:</span>${tags}` : `<span class="k">Tags:</span>—`;
+    
+              const lineAdded = document.createElement("div");
+              lineAdded.className = "vocabLine";
+              const added = (it.added || "").trim();
+              lineAdded.innerHTML = added ? `<span class="k">Added:</span>${added}` : `<span class="k">Added:</span>—`;
+    
+              body2.appendChild(lineDe);
+              body2.appendChild(lineEx);
+              body2.appendChild(lineTags);
+              body2.appendChild(lineAdded);
+    
+              d.appendChild(s);
+              d.appendChild(body2);
+    
+              listHost.appendChild(d);
+            }
+          };
+    
+          const searchEl = () => document.getElementById("wrongVocabSearch");
+          setTimeout(() => {
+            const el = searchEl();
+            if (el) {
+              el.value = "";
+              el.oninput = () => {
+                q = el.value || "";
+                render();
+              };
+            }
+            render();
+          }, 0);
+        },
+        null
+      );
+    }
+    
     // -------------------------
     // Wiring
     // -------------------------
