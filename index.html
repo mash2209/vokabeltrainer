@@ -592,11 +592,12 @@
 <body>
 <!-- Lern-Overlay -->
 <div aria-hidden="true" class="overlay" id="learnOverlay">
-<div class="overlayPanel">
-<div class="row" style="margin-bottom: 10px;">
-<strong>Lernen</strong>
-<button disabled="" id="nextBtn2">Nächste</button>
-<button class="danger" disabled="" id="endBtn2">Beenden</button>
+<div class="overlayPanel"><div class="row" style="margin-bottom: 10px;">
+  <strong id="overlayModeLabel">Lernen</strong>
+  <span id="challengeCounter" class="pill mono" style="display:none;">0/0</span>
+
+  <button disabled="" id="nextBtn2">Nächste</button>
+  <button class="danger" disabled="" id="endBtn2">Beenden</button>
 </div>
 <div id="learnCardInner"></div>
 </div>
@@ -945,22 +946,24 @@
       const tag = ch.tag;
       if (!APP_STATE.challengesByTag[tag]) APP_STATE.challengesByTag[tag] = [];
       if (!Array.isArray(APP_STATE.challengesByTag[tag])) APP_STATE.challengesByTag[tag] = [];
-    
-      // neueste oben
+
+      const finished = { ...ch };
       APP_STATE.challengesByTag[tag].unshift({ ...ch });
     
-      // optional: History pro Tag begrenzen
       APP_STATE.challengesByTag[tag] = APP_STATE.challengesByTag[tag].slice(0, 50);
     
       APP_STATE.activeChallenge = null;
       saveRootState(APP_STATE);
     
       inChallenge = false;
-      // ✅ UI sofort beenden, sobald Challenge fertig
       if (inSession) {
-        endSession();           // schließt Overlay und setzt inSession=false
+        endSession();
       }
-      renderChallengeHistory(); // Home-Karte aktualisieren
+      renderChallengeHistory();
+      if (reason === "targetReached") {
+        showChallengeResultModal(finished);
+      }
+        
       return true;
     }
 
@@ -1784,6 +1787,34 @@
       }
 
       const item = currentItem();
+
+      // -------------------------
+      // Challenge-Header + Counter (A')
+      // -------------------------
+      const titleEl = $("overlayModeLabel");
+      const ctrEl = $("challengeCounter");
+    
+      if (titleEl) {
+        if (inChallenge) {
+          titleEl.textContent = "CHALLENGE";
+          titleEl.style.color = "var(--ctaA)";      // Orange
+        } else {
+          titleEl.textContent = "Lernen";
+          titleEl.style.color = "";                 // default
+        }
+      }
+    
+      if (ctrEl) {
+        if (inChallenge) {
+          const ch = getActiveChallenge();
+          const total = Math.max(1, Number(ch?.targetN || 0));
+          const current = Math.min(total, Number(ch?.answerN || 0) + 1); // "gerade die n-te"
+          ctrEl.textContent = `${current}/${total}`;
+          ctrEl.style.display = "inline-flex";
+        } else {
+          ctrEl.style.display = "none";
+        }
+      }
         
       const nextBtn = $("nextBtn2");
       if (nextBtn) nextBtn.disabled = true;
@@ -2133,6 +2164,106 @@
     // Modal helpers
     // -------------------------
     let modalOnOk = null;
+
+    // -------------------------
+    // Challenge Result Screen (Modal)
+    // -------------------------
+    function showChallengeResultModal(ch) {
+      if (!ch) return;
+    
+      const total = Math.max(1, Number(ch.answerN || 0));   // Antworten zählen (nicht unique!)
+      const correct = Math.max(0, Number(ch.correctN || 0));
+      const wrong = Math.max(0, total - correct);
+    
+      const acc = Math.round((correct / total) * 100);      // Accuracy immer anzeigen
+    
+      // Häkchen-Regel:
+      // 1 grün: <= 75
+      // 2 grün: > 75 und < 90
+      // 3 grün: >= 95 und < 100
+      // 3 gold: = 100
+      // (90–94 => 2 grün)
+      let checkCount = 1;
+      let checkColor = "green";
+    
+      if (acc === 100) {
+        checkCount = 3;
+        checkColor = "gold";
+      } else if (acc >= 95) {
+        checkCount = 3;
+        checkColor = "green";
+      } else if (acc > 75 && acc < 90) {
+        checkCount = 2;
+        checkColor = "green";
+      } else if (acc >= 90 && acc < 95) {
+        checkCount = 2;
+        checkColor = "green";
+      } else {
+        checkCount = 1;
+        checkColor = "green";
+      }
+    
+      openModal(
+        "Challenge abgeschlossen!",
+        (body) => {
+          // Modal Buttons konfigurieren
+          if ($("modalCancelBtn")) $("modalCancelBtn").style.display = "none";
+          if ($("modalGoBtn")) {
+            $("modalGoBtn").disabled = false;
+            $("modalGoBtn").textContent = "Review der schwierigen Vokabeln";
+            $("modalGoBtn").style.width = "100%";
+          }
+    
+          // 1) Headline fett
+          const title = document.createElement("div");
+          title.className = "big";
+          title.style.fontSize = "20px";
+          title.style.marginBottom = "12px";
+          title.textContent = "Challenge abgeschlossen!";
+          body.appendChild(title);
+    
+          // 2) Häkchen nebeneinander
+          const row = document.createElement("div");
+          row.style.display = "flex";
+          row.style.justifyContent = "center";
+          row.style.gap = "10px";
+          row.style.margin = "8px 0 10px";
+    
+          for (let i = 0; i < checkCount; i++) {
+            const s = document.createElement("span");
+            s.textContent = "✔";
+            s.style.fontSize = "26px";
+            s.style.fontWeight = "900";
+            s.style.lineHeight = "1";
+            s.style.color = (checkColor === "gold") ? "#f59e0b" : "#16a34a"; // gold / grün
+            row.appendChild(s);
+          }
+          body.appendChild(row);
+    
+          // 3) Subline klein grau (Accuracy immer)
+          const sub = document.createElement("div");
+          sub.className = "small";
+          sub.style.textAlign = "center";
+          sub.style.marginTop = "6px";
+          sub.textContent = `${correct} von ${total} Vokabeln korrekt beantwortet – ${acc} % richtig`;
+          body.appendChild(sub);
+    
+          // Review-Button nur aktiv, wenn mindestens ein Fehler
+          if ($("modalGoBtn")) {
+            $("modalGoBtn").disabled = (wrong <= 0);
+            if (wrong <= 0) {
+              $("modalGoBtn").textContent = "Keine schwierigen Vokabeln";
+            }
+          }
+        },
+        () => {
+          // Placeholder: Review-Start kommt in Schritt 2/3
+          // Hier machen wir später den Sprung in den Review-Modus (nur bei wrong > 0).
+          // Für jetzt: einfach schließen.
+        }
+      );
+    }
+
     
     function openModal(title, buildBodyFn, onOkFn) {
       $("modalTitle").textContent = title;
