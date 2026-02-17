@@ -341,3 +341,144 @@ id,added,de,foreign,lang,tags,example
 340,2025-12-20,ihr seid / ihr befindet euch,estáis,ES,Unidad 3 Verb estar (Qué pasa 1),2. Person Plural
 341,2025-12-20,sie sind / sie befinden sich,están,ES,Unidad 3 Verb estar (Qué pasa 1),3. Person Plural
 342,2025-12-20,sein / sich befinden,estar,ES,Unidad 3 Verb estar (Qué pasa 1),Infinitiv
+343,2026-02-17,die Leute,la gente,ES,Unidad 4 (Qué pasa 1),"La gente es maja."
+344,2026-02-17,der Opa,el abuelo,ES,Unidad 4 (Qué pasa 1),
+345,2026-02-17,die Oma,la abuela,ES,Unidad 4 (Qué pasa 1),"Mi abuela es de España."
+346,2026-02-17,die Großeltern,los abuelos,ES,Unidad 4 (Qué pasa 1),
+347,2026-02-17,der Onkel,el tío,ES,Unidad 4 (Qué pasa 1),"¿Cómo se llama tu tío?"
+348,2026-02-17,die Tante,la tía,ES,Unidad 4 (Qué pasa 1),"¿Quién es tu tía?"
+349,2026-02-17,die Gruppe,el grupo,ES,Unidad 4 (Qué pasa 1),
+350,2026-02-17,wer?,¿quién?,ES,Unidad 4 (Qué pasa 1),
+351,2026-02-17,wer?,¿quiénes?,ES,Unidad 4 (Qué pasa 1),
+352,2026-02-17,der Sohn,el hijo,ES,Unidad 4 (Qué pasa 1),
+353,2026-02-17,die Tochter,la hija,ES,Unidad 4 (Qué pasa 1),"Yolanda es la hija de Rosario."
+354,2026-02-17,der Halbbruder,el medio hermano,ES,Unidad 4 (Qué pasa 1),
+355,2026-02-17,die Halbschwester,la media hermana,ES,Unidad 4 (Qué pasa 1),"Mi media hermana se llama Ana."
+356,2026-02-17,die Stiefmutter,la madrastra,ES,Unidad 4 (Qué pasa 1),
+357,2026-02-17,der Stiefvater,el padrastro,ES,Unidad 4 (Qué pasa 1),
+358,2026-02-17,der/die Partner/in,la pareja,ES,Unidad 4 (Qué pasa 1),"Él es la pareja de mi padre."
+359,2026-02-17,der feste Freund,el novio,ES,Unidad 4 (Qué pasa 1),
+360,2026-02-17,die feste Freundin,la novia,ES,Unidad 4 (Qué pasa 1),
+361,2026-02-17,der Chat,el chat,ES,Unidad 4 (Qué pasa 1),
+362,2026-02-17,hier,aquí,ES,Unidad 4 (Qué pasa 1),"≠ allí"
+363,2026-02-17,"leicht, einfach",fácil,ES,Unidad 4 (Qué pasa 1),"Los exámenes son fáciles."
+364,2026-02-17,weil,porque,ES,Unidad 4 (Qué pasa 1),
+365,2026-02-17,neu,nuevo,ES,Unidad 4 (Qué pasa 1),"El libro es nuevo."
+366,2026-02-17,neu,nueva,ES,Unidad 4 (Qué pasa 1),
+367,2026-02-17,verschieden,diferente,ES,Unidad 4 (Qué pasa 1),"Englisch: different"
+368,2026-02-17,sympathisch,simpático,ES,Unidad 4 (Qué pasa 1),"Miguel es simpático."
+369,2026-02-17,sympathisch,simpática,ES,Unidad 4 (Qué pasa 1),
+370,2026-02-17,blond,rubio,ES,Unidad 4 (Qué pasa 1),
+371,2026-02-17,blond,rubia,ES,Unidad 4 (Qué pasa 1),"Lucía es rubia."
+372,2026-02-17,kreativ,creativo,ES,Unidad 4 (Qué pasa 1),"Englisch: creative"
+373,2026-02-17,kreativ,creativa,ES,Unidad 4 (Qué pasa 1),
+374,2026-02-17,das Haar,el pelo,ES,Unidad 4 (Qué pasa 1),"Raúl tiene el pelo castaño."
+375,2026-02-17,kastanienbraun,castaño,ES,Unidad 4 (Qué pasa 1),
+376,2026-02-17,kastanienbraun,castaña,ES,Unidad 4 (Qué pasa 1),
+377,2026-02-17,das T-Shirt,la camiseta,ES,Unidad 4 (Qué pasa 1),
+378,2026-02-17,rot,rojo,ES,Unidad 4 (Qué pasa 1),
+379,2026-02-17,rot,roja,ES,Unidad 4 (Qué pasa 1),
+380,2026-02-17,nervig,pesado,ES,Unidad 4 (Qué pasa 1),"¡Eres pesado!"
+381,2026-02-17,nervig,pesada,ES,Unidad 4 (Qué pasa 1),
+382,2026-02-17,schwarz,negro,ES,Unidad 4 (Qué pasa 1),
+383,2026-02-17,schwarz,negra,ES,Unidad 4 (Qué pasa 1),
+384,2026-02-17,die Person,la persona,ES,Unidad 4 (Qué pasa 1),"Tito es una persona activa."
+385,2026-02-17,aktiv,activo,ES,Unidad 4 (Qué pasa 1),
+386,2026-02-17,aktiv,activa,ES,Unidad 4 (Qué pasa 1),
+387,2026-02-17,"lustig, witzig",gracioso,ES,Unidad 4 (Qué pasa 1),"Omar es gracioso."
+388,2026-02-17,"lustig, witzig",graciosa,ES,Unidad 4 (Qué pasa 1),"¡Qué gracioso!"
+389,2026-02-17,"Wie ...! Was für ein(e) ...!",¡Qué!,ES,Unidad 4 (Qué pasa 1),
+390,2026-02-17,"klasse, super (ugs.)",chévere,ES,Unidad 4 (Qué pasa 1),"= genial"
+391,2026-02-17,guck mal,mira,ES,Unidad 4 (Qué pasa 1),"Mira, tengo una foto."
+392,2026-02-17,"gehen, fahren",ir a,ES,Unidad 4 (Qué pasa 1),
+393,2026-02-17,"nach, zu, in",a,ES,Unidad 4 (Qué pasa 1),"Voy al parque."
+394,2026-02-17,das Stadion,el estadio,ES,Unidad 4 (Qué pasa 1),
+395,2026-02-17,der Fußball,el fútbol,ES,Unidad 4 (Qué pasa 1),"Englisch: football"
+396,2026-02-17,groß,grande,ES,Unidad 4 (Qué pasa 1),"El estadio de fútbol es grande."
+397,2026-02-17,die Frau,la mujer,ES,Unidad 4 (Qué pasa 1),"La mujer es mi madre."
+398,2026-02-17,"hoch, groß",alto,ES,Unidad 4 (Qué pasa 1),
+399,2026-02-17,"hoch, groß",alta,ES,Unidad 4 (Qué pasa 1),
+400,2026-02-17,streng,estricto,ES,Unidad 4 (Qué pasa 1),
+401,2026-02-17,streng,estricta,ES,Unidad 4 (Qué pasa 1),
+402,2026-02-17,"der Mann, der Mensch",el hombre,ES,Unidad 4 (Qué pasa 1),"El hombre es mi profe."
+403,2026-02-17,"niedrig, klein",bajo,ES,Unidad 4 (Qué pasa 1),
+404,2026-02-17,"niedrig, klein",baja,ES,Unidad 4 (Qué pasa 1),
+405,2026-02-17,intelligent,inteligente,ES,Unidad 4 (Qué pasa 1),
+406,2026-02-17,ruhig,tranquilo,ES,Unidad 4 (Qué pasa 1),
+407,2026-02-17,ruhig,tranquila,ES,Unidad 4 (Qué pasa 1),"Yolanda es una chica tranquila."
+408,2026-02-17,"schwer, schwierig",difícil,ES,Unidad 4 (Qué pasa 1),"≠ fácil"
+409,2026-02-17,interessant,interesante,ES,Unidad 4 (Qué pasa 1),
+410,2026-02-17,das Lieblings-,favorito,ES,Unidad 4 (Qué pasa 1),"Englisch: favourite"
+411,2026-02-17,das Lieblings-,favorita,ES,Unidad 4 (Qué pasa 1),
+412,2026-02-17,das Schwimmbad,la piscina,ES,Unidad 4 (Qué pasa 1),
+413,2026-02-17,modern,moderno,ES,Unidad 4 (Qué pasa 1),
+414,2026-02-17,modern,moderna,ES,Unidad 4 (Qué pasa 1),
+415,2026-02-17,schön,bonito,ES,Unidad 4 (Qué pasa 1),
+416,2026-02-17,schön,bonita,ES,Unidad 4 (Qué pasa 1),"La foto es bonita."
+417,2026-02-17,der Plan,el plan,ES,Unidad 4 (Qué pasa 1),
+418,2026-02-17,Kolumbien,Colombia,ES,Unidad 4 (Qué pasa 1),
+419,2026-02-17,chatten,chatear,ES,Unidad 4 (Qué pasa 1),
+420,2026-02-17,noch (ein)mal,otra vez,ES,Unidad 4 (Qué pasa 1),
+421,2026-02-17,der Geburtstag,el cumpleaños,ES,Unidad 4 (Qué pasa 1),"Mi cumpleaños es mañana."
+422,2026-02-17,der Geburtstag,el cumple,ES,Unidad 4 (Qué pasa 1),
+423,2026-02-17,der Kuss,el beso,ES,Unidad 4 (Qué pasa 1),
+424,2026-02-17,hübsch,guapo,ES,Unidad 4 (Qué pasa 1),
+425,2026-02-17,hübsch,guapa,ES,Unidad 4 (Qué pasa 1),"La chica es muy guapa."
+426,2026-02-17,rothaarig,pelirrojo,ES,Unidad 4 (Qué pasa 1),"Henry es pelirrojo."
+427,2026-02-17,rothaarig,pelirroja,ES,Unidad 4 (Qué pasa 1),
+428,2026-02-17,lang,largo,ES,Unidad 4 (Qué pasa 1),
+429,2026-02-17,lang,larga,ES,Unidad 4 (Qué pasa 1),
+430,2026-02-17,kurz,corto,ES,Unidad 4 (Qué pasa 1),
+431,2026-02-17,kurz,corta,ES,Unidad 4 (Qué pasa 1),
+432,2026-02-17,glatt,liso,ES,Unidad 4 (Qué pasa 1),
+433,2026-02-17,glatt,lisa,ES,Unidad 4 (Qué pasa 1),"Lucía tiene el pelo liso."
+434,2026-02-17,"lockig, gelockt",rizado,ES,Unidad 4 (Qué pasa 1),
+435,2026-02-17,"lockig, gelockt",rizada,ES,Unidad 4 (Qué pasa 1),
+436,2026-02-17,das Auge,el ojo,ES,Unidad 4 (Qué pasa 1),
+437,2026-02-17,blau,azul,ES,Unidad 4 (Qué pasa 1),"Tengo los ojos azules."
+438,2026-02-17,grün,verde,ES,Unidad 4 (Qué pasa 1),"Tu camiseta es verde."
+439,2026-02-17,braun,marrón,ES,Unidad 4 (Qué pasa 1),
+440,2026-02-17,grau,gris,ES,Unidad 4 (Qué pasa 1),
+441,2026-02-17,tragen,llevar,ES,Unidad 4 (Qué pasa 1),
+442,2026-02-17,die Brille,las gafas,ES,Unidad 4 (Qué pasa 1),"¿Llevas gafas?"
+443,2026-02-17,die Zahnspange,el aparato de dientes,ES,Unidad 4 (Qué pasa 1),
+444,2026-02-17,"der Star, der Stern",la estrella,ES,Unidad 4 (Qué pasa 1),
+445,2026-02-17,wohin?,¿adónde?,ES,Unidad 4 (Qué pasa 1),"¿Adónde vas?"
+446,2026-02-17,mein/e,mi(s),ES,Unidad 4 (Qué pasa 1),
+447,2026-02-17,dein/e,tu(s),ES,Unidad 4 (Qué pasa 1),
+448,2026-02-17,"sein/e, ihr/e (sg.)",su(s),ES,Unidad 4 (Qué pasa 1),
+449,2026-02-17,unser/e,nuestro(s)/-a(s),ES,Unidad 4 (Qué pasa 1),
+450,2026-02-17,euer/e,vuestro(s)/-a(s),ES,Unidad 4 (Qué pasa 1),
+451,2026-02-17,singen,cantar,ES,Unidad 4 (Qué pasa 1),
+452,2026-02-17,die Torte,la tarta,ES,Unidad 4 (Qué pasa 1),
+453,2026-02-17,"der/die Mitschüler/in, der Kumpel",el compañero,ES,Unidad 4 (Qué pasa 1),
+454,2026-02-17,"der/die Mitschüler/in, der Kumpel",la compañera,ES,Unidad 4 (Qué pasa 1),"Yolanda es la compañera nueva."
+455,2026-02-17,"leben, wohnen",vivir,ES,Unidad 4 (Qué pasa 1),"Vivo en Berlín."
+456,2026-02-17,Alles Gute zum Geburtstag!,¡Feliz cumpleaños!,ES,Unidad 4 (Qué pasa 1),
+457,2026-02-17,das ist ...,este es...,ES,Unidad 4 (Qué pasa 1),
+458,2026-02-17,das ist ...,esta es...,ES,Unidad 4 (Qué pasa 1),"Esta es Juana."
+459,2026-02-17,Ganz und gar nicht!,¡Qué va!,ES,Unidad 4 (Qué pasa 1),
+460,2026-02-17,"nett, sympathisch",majo,ES,Unidad 4 (Qué pasa 1),
+461,2026-02-17,"nett, sympathisch",maja,ES,Unidad 4 (Qué pasa 1),
+462,2026-02-17,der Teller,el plato,ES,Unidad 4 (Qué pasa 1),
+463,2026-02-17,das Stück,el trozo,ES,Unidad 4 (Qué pasa 1),
+464,2026-02-17,klein,pequeño,ES,Unidad 4 (Qué pasa 1),
+465,2026-02-17,klein,pequeña,ES,Unidad 4 (Qué pasa 1),
+466,2026-02-17,das Geschenk,el regalo,ES,Unidad 4 (Qué pasa 1),"El regalo es para ti."
+467,2026-02-17,für dich,para ti,ES,Unidad 4 (Qué pasa 1),
+468,2026-02-17,die Piñata,la piñata,ES,Unidad 4 (Qué pasa 1),
+469,2026-02-17,"klasse, cool (ugs.)",guay,ES,Unidad 4 (Qué pasa 1),"Ir a la playa es guay."
+470,2026-02-17,Es tut mir leid.,Lo siento.,ES,Unidad 4 (Qué pasa 1),
+471,2026-02-17,die Wahrheit,la verdad,ES,Unidad 4 (Qué pasa 1),
+472,2026-02-17,"der Witz, der Spaß, der Scherz",la broma,ES,Unidad 4 (Qué pasa 1),"Es una broma."
+473,2026-02-17,die Süßigkeit,la chuchería,ES,Unidad 4 (Qué pasa 1),
+474,2026-02-17,Vielen Dank!,¡Muchas gracias!,ES,Unidad 4 (Qué pasa 1),
+475,2026-02-17,cool (ugs.),chulo,ES,Unidad 4 (Qué pasa 1),
+476,2026-02-17,cool (ugs.),chula,ES,Unidad 4 (Qué pasa 1),"La camiseta es chula."
+477,2026-02-17,"das Schamgefühl, die Peinlichkeit",la vergüenza,ES,Unidad 4 (Qué pasa 1),
+478,2026-02-17,feiern,celebrar,ES,Unidad 4 (Qué pasa 1),"Englisch: to celebrate"
+479,2026-02-17,die Telefonnummer,el número de teléfono,ES,Unidad 4 (Qué pasa 1),
+480,2026-02-17,wie viel/e?,¿cuánto?,ES,Unidad 4 (Qué pasa 1),
+481,2026-02-17,wie viel/e?,¿cuánta?,ES,Unidad 4 (Qué pasa 1),
+482,2026-02-17,wie viel/e?,¿cuántos?,ES,Unidad 4 (Qué pasa 1),"¿Cuántos libros tienes?"
+483,2026-02-17,wie viel/e?,¿cuántas?,ES,Unidad 4 (Qué pasa 1)
